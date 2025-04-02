@@ -15,7 +15,4 @@ public class Client {
     @OneToOne
     @JoinColumn(name = "fk_endereco_cliente", referencedColumnName = "idendereco")
     private Address address;
-    @OneToOne
-    @JoinColumn(name = "fk_telefone_cliente", referencedColumnName = "idtelefone")
-    private Phone phone;
 }

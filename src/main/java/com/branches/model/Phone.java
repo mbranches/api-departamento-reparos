@@ -13,4 +13,10 @@ public class Phone {
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_telefone")
     private PhoneType phoneType;
+    @ManyToOne
+    @JoinColumn(name = "fk_cliente_telefone", referencedColumnName = "idcliente")
+    private Client client;
+    @JoinColumn(name = "fk_funcionario_telefone", referencedColumnName = "idfuncionario")
+    @ManyToOne
+    private Employee employee;
 }
