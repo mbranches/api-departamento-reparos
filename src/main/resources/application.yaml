@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: oficina
+  datasource:
+    url: jdbc:mysql://localhost:3307/oficina
+    username: ${ENV_ROOT_USER:root}
+    password: ${ENV_ROOT_PASSWORD:1234}
+  jpa:
+    show-sql: true
+    database: mysql
+    hibernate:
+      ddl-auto: validate
+  threads:
+    virtual:
+      enabled: true
+server:
+  error:
+    include-stacktrace: on_param
+  tomcat:
+    threads:
+      max: 20
