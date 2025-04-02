@@ -1,6 +1,10 @@
 package com.branches.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.Getter;
+
+import java.util.List;
 
 @Entity(name = "cliente")
 @Getter
@@ -16,4 +20,7 @@ public class Client {
     @OneToOne
     @JoinColumn(name = "fk_endereco_cliente", referencedColumnName = "idendereco")
     private Address address;
+    @OneToMany(mappedBy = "client")
+    @JsonManagedReference
+    private List<Phone> phones;
 }
