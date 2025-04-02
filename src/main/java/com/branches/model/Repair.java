@@ -16,7 +16,7 @@ public class Repair {
     @ManyToOne
     @JoinColumn(name = "fk_veiculo_reparacao", referencedColumnName = "idveiculo")
     private Vehicle vehicle;
-    @Column(name = "valor_total")
+    @Column(name = "valor_total", columnDefinition = "DECIMAL")
     private double totalValue;
     @Column(name = "data_finalizacao")
     private LocalDate endDate;

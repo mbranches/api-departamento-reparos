@@ -16,6 +16,6 @@ public class RepairEmployee {
     private Employee employee;
     @Column(name = "horas_trabalhadas")
     private int hoursWorked;
-    @Column(name = "valor_total")
+    @Column(name = "valor_total", columnDefinition = "DECIMAL")
     private double totalValue;
 }

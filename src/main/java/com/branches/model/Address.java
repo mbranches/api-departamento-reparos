@@ -14,6 +14,6 @@ public class Address {
     private String district;
     @Column(name = "cidade")
     private String city;
-    @Column(name = "uf")
+    @Column(name = "uf", columnDefinition = "CHAR")
     private String state;
 }

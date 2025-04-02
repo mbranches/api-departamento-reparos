@@ -10,6 +10,6 @@ public class Category {
     private Long id;
     @Column(name = "nome")
     private String name;
-    @Column(name = "preco_hora")
+    @Column(name = "preco_hora",columnDefinition = "DECIMAL")
     private double hourlyPrice;
 }

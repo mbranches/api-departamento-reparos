@@ -15,5 +15,6 @@ public class RepairPiece {
     @JoinColumn(name = "peca_idpeca")
     private Piece piece;
     private int quantity;
+    @Column(name = "valor_total", columnDefinition = "DECIMAL")
     private double totalValue;
 }

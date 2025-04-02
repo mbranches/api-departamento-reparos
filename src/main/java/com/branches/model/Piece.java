@@ -10,6 +10,6 @@ public class Piece {
     private Long id;
     @Column(name = "nome")
     private String name;
-    @Column(name = "valor_unitario")
+    @Column(name = "preco_unitario", columnDefinition = "DECIMAL")
     private double unitValue;
 }
