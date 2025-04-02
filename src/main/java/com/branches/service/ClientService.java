@@ -12,6 +12,6 @@ import java.util.List;
 public class ClientService {
     private final ClientRepository repository;
     public List<Client> findAll(String firstName) {
-        return firstName == null ? repository.findAll() : repository.findAllByName(firstName);
+        return firstName == null ? repository.findAll() : repository.findByNameContaining(firstName);
     }
 }
