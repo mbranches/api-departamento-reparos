@@ -1,5 +1,4 @@
 CREATE DATABASE oficina;
-
 USE oficina;
 
 CREATE TABLE endereco (
@@ -10,27 +9,16 @@ CREATE TABLE endereco (
     uf CHAR(2)
 );
 
-CREATE TABLE telefone (
-	idtelefone BIGINT PRIMARY KEY AUTO_INCREMENT,
-    numero VARCHAR(14),
-    tipo_telefone ENUM('residencial', 'celular')
-);
-
 CREATE TABLE cliente (
 	idcliente BIGINT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(30),
     sobrenome VARCHAR(30),
-    fk_endereco_cliente BIGINT,
-    fk_telefone_cliente BIGINT
+    fk_endereco_cliente BIGINT
 );
 
 ALTER TABLE cliente 
 ADD CONSTRAINT fk_endereco_cliente 
 FOREIGN KEY(fk_endereco_cliente) REFERENCES endereco(idendereco);
-
-ALTER TABLE cliente 
-ADD CONSTRAINT fk_telefone_cliente 
-FOREIGN KEY(fk_telefone_cliente) REFERENCES telefone(idtelefone);
 
 CREATE TABLE categoria (
 	idcategoria BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -43,8 +31,7 @@ CREATE TABLE funcionario (
     nome VARCHAR(30),
     sobrenome VARCHAR(30),
     fk_categoria_funcionario BIGINT,
-    fk_endereco_funcionario BIGINT,
-    fk_telefone_funcionario BIGINT
+    fk_endereco_funcionario BIGINT
 );
 
 ALTER TABLE funcionario 
@@ -55,9 +42,19 @@ ALTER TABLE funcionario
 ADD CONSTRAINT fk_endereco_funcionario
 FOREIGN KEY(fk_endereco_funcionario) REFERENCES endereco(idendereco);
 
-ALTER TABLE funcionario 
-ADD CONSTRAINT fk_telefone_funcionario 
-FOREIGN KEY(fk_telefone_funcionario) REFERENCES telefone(idtelefone);
+CREATE TABLE telefone (
+	idtelefone BIGINT PRIMARY KEY AUTO_INCREMENT,
+    numero VARCHAR(14),
+    tipo_telefone ENUM('residencial', 'celular'),
+    fk_cliente_telefone BIGINT,
+	fk_funcionario_telefone BIGINT
+);
+
+ALTER TABLE telefone
+ADD CONSTRAINT fk_cliente_telefone 
+FOREIGN KEY(fk_cliente_telefone) REFERENCES cliente(idcliente),
+ADD CONSTRAINT fk_funcionario_telefone 
+FOREIGN KEY(fk_funcionario_telefone) REFERENCES funcionario(idfuncionario);
 
 CREATE TABLE veiculo (
 	idveiculo BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -100,10 +97,6 @@ CREATE TABLE reparacao_funcionario (
     valor_total DECIMAL(10, 2),
     PRIMARY KEY(reparacaoid, funcionarioid)
 );
-
-ALTER TABLE reparacao_funcionario
-ADD COLUMN horas_trabalhadas INT,
-ADD COLUMN valor_total DECIMAL(10, 2);
 
 ALTER TABLE reparacao_funcionario
 ADD CONSTRAINT fk_reparacao_reparacao_funcionario
