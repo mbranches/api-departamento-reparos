@@ -8,6 +8,7 @@ public class Vehicle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idveiculo")
     private Long id;
+    @Enumerated(EnumType.STRING)
     @Column(name = "tipo_veiculo")
     private VehicleType vehicleType;
     @Column(name = "marca")

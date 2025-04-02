@@ -9,8 +9,8 @@ import java.io.Serializable;
 @Data
 @Embeddable
 public class RepairEmployeeKey implements Serializable {
-    @Column(name = "reparacao_idreparacao")
+    @Column(name = "reparacaoid")
     private Long repairId;
-    @Column(name = "funcionario_idfuncionario")
+    @Column(name = "funcionarioid")
     private Long employeeId;
 }

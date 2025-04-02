@@ -7,12 +7,12 @@ public class RepairEmployee {
     @EmbeddedId
     private RepairEmployeeKey id;
     @ManyToOne
-    @MapsId("idreparacao")
-    @JoinColumn(name = "reparacao_idreparacao")
+    @MapsId("employeeId")
+    @JoinColumn(name = "reparacaoid")
     private Repair repair;
     @ManyToOne
-    @MapsId("idfuncionario")
-    @JoinColumn(name = "funcionario_idfuncionario")
+    @MapsId("repairId")
+    @JoinColumn(name = "funcionarioid")
     private Employee employee;
     @Column(name = "horas_trabalhadas")
     private int hoursWorked;

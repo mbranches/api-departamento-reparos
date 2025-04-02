@@ -7,8 +7,8 @@ import java.io.Serializable;
 
 @Embeddable
 public class RepairPieceKey implements Serializable {
-    @Column(name = "reparacao_idreparacao")
+    @Column(name = "reparacaoid")
     private Long repairId;
-    @Column(name = "peca_idpeca")
+    @Column(name = "pecaid")
     private Long pieceId;
 }

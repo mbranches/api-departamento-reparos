@@ -7,13 +7,14 @@ public class RepairPiece {
     @EmbeddedId
     private RepairPieceKey id;
     @ManyToOne
-    @MapsId("idreparacao")
-    @JoinColumn(name = "reparacao_idreparacao")
+    @MapsId("repairId")
+    @JoinColumn(name = "reparacaoid")
     private Repair repair;
     @ManyToOne
-    @MapsId("idpeca")
-    @JoinColumn(name = "peca_idpeca")
+    @MapsId("pieceId")
+    @JoinColumn(name = "pecaid")
     private Piece piece;
+    @Column(name = "quantidade")
     private int quantity;
     @Column(name = "valor_total", columnDefinition = "DECIMAL")
     private double totalValue;
