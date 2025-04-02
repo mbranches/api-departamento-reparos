@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.util.List;
+
 @Entity(name = "funcionario")
 @Getter
 public class Employee {
@@ -22,4 +24,7 @@ public class Employee {
     @JoinColumn(name = "fk_endereco_funcionario", referencedColumnName = "idendereco")
     @JsonManagedReference
     private Address address;
+    @OneToMany(mappedBy = "employee")
+    @JsonManagedReference
+    private List<Phone> phones;
 }
