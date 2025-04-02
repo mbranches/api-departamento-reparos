@@ -1,8 +1,10 @@
 package com.branches.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity(name = "reparacao_peca")
+@Getter
 public class RepairPiece {
     @EmbeddedId
     private RepairPieceKey id;

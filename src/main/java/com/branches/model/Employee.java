@@ -1,8 +1,11 @@
 package com.branches.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity(name = "funcionario")
+@Getter
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,5 +20,6 @@ public class Employee {
     private Category category;
     @OneToOne
     @JoinColumn(name = "fk_endereco_funcionario", referencedColumnName = "idendereco")
+    @JsonManagedReference
     private Address address;
 }

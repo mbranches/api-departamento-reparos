@@ -3,6 +3,7 @@ package com.branches.model;
 import jakarta.persistence.*;
 
 @Entity(name = "cliente")
+@Getter
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

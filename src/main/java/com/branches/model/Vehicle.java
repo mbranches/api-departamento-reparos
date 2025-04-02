@@ -1,8 +1,10 @@
 package com.branches.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity(name = "veiculo")
+@Getter
 public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

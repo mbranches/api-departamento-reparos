@@ -1,10 +1,12 @@
 package com.branches.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.time.LocalDate;
 
 @Entity(name = "reparacao")
+@Getter
 public class Repair {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
