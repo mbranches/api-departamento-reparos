@@ -13,4 +13,6 @@ import java.util.List;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ClientMapper {
     List<ClientGetResponse> toClientGetResponseList(List<Client> clientList);
+
+    ClientGetResponse toClientGetResponse(Client client);
 }

@@ -6,10 +6,7 @@ import com.branches.response.ClientGetResponse;
 import com.branches.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -26,6 +23,15 @@ public class ClientController {
         List<Client> clients = service.findAll(firstName);
 
         List<ClientGetResponse> response = mapper.toClientGetResponseList(clients);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ClientGetResponse> findById(@PathVariable Long id) {
+        Client client = service.findByIdOrElseThrowsNotFoundException(id);
+
+        ClientGetResponse response = mapper.toClientGetResponse(client);
 
         return ResponseEntity.ok(response);
     }
