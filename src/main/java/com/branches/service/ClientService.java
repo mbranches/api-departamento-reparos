@@ -1,9 +1,13 @@
 package com.branches.service;
 
 import com.branches.exception.NotFoundException;
+import com.branches.mapper.ClientMapper;
 import com.branches.model.Address;
 import com.branches.model.Client;
 import com.branches.repository.ClientRepository;
+import com.branches.request.ClientPostRequest;
+import com.branches.response.ClientGetResponse;
+import com.branches.response.ClientPostResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +18,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ClientService {
     private final ClientRepository repository;
+    private final ClientMapper mapper;
     private final AddressService addressService;
 
-    public List<Client> findAll(String firstName) {
-        return firstName == null ? repository.findAll() : repository.findByNameContaining(firstName);
+    public List<ClientGetResponse> findAll(String firstName) {
+        List<Client> response = firstName == null ? repository.findAll() : repository.findByNameContaining(firstName);
+        return mapper.toClientGetResponseList(response);
+    }
+
+    public ClientGetResponse findById(Long id) {
+        Client clientFound = findByIdOrElseThrowsNotFoundException(id);
+
+        return mapper.toClientGetResponse(clientFound);
     }
 
     public Client findByIdOrElseThrowsNotFoundException(Long id) {
@@ -25,7 +37,9 @@ public class ClientService {
                 .orElseThrow(() -> new NotFoundException("Client not Found"));
     }
 
-    public Client save(Client clientToSave) {
+    public ClientPostResponse save(ClientPostRequest postRequest) {
+        Client clientToSave = mapper.toClient(postRequest);
+
         Address address = clientToSave.getAddress();
 
         Optional<Address> addressSearched = addressService.findAddress(address);
@@ -35,6 +49,8 @@ public class ClientService {
         clientToSave.getPhones()
             .forEach(phone -> phone.setClient(clientToSave));
 
-        return repository.save(clientToSave);
+        Client response = repository.save(clientToSave);
+
+        return mapper.toClientPostResponse(response);
     }
 }

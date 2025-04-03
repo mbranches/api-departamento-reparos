@@ -18,33 +18,24 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ClientController {
     private final ClientService service;
-    private final ClientMapper mapper;
 
     @GetMapping
     public ResponseEntity<List<ClientGetResponse>> findAll(@RequestParam(required = false) String firstName) {
-        List<Client> clients = service.findAll(firstName);
-
-        List<ClientGetResponse> response = mapper.toClientGetResponseList(clients);
+        List<ClientGetResponse> response = service.findAll(firstName);
 
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ClientGetResponse> findById(@PathVariable Long id) {
-        Client client = service.findByIdOrElseThrowsNotFoundException(id);
-
-        ClientGetResponse response = mapper.toClientGetResponse(client);
+        ClientGetResponse response = service.findById(id);
 
         return ResponseEntity.ok(response);
     }
 
     @PostMapping
     public ResponseEntity<ClientPostResponse> save(@RequestBody ClientPostRequest postRequest) {
-        Client clientToSave = mapper.toClient(postRequest);
-
-        Client clientSaved = service.save(clientToSave);
-
-        ClientPostResponse response = mapper.toClientPostResponse(clientSaved);
+        ClientPostResponse response = service.save(postRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
