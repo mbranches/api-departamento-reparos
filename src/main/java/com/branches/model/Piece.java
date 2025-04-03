@@ -1,10 +1,10 @@
 package com.branches.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.Data;
 
 @Entity(name = "peca")
-@Getter
+@Data
 public class Piece {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -2,10 +2,10 @@ package com.branches.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.Data;
 
 @Entity(name = "telefone")
-@Getter
+@Data
 public class Phone {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

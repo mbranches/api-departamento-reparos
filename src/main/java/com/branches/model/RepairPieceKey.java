@@ -2,12 +2,12 @@ package com.branches.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.Getter;
+import lombok.Data;
 
 import java.io.Serializable;
 
 @Embeddable
-@Getter
+@Data
 public class RepairPieceKey implements Serializable {
     @Column(name = "reparacaoid")
     private Long repairId;
