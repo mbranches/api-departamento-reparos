@@ -17,13 +17,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VehicleController {
     private final VehicleService service;
-    private final VehicleMapper mapper;
 
     @GetMapping
     public ResponseEntity<List<VehicleGetResponse>> findAll() {
-        List<Vehicle> vehicles = service.findAll();
-
-        List<VehicleGetResponse> response = mapper.toVehicleGetResponseList(vehicles);
+        List<VehicleGetResponse> response = service.findAll();
 
         return ResponseEntity.ok(response);
     }
