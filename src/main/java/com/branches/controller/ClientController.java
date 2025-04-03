@@ -2,14 +2,16 @@ package com.branches.controller;
 
 import com.branches.mapper.ClientMapper;
 import com.branches.model.Client;
+import com.branches.request.ClientPostRequest;
 import com.branches.response.ClientGetResponse;
+import com.branches.response.ClientPostResponse;
 import com.branches.service.ClientService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 @RequestMapping("v1/clients")
 @RestController
@@ -34,5 +36,16 @@ public class ClientController {
         ClientGetResponse response = mapper.toClientGetResponse(client);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping
+    public ResponseEntity<ClientPostResponse> save(@RequestBody ClientPostRequest postRequest) {
+        Client clientToSave = mapper.toClient(postRequest);
+
+        Client clientSaved = service.save(clientToSave);
+
+        ClientPostResponse response = mapper.toClientPostResponse(clientSaved);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
