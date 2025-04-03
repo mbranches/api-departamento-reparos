@@ -19,3 +19,6 @@ server:
   tomcat:
     threads:
       max: 20
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: trace
