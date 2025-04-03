@@ -1,7 +1,5 @@
 package com.branches.controller;
 
-import com.branches.mapper.EmployeeMapper;
-import com.branches.model.Employee;
 import com.branches.response.EmployeeGetResponse;
 import com.branches.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
@@ -17,14 +15,11 @@ import java.util.List;
 @RequestMapping("v1/employees")
 @RequiredArgsConstructor
 public class EmployeeController {
-    private final EmployeeMapper mapper;
     private final EmployeeService service;
 
     @GetMapping
     public ResponseEntity<List<EmployeeGetResponse>> findAll(@RequestParam(required = false) String firstName) {
-        List<Employee> employees = service.findAll(firstName);
-
-        List<EmployeeGetResponse> response = mapper.toEmployeeGetResponseList(employees);
+        List<EmployeeGetResponse> response = service.findAll(firstName);;
 
         return ResponseEntity.ok(response);
     }
