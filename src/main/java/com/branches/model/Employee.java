@@ -25,6 +25,5 @@ public class Employee {
     @JsonManagedReference
     private Address address;
     @OneToMany(mappedBy = "employee")
-    @JsonManagedReference
     private List<Phone> phones;
 }

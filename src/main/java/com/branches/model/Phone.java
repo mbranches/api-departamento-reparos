@@ -1,6 +1,7 @@
 package com.branches.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -18,10 +19,10 @@ public class Phone {
     private PhoneType phoneType;
     @ManyToOne
     @JoinColumn(name = "fk_cliente_telefone", referencedColumnName = "idcliente")
-    @JsonBackReference
+    @JsonIgnore
     private Client client;
     @JoinColumn(name = "fk_funcionario_telefone", referencedColumnName = "idfuncionario")
     @ManyToOne
-    @JsonBackReference
+    @JsonIgnore
     private Employee employee;
 }
