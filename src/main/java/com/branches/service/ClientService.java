@@ -26,17 +26,17 @@ public class ClientService {
         return mapper.toClientGetResponseList(response);
     }
 
-    public ClientGetResponse findById(Long id) {
-        Client clientFound = findByIdOrElseThrowsNotFoundException(id);
-
-        return mapper.toClientGetResponse(clientFound);
-    }
-
     public Client findByIdOrElseThrowsNotFoundException(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Client not Found"));
     }
 
+
+    private ClientGetResponse findById(Long id) {
+        Client clientFound = findByIdOrElseThrowsNotFoundException(id);
+
+        return mapper.toClientGetResponse(clientFound);
+    }
     public ClientPostResponse save(ClientPostRequest postRequest) {
         Client clientToSave = mapper.toClient(postRequest);
 
