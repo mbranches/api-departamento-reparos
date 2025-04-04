@@ -22,13 +22,11 @@ class CategoryServiceTest {
     private CategoryService service;
     @Mock
     private CategoryRepository repository;
-    @InjectMocks
-    private CategoryUtils categoryUtils;
     private List<Category> categoryList;
 
     @BeforeEach
     void init() {
-        categoryList = categoryUtils.newCategoryList();
+        categoryList = CategoryUtils.newCategoryList();
     }
 
     @Test
