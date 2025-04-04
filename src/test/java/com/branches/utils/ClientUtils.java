@@ -55,7 +55,7 @@ public class ClientUtils {
         Address address = AddressUtils.newAddressToSave();
 
         ClientPostRequest client = ClientPostRequest.builder().name("Chispirito").lastName("Costa").address(address).build();
-        Phone phone = Phone.builder().id(4L).number("21121521").phoneType(PhoneType.celular).build();
+        Phone phone = PhoneUtils.newPhone(4L);
         client.setPhones(List.of(phone));
 
         return client;
@@ -65,7 +65,7 @@ public class ClientUtils {
         Address address = AddressUtils.newAddressToSave();
 
         Client client = Client.builder().id(4L).name("Chispirito").lastName("Costa").address(address).build();
-        Phone phone = Phone.builder().id(4L).client(client).number("21121521").phoneType(PhoneType.celular).build();
+        Phone phone = PhoneUtils.newPhone(4L);
         client.setPhones(List.of(phone));
 
         return client;
@@ -85,7 +85,7 @@ public class ClientUtils {
         Address address = AddressUtils.newAddressToSave();
 
         ClientPostResponse client = ClientPostResponse.builder().id(4L).name("Chispirito").lastName("Costa").address(address).build();
-        Phone phone = Phone.builder().id(4L).number("21121521").phoneType(PhoneType.celular).build();
+        Phone phone = PhoneUtils.newPhone(4L);
         client.setPhones(List.of(phone));
 
         return client;

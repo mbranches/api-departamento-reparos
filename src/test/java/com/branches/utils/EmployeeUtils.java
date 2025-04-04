@@ -52,7 +52,7 @@ public class EmployeeUtils {
         Address address = AddressUtils.newAddressToSave();
 
         EmployeePostRequest employee = EmployeePostRequest.builder().name("Chispirito").lastName("Costa").categoryId(1L).address(address).build();
-        Phone phone = Phone.builder().id(4L).number("21121521").phoneType(PhoneType.celular).build();
+        Phone phone = PhoneUtils.newPhone(4L);
         employee.setPhones(List.of(phone));
 
         return employee;
@@ -64,7 +64,7 @@ public class EmployeeUtils {
         Category category = CategoryUtils.newCategory();
 
         Employee employee = Employee.builder().id(4L).name("Chispirito").lastName("Costa").category(category).address(address).build();
-        Phone phone = Phone.builder().id(4L).employee(employee).number("21121521").phoneType(PhoneType.celular).build();
+        Phone phone = PhoneUtils.newPhone(4L);
         employee.setPhones(List.of(phone));
 
         return employee;
@@ -76,7 +76,7 @@ public class EmployeeUtils {
         Category category = CategoryUtils.newCategory();
 
         EmployeePostResponse employee = EmployeePostResponse.builder().id(4L).name("Chispirito").lastName("Costa").category(category).address(address).build();
-        Phone phone = Phone.builder().id(4L).number("21121521").phoneType(PhoneType.celular).build();
+        Phone phone = PhoneUtils.newPhone(4L);
         employee.setPhones(List.of(phone));
 
         return employee;
