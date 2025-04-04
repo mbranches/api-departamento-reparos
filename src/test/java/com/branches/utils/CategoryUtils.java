@@ -14,4 +14,8 @@ public class CategoryUtils {
 
         return new ArrayList<>(List.of(mecanico, borracheiro, pintor));
     }
+
+    public static Category newCategory() {
+        return Category.builder().id(1L).name("Mecânico").hourlyPrice(50.0).build();
+    }
 }
