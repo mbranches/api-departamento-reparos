@@ -71,6 +71,16 @@ public class ClientUtils {
         return client;
     }
 
+    public static ClientGetResponse newClientGetResponse() {
+        AddressGetResponse address = AddressUtils.newAddressGetResponse();
+
+        ClientGetResponse client = ClientGetResponse.builder().name("Chispirito").lastName("Costa").address(address).build();
+        PhoneGetResponse phone = PhoneGetResponse.builder().number("21121521").phoneType(PhoneType.celular).build();
+        client.setPhones(List.of(phone));
+
+        return client;
+    }
+
     public static ClientPostResponse newClientPostResponse() {
         Address address = AddressUtils.newAddressToSave();
 
