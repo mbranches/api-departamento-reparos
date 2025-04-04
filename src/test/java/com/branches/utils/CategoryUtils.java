@@ -1,6 +1,9 @@
 package com.branches.utils;
 
 import com.branches.model.Category;
+import com.branches.request.CategoryPostRequest;
+import com.branches.response.CategoryGetResponse;
+import com.branches.response.CategoryPostResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,7 +18,23 @@ public class CategoryUtils {
         return new ArrayList<>(List.of(mecanico, borracheiro, pintor));
     }
 
+    public static List<CategoryGetResponse> newCategoryGetResponseList() {
+        CategoryGetResponse mecanico = CategoryGetResponse.builder().name("Mecânico").hourlyPrice(50.0).build();
+        CategoryGetResponse borracheiro = CategoryGetResponse.builder().name("Borracheiro").hourlyPrice(40.0).build();
+        CategoryGetResponse pintor = CategoryGetResponse.builder().name("Pintor").hourlyPrice(30.0).build();
+
+        return new ArrayList<>(List.of(mecanico, borracheiro, pintor));
+    }
+
     public static Category newCategory() {
-        return Category.builder().id(1L).name("Mecânico").hourlyPrice(50.0).build();
+        return Category.builder().id(4L).name("Mecânico").hourlyPrice(50.0).build();
+    }
+
+    public static CategoryPostRequest newCategoryPostRequest() {
+        return CategoryPostRequest.builder().name("Mecânico").hourlyPrice(50.0).build();
+    }
+
+    public static CategoryPostResponse newCategoryPostResponse() {
+        return CategoryPostResponse.builder().id(4L).name("Mecânico").hourlyPrice(50.0).build();
     }
 }
