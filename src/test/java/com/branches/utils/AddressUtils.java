@@ -1,7 +1,7 @@
 package com.branches.utils;
 
 import com.branches.model.Address;
-import org.springframework.stereotype.Component;
+import com.branches.response.AddressGetResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +18,15 @@ public class AddressUtils {
     public static Address newAddressToSave() {
         return Address.builder()
                 .id(4L)
+                .street("Almirante Barroso")
+                .district("São Brás")
+                .city("Belém")
+                .state("Pa")
+                .build();
+    }
+
+    public static AddressGetResponse newAddressGetResponse() {
+        return AddressGetResponse.builder()
                 .street("Almirante Barroso")
                 .district("São Brás")
                 .city("Belém")
