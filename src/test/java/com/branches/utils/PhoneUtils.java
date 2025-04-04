@@ -5,6 +5,6 @@ import com.branches.model.PhoneType;
 
 public class PhoneUtils {
     public static Phone newPhone(Long id) {
-        Phone.builder().id(id).number("21121521").phoneType(PhoneType.celular).build();
+        return Phone.builder().id(id).number("21121521").phoneType(PhoneType.celular).build();
     }
 }
