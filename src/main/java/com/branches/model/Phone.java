@@ -3,10 +3,16 @@ package com.branches.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity(name = "telefone")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Phone {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
