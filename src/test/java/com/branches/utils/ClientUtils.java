@@ -14,10 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientUtils {
-    private static final AddressUtils addressUtils = new AddressUtils();
 
     public static List<Client> newClientList() {
-        Address address = addressUtils.newAddressToSave();
+        Address address = AddressUtils.newAddressToSave();
 
         Client client1 = Client.builder().id(1L).name("Marcus").lastName("Branches").address(address).build();
         Phone phone1 = Phone.builder().id(1L).client(client1).number("5959559").phoneType(PhoneType.celular).build();
@@ -53,7 +52,7 @@ public class ClientUtils {
     }
 
     public static ClientPostRequest newClientPostRequest() {
-        Address address = addressUtils.newAddressToSave();
+        Address address = AddressUtils.newAddressToSave();
 
         ClientPostRequest client = ClientPostRequest.builder().name("Chispirito").lastName("Costa").address(address).build();
         Phone phone = Phone.builder().id(4L).number("21121521").phoneType(PhoneType.celular).build();
@@ -63,7 +62,7 @@ public class ClientUtils {
     }
 
     public static Client newClientToSave() {
-        Address address = addressUtils.newAddressToSave();
+        Address address = AddressUtils.newAddressToSave();
 
         Client client = Client.builder().id(4L).name("Chispirito").lastName("Costa").address(address).build();
         Phone phone = Phone.builder().id(4L).client(client).number("21121521").phoneType(PhoneType.celular).build();
@@ -73,7 +72,7 @@ public class ClientUtils {
     }
 
     public static ClientPostResponse newClientPostResponse() {
-        Address address = addressUtils.newAddressToSave();
+        Address address = AddressUtils.newAddressToSave();
 
         ClientPostResponse client = ClientPostResponse.builder().id(4L).name("Chispirito").lastName("Costa").address(address).build();
         Phone phone = Phone.builder().id(4L).number("21121521").phoneType(PhoneType.celular).build();
