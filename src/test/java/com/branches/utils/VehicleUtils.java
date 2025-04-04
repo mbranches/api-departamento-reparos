@@ -2,8 +2,10 @@ package com.branches.utils;
 
 import com.branches.model.Vehicle;
 import com.branches.model.VehicleType;
+import com.branches.request.VehiclePostRequest;
 import com.branches.response.ClientGetResponse;
 import com.branches.response.VehicleGetResponse;
+import com.branches.response.VehiclePostResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,5 +27,32 @@ public class VehicleUtils {
         VehicleGetResponse vehicle3 = VehicleGetResponse.builder().vehicleType(VehicleType.moto).brand("Honda").model("Biz").client(clientGetResponse).build();
 
         return new ArrayList<>(List.of(vehicle1, vehicle2, vehicle3));
+    }
+
+    public static Vehicle newVehicleToSave() {
+        return Vehicle.builder()
+                .id(4L)
+                .vehicleType(VehicleType.caminhao)
+                .brand("Scania")
+                .model("T113")
+                .client(ClientUtils.newClientToSave()).build();
+    }
+
+    public static VehiclePostRequest newVehiclePostRequest() {
+        return VehiclePostRequest.builder()
+                .vehicleType(VehicleType.caminhao)
+                .brand("Scania")
+                .model("T113")
+                .clientId(ClientUtils.newClientToSave().getId())
+                .build();
+    }
+
+    public static VehiclePostResponse newVehiclePostResponse() {
+        return VehiclePostResponse.builder()
+                .id(4L)
+                .vehicleType(VehicleType.caminhao)
+                .brand("Scania")
+                .model("T113")
+                .client(ClientUtils.newClientToSave()).build();
     }
 }
