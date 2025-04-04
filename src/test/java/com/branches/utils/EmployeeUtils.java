@@ -8,10 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeUtils {
-    private static final AddressUtils addressUtils = new AddressUtils();
 
     public static List<Employee> newEmployeeList() {
-        Address address = addressUtils.newAddressToSave();
+        Address address = AddressUtils.newAddressToSave();
 
         Category category = CategoryUtils.newCategory();
 
@@ -50,7 +49,7 @@ public class EmployeeUtils {
     }
 
     public static EmployeePostRequest newEmployeePostRequest() {
-        Address address = addressUtils.newAddressToSave();
+        Address address = AddressUtils.newAddressToSave();
 
         EmployeePostRequest employee = EmployeePostRequest.builder().name("Chispirito").lastName("Costa").categoryId(1L).address(address).build();
         Phone phone = Phone.builder().id(4L).number("21121521").phoneType(PhoneType.celular).build();
@@ -60,7 +59,7 @@ public class EmployeeUtils {
     }
 
     public static Employee newEmployeeToSave() {
-        Address address = addressUtils.newAddressToSave();
+        Address address = AddressUtils.newAddressToSave();
 
         Category category = CategoryUtils.newCategory();
 
@@ -72,7 +71,7 @@ public class EmployeeUtils {
     }
 
     public static EmployeePostResponse newEmployeePostResponse() {
-        Address address = addressUtils.newAddressToSave();
+        Address address = AddressUtils.newAddressToSave();
 
         Category category = CategoryUtils.newCategory();
 
