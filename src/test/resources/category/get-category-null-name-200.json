@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Mecânico",
+    "hourlyPrice": 50.0
+  },
+  {
+    "name": "Borracheiro",
+    "hourlyPrice": 40.0
+  },
+  {
+    "name": "Pintor",
+    "hourlyPrice": 30.0
+  }
+]
