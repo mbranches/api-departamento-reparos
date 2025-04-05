@@ -22,13 +22,11 @@ class AddressServiceTest {
     private AddressService service;
     @Mock
     private AddressRepository repository;
-    @InjectMocks
-    private AddressUtils addressUtils;
     private List<Address> addressList;
 
     @BeforeEach
     void init() {
-        addressList = addressUtils.newAddressList();
+        addressList = AddressUtils.newAddressList();
     }
 
     @Test
@@ -59,7 +57,7 @@ class AddressServiceTest {
     @DisplayName("findAddress returns an empty optional when address is not found")
     @Order(2)
     void findAddress_ReturnsEmptyOptional_WhenAddressIsNotFound() {
-        Address addressNotSaved = addressUtils.newAddressToSave();
+        Address addressNotSaved = AddressUtils.newAddressToSave();
 
         BDDMockito.when(repository.findByStreetAndDistrictAndCityAndState(
                 ArgumentMatchers.anyString(),
@@ -80,7 +78,7 @@ class AddressServiceTest {
     @DisplayName("save returns saved address when successful")
     @Order(3)
     void save_ReturnsSavedAddress_WhenSuccessful() {
-        Address addressToSave = addressUtils.newAddressToSave();
+        Address addressToSave = AddressUtils.newAddressToSave();
 
         BDDMockito.when(repository.save(addressToSave)).thenReturn(addressToSave);
 
