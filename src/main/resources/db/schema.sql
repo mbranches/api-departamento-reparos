@@ -71,7 +71,8 @@ FOREIGN KEY(fk_cliente_veiculo) REFERENCES cliente(idcliente);
 CREATE TABLE peca (
 	idpeca BIGINT PRIMARY KEY AUTO_INCREMENT,
 	nome VARCHAR(30),
-	preco_unitario DECIMAL(10, 2)
+	preco_unitario DECIMAL(10, 2),
+    estoque INT
 );
 
 CREATE TABLE reparacao (
