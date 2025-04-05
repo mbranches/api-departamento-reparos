@@ -3,7 +3,6 @@ package com.branches.controller;
 import com.branches.mapper.CategoryMapperImpl;
 import com.branches.model.Category;
 import com.branches.repository.CategoryRepository;
-import com.branches.request.CategoryPostRequest;
 import com.branches.service.CategoryService;
 import com.branches.utils.CategoryUtils;
 import com.branches.utils.FileUtils;
@@ -19,7 +18,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
