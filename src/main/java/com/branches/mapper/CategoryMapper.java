@@ -15,12 +15,12 @@ import java.util.List;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CategoryMapper {
 
-    List<CategoryGetResponse> toCategoryGetResponseList(List<Category> response);
+    List<CategoryGetResponse> toCategoryGetResponseList(List<Category> categoryList);
 
-    CategoryGetResponse toCategoryGetResponse(Category foundCategory);
+    CategoryGetResponse toCategoryGetResponse(Category category);
 
     @Mapping(target = "id", ignore = true)
     Category toCategory(CategoryPostRequest postRequest);
 
-    CategoryPostResponse toCategoryPostResponse(Category categorySaved);
+    CategoryPostResponse toCategoryPostResponse(Category category);
 }

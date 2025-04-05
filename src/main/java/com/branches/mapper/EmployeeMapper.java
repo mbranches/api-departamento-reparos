@@ -20,5 +20,5 @@ public interface EmployeeMapper {
     @Mapping(target = "category", ignore = true)
     Employee toEmployee(EmployeePostRequest postRequest);
 
-    EmployeePostResponse toEmployeePostResponse(Employee response);
+    EmployeePostResponse toEmployeePostResponse(Employee employee);
 }

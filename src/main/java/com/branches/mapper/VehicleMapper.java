@@ -20,5 +20,5 @@ public interface VehicleMapper {
     @Mapping(target = "client", ignore = true)
     Vehicle toVehicle(VehiclePostRequest postRequest);
 
-    VehiclePostResponse toVehiclePostResponse(Vehicle response);
+    VehiclePostResponse toVehiclePostResponse(Vehicle vehicle);
 }
