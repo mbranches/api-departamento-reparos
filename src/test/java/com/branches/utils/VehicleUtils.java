@@ -1,5 +1,6 @@
 package com.branches.utils;
 
+import com.branches.model.Client;
 import com.branches.model.Vehicle;
 import com.branches.model.VehicleType;
 import com.branches.request.VehiclePostRequest;
@@ -12,9 +13,11 @@ import java.util.List;
 
 public class VehicleUtils {
     public static List<Vehicle> newVehicleList() {
-        Vehicle vehicle1 = Vehicle.builder().id(1L).vehicleType(VehicleType.carro).brand("Fiat").model("Toro").client(ClientUtils.newClientToSave()).build();
-        Vehicle vehicle2 = Vehicle.builder().id(2L).vehicleType(VehicleType.moto).brand("Yamaha").model("Mt-07").client(ClientUtils.newClientToSave()).build();
-        Vehicle vehicle3 = Vehicle.builder().id(3L).vehicleType(VehicleType.moto).brand("Honda").model("Biz").client(ClientUtils.newClientToSave()).build();
+        Client client = ClientUtils.newClientToSave();
+
+        Vehicle vehicle1 = Vehicle.builder().id(1L).vehicleType(VehicleType.carro).brand("Fiat").model("Toro").client(client).build();
+        Vehicle vehicle2 = Vehicle.builder().id(2L).vehicleType(VehicleType.moto).brand("Yamaha").model("Mt-07").client(client).build();
+        Vehicle vehicle3 = Vehicle.builder().id(3L).vehicleType(VehicleType.moto).brand("Honda").model("Biz").client(client).build();
 
         return new ArrayList<>(List.of(vehicle1, vehicle2, vehicle3));
     }
