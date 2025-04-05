@@ -4,7 +4,6 @@ import com.branches.model.Category;
 import com.branches.request.CategoryPostRequest;
 import com.branches.response.CategoryGetResponse;
 import com.branches.response.CategoryPostResponse;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,7 @@ public class CategoryUtils {
         return new ArrayList<>(List.of(mecanico, borracheiro, pintor));
     }
 
-    public static Category newCategory() {
+    public static Category newCategoryToSave() {
         return Category.builder().id(4L).name("Mecânico").hourlyPrice(50.0).build();
     }
 

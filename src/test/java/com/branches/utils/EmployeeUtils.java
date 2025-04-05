@@ -12,7 +12,7 @@ public class EmployeeUtils {
     public static List<Employee> newEmployeeList() {
         Address address = AddressUtils.newAddressToSave();
 
-        Category category = CategoryUtils.newCategory();
+        Category category = CategoryUtils.newCategoryToSave();
 
         Employee employee1 = Employee.builder().id(1L).name("Marcus").lastName("Branches").category(category).address(address).build();
         Phone phone1 = Phone.builder().id(1L).employee(employee1).number("5959559").phoneType(PhoneType.celular).build();
@@ -61,7 +61,7 @@ public class EmployeeUtils {
     public static Employee newEmployeeToSave() {
         Address address = AddressUtils.newAddressToSave();
 
-        Category category = CategoryUtils.newCategory();
+        Category category = CategoryUtils.newCategoryToSave();
 
         Employee employee = Employee.builder().id(4L).name("Chispirito").lastName("Costa").category(category).address(address).build();
         Phone phone = PhoneUtils.newPhone(4L);
@@ -73,7 +73,7 @@ public class EmployeeUtils {
     public static EmployeePostResponse newEmployeePostResponse() {
         Address address = AddressUtils.newAddressToSave();
 
-        Category category = CategoryUtils.newCategory();
+        Category category = CategoryUtils.newCategoryToSave();
 
         EmployeePostResponse employee = EmployeePostResponse.builder().id(4L).name("Chispirito").lastName("Costa").category(category).address(address).build();
         Phone phone = PhoneUtils.newPhone(4L);

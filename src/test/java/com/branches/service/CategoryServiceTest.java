@@ -2,17 +2,11 @@ package com.branches.service;
 
 import com.branches.exception.NotFoundException;
 import com.branches.mapper.CategoryMapper;
-import com.branches.model.Address;
-import com.branches.model.Category;
-import com.branches.model.Category;
 import com.branches.model.Category;
 import com.branches.repository.CategoryRepository;
 import com.branches.request.CategoryPostRequest;
 import com.branches.response.CategoryGetResponse;
-import com.branches.response.CategoryGetResponse;
 import com.branches.response.CategoryPostResponse;
-import com.branches.response.CategoryGetResponse;
-import com.branches.utils.CategoryUtils;
 import com.branches.utils.CategoryUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
@@ -116,7 +110,7 @@ class CategoryServiceTest {
     @DisplayName("save returns saved category when successful")
     @Order(5)
     void save_ReturnsSavedCategory_WhenGivenAddressExists() {
-        Category CategoryToSave = CategoryUtils.newCategory();
+        Category CategoryToSave = CategoryUtils.newCategoryToSave();
         CategoryPostRequest CategoryPostRequest = CategoryUtils.newCategoryPostRequest();
 
         CategoryPostResponse expectedResponse = CategoryUtils.newCategoryPostResponse();

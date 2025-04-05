@@ -4,12 +4,10 @@ import com.branches.exception.NotFoundException;
 import com.branches.mapper.EmployeeMapper;
 import com.branches.model.Address;
 import com.branches.model.Employee;
-import com.branches.model.Employee;
 import com.branches.repository.EmployeeRepository;
 import com.branches.request.EmployeePostRequest;
 import com.branches.response.EmployeeGetResponse;
 import com.branches.response.EmployeePostResponse;
-import com.branches.response.EmployeeGetResponse;
 import com.branches.utils.CategoryUtils;
 import com.branches.utils.EmployeeUtils;
 import org.assertj.core.api.Assertions;
@@ -110,7 +108,7 @@ class EmployeeServiceTest {
 
         EmployeePostResponse expectedResponse = EmployeeUtils.newEmployeePostResponse();
 
-        BDDMockito.when(categoryService.findByIdOrElseThrowsNotFoundException(employeePostRequest.getCategoryId())).thenReturn(CategoryUtils.newCategory());
+        BDDMockito.when(categoryService.findByIdOrElseThrowsNotFoundException(employeePostRequest.getCategoryId())).thenReturn(CategoryUtils.newCategoryToSave());
         BDDMockito.when(mapper.toEmployee(employeePostRequest)).thenReturn(employeeToSave);
         BDDMockito.when(addressService.findAddress(employeeAddress)).thenReturn(Optional.of(employeeAddress));
         BDDMockito.when(repository.save(employeeToSave)).thenReturn(employeeToSave);
