@@ -26,14 +26,14 @@ public class CategoryUtils {
     }
 
     public static Category newCategoryToSave() {
-        return Category.builder().id(4L).name("Mecânico").hourlyPrice(50.0).build();
+        return Category.builder().id(4L).name("Vidraceiro").hourlyPrice(50.0).build();
     }
 
     public static CategoryPostRequest newCategoryPostRequest() {
-        return CategoryPostRequest.builder().name("Mecânico").hourlyPrice(50.0).build();
+        return CategoryPostRequest.builder().name("Vidraceiro").hourlyPrice(50.0).build();
     }
 
     public static CategoryPostResponse newCategoryPostResponse() {
-        return CategoryPostResponse.builder().id(4L).name("Mecânico").hourlyPrice(50.0).build();
+        return CategoryPostResponse.builder().id(4L).name("Vidraceiro").hourlyPrice(50.0).build();
     }
 }
