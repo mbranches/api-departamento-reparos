@@ -7,6 +7,7 @@ import com.branches.repository.CategoryRepository;
 import com.branches.request.CategoryPostRequest;
 import com.branches.response.CategoryGetResponse;
 import com.branches.response.CategoryPostResponse;
+import com.branches.response.CategoryGetResponse;
 import com.branches.utils.CategoryUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
@@ -17,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,8 +77,24 @@ class CategoryServiceTest {
     }
 
     @Test
-    @DisplayName("findById returns found Category when successful")
+    @DisplayName("findAll returns an empty list when the given argument is not found")
     @Order(3)
+    void findAll_ReturnsEmptyList_WhenGivenArgumentIsNotFound() {
+        String randomName = "name invalid";
+
+        BDDMockito.when(repository.findAllByNameContaining(randomName)).thenReturn(Collections.emptyList());
+        BDDMockito.when(mapper.toCategoryGetResponseList(ArgumentMatchers.anyList())).thenReturn(Collections.emptyList());
+
+        List<CategoryGetResponse> response = service.findAll(randomName);
+
+        Assertions.assertThat(response)
+                .isNotNull()
+                .isEmpty();
+    }
+
+    @Test
+    @DisplayName("findById returns found Category when successful")
+    @Order(4)
     void findById_ReturnsFoundCategory_WhenSuccessful() {
         Category expectedResponseRepository = categoryList.getFirst();
         Long idToSearch = expectedResponseRepository.getId();
@@ -95,7 +113,7 @@ class CategoryServiceTest {
 
     @Test
     @DisplayName("findById throws NotFoundException when id is not found")
-    @Order(4)
+    @Order(5)
     void findById_ThrowsNotFoundException_WhenIdIsNotFound() {
         Long randomId = 4445511L;
 
@@ -108,7 +126,7 @@ class CategoryServiceTest {
 
     @Test
     @DisplayName("save returns saved category when successful")
-    @Order(5)
+    @Order(6)
     void save_ReturnsSavedCategory_WhenGivenAddressExists() {
         Category CategoryToSave = CategoryUtils.newCategoryToSave();
         CategoryPostRequest CategoryPostRequest = CategoryUtils.newCategoryPostRequest();
