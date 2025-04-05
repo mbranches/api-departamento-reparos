@@ -8,4 +8,5 @@ import lombok.Data;
 public class PieceGetResponse {
     private String name;
     private double unitValue;
+    private int stock;
 }
