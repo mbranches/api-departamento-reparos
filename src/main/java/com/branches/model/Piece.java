@@ -20,4 +20,6 @@ public class Piece {
     private String name;
     @Column(name = "preco_unitario", columnDefinition = "DECIMAL")
     private double unitValue;
+    @Column(name = "estoque")
+    private int stock;
 }
