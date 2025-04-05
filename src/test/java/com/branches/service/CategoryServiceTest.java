@@ -126,7 +126,7 @@ class CategoryServiceTest {
     @Test
     @DisplayName("save returns saved category when successful")
     @Order(6)
-    void save_ReturnsSavedCategory_WhenGivenAddressExists() {
+    void save_ReturnsSavedCategory_WhenSuccessful() {
         Category CategoryToSave = CategoryUtils.newCategoryToSave();
         CategoryPostRequest CategoryPostRequest = CategoryUtils.newCategoryPostRequest();
 
