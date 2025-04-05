@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Óleo de motor",
+    "unitValue": 50,
+    "stock": 50
+  },
+  {
+    "name": "Filtro de ar",
+    "unitValue": 80,
+    "stock": 50
+  },
+  {
+    "name": "Pneu Aro 15",
+    "unitValue": 407,
+    "stock": 98
+  }
+]
