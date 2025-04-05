@@ -1,9 +1,12 @@
 package com.branches.service;
 
+import com.branches.exception.NotFoundException;
 import com.branches.mapper.PieceMapper;
+import com.branches.model.Piece;
 import com.branches.model.Piece;
 import com.branches.repository.PieceRepository;
 import com.branches.request.PiecePostRequest;
+import com.branches.response.PieceGetResponse;
 import com.branches.response.PiecePostResponse;
 import com.branches.response.PieceGetResponse;
 import com.branches.utils.PieceUtils;
@@ -18,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -90,8 +94,40 @@ class PieceServiceTest {
     }
 
     @Test
-    @DisplayName("save returns saved piece when successful")
+    @DisplayName("findById returns found Piece when successful")
     @Order(4)
+    void findById_ReturnsFoundPiece_WhenSuccessful() {
+        Piece expectedResponseRepository = pieceList.getFirst();
+        Long idToSearch = expectedResponseRepository.getId();
+
+        PieceGetResponse expectedResponse = pieceGetResponseList.getFirst();
+
+        BDDMockito.when(repository.findById(idToSearch)).thenReturn(Optional.of(expectedResponseRepository));
+        BDDMockito.when(mapper.toPieceGetResponse(expectedResponseRepository)).thenReturn(expectedResponse);
+
+        PieceGetResponse response = service.findById(idToSearch);
+
+        Assertions.assertThat(response)
+                .isNotNull()
+                .isEqualTo(expectedResponse);
+    }
+
+    @Test
+    @DisplayName("findById throws NotFoundException when id is not found")
+    @Order(5)
+    void findById_ThrowsNotFoundException_WhenIdIsNotFound() {
+        Long randomId = 4445511L;
+
+        BDDMockito.when(repository.findById(randomId)).thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> service.findById(randomId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Piece not Found");
+    }
+
+    @Test
+    @DisplayName("save returns saved piece when successful")
+    @Order(6)
     void save_ReturnsSavedPiece_WhenGivenAddressExists() {
         Piece PieceToSave = PieceUtils.newPieceToSave();
         PiecePostRequest PiecePostRequest = PieceUtils.newPiecePostRequest();
