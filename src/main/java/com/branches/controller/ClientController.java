@@ -1,7 +1,5 @@
 package com.branches.controller;
 
-import com.branches.mapper.ClientMapper;
-import com.branches.model.Client;
 import com.branches.request.ClientPostRequest;
 import com.branches.response.ClientGetResponse;
 import com.branches.response.ClientPostResponse;

@@ -1,6 +1,5 @@
 package com.branches.request;
 
-import com.branches.model.Client;
 import com.branches.model.VehicleType;
 import lombok.Builder;
 import lombok.Data;

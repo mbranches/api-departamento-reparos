@@ -1,7 +1,5 @@
 package com.branches.response;
 
-import com.branches.model.Category;
-import com.branches.model.Employee;
 import lombok.Builder;
 import lombok.Data;
 

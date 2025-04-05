@@ -1,7 +1,5 @@
 package com.branches.controller;
 
-import com.branches.mapper.VehicleMapper;
-import com.branches.model.Vehicle;
 import com.branches.request.VehiclePostRequest;
 import com.branches.response.VehicleGetResponse;
 import com.branches.response.VehiclePostResponse;

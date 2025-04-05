@@ -7,7 +7,6 @@ import com.branches.repository.CategoryRepository;
 import com.branches.request.CategoryPostRequest;
 import com.branches.response.CategoryGetResponse;
 import com.branches.response.CategoryPostResponse;
-import com.branches.response.CategoryGetResponse;
 import com.branches.utils.CategoryUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
