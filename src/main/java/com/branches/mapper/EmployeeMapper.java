@@ -21,4 +21,6 @@ public interface EmployeeMapper {
     Employee toEmployee(EmployeePostRequest postRequest);
 
     EmployeePostResponse toEmployeePostResponse(Employee employee);
+
+    EmployeeGetResponse toEmployeeGetResponse(Employee foundEmployee);
 }

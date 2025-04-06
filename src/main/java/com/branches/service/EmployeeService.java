@@ -1,5 +1,6 @@
 package com.branches.service;
 
+import com.branches.exception.NotFoundException;
 import com.branches.mapper.EmployeeMapper;
 import com.branches.model.Address;
 import com.branches.model.Category;
@@ -51,5 +52,16 @@ public class EmployeeService {
         Employee response = repository.save(employeeToSave);
 
         return mapper.toEmployeePostResponse(response);
+    }
+
+    public EmployeeGetResponse findById(Long id) {
+        Employee foundEmployee = findByIdOrThrowsNotFoundException(id);
+
+        return mapper.toEmployeeGetResponse(foundEmployee);
+    }
+
+    private Employee findByIdOrThrowsNotFoundException(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Employee not Found"));
     }
 }

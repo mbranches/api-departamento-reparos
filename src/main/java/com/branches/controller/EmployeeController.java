@@ -25,6 +25,13 @@ public class EmployeeController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<EmployeeGetResponse> findById(@PathVariable Long id) {
+        EmployeeGetResponse response = service.findById(id);
+
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping
     public ResponseEntity<EmployeePostResponse> save(@Valid @RequestBody EmployeePostRequest postRequest) {
         EmployeePostResponse response = service.save(postRequest);
