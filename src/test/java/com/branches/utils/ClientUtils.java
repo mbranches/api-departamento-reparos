@@ -5,10 +5,7 @@ import com.branches.model.Client;
 import com.branches.model.Phone;
 import com.branches.model.PhoneType;
 import com.branches.request.ClientPostRequest;
-import com.branches.response.AddressGetResponse;
-import com.branches.response.ClientGetResponse;
-import com.branches.response.ClientPostResponse;
-import com.branches.response.PhoneGetResponse;
+import com.branches.response.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,14 +68,11 @@ public class ClientUtils {
         return client;
     }
 
-    public static ClientGetResponse newClientGetResponse() {
-        AddressGetResponse address = AddressUtils.newAddressGetResponse();
-
-        ClientGetResponse client = ClientGetResponse.builder().name("Chispirito").lastName("Costa").address(address).build();
-        PhoneGetResponse phone = PhoneGetResponse.builder().number("21121521").phoneType(PhoneType.celular).build();
-        client.setPhones(List.of(phone));
-
-        return client;
+    public static ClientVehicleGetResponse newClientVehicleGetResponse() {
+        return ClientVehicleGetResponse.builder()
+                .name("Chispirito")
+                .lastName("Costa")
+                .build();
     }
 
     public static ClientPostResponse newClientPostResponse() {

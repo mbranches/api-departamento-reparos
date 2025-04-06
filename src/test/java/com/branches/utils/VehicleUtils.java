@@ -5,6 +5,7 @@ import com.branches.model.Vehicle;
 import com.branches.model.VehicleType;
 import com.branches.request.VehiclePostRequest;
 import com.branches.response.ClientGetResponse;
+import com.branches.response.ClientVehicleGetResponse;
 import com.branches.response.VehicleGetResponse;
 import com.branches.response.VehiclePostResponse;
 
@@ -23,11 +24,11 @@ public class VehicleUtils {
     }
 
     public static List<VehicleGetResponse> newVehicleGetResponseList() {
-        ClientGetResponse clientGetResponse = ClientUtils.newClientGetResponse();
+        ClientVehicleGetResponse clientVehicleGetResponse = ClientUtils.newClientVehicleGetResponse();
 
-        VehicleGetResponse vehicle1 = VehicleGetResponse.builder().vehicleType(VehicleType.carro).brand("Fiat").model("Toro").client(clientGetResponse).build();
-        VehicleGetResponse vehicle2 = VehicleGetResponse.builder().vehicleType(VehicleType.moto).brand("Yamaha").model("Mt-07").client(clientGetResponse).build();
-        VehicleGetResponse vehicle3 = VehicleGetResponse.builder().vehicleType(VehicleType.moto).brand("Honda").model("Biz").client(clientGetResponse).build();
+        VehicleGetResponse vehicle1 = VehicleGetResponse.builder().vehicleType(VehicleType.carro).brand("Fiat").model("Toro").client(clientVehicleGetResponse).build();
+        VehicleGetResponse vehicle2 = VehicleGetResponse.builder().vehicleType(VehicleType.moto).brand("Yamaha").model("Mt-07").client(clientVehicleGetResponse).build();
+        VehicleGetResponse vehicle3 = VehicleGetResponse.builder().vehicleType(VehicleType.moto).brand("Honda").model("Biz").client(clientVehicleGetResponse).build();
 
         return new ArrayList<>(List.of(vehicle1, vehicle2, vehicle3));
     }

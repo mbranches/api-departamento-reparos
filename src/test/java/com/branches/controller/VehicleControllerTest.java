@@ -99,7 +99,7 @@ class VehicleControllerTest {
     @ParameterizedTest
     @MethodSource("postVehicleBadRequestSource")
     @DisplayName("save return BadRequest when fields are invalid")
-    @Order(7)
+    @Order(4)
     void save_ReturnsBadRequest_WhenFieldAreInvalid(String fileName, List<String> expectedErrors) throws Exception {
         String request = fileUtils.readResourceFile("vehicle/%s".formatted(fileName));
 
