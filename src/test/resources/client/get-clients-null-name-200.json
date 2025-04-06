@@ -1,0 +1,50 @@
+[
+  {
+    "name":"Marcus",
+    "lastName":"Branches",
+    "address":{
+      "street":"Almirante Barroso",
+      "district":"São Brás",
+      "city":"Belém",
+      "state":"Pa"
+    },
+    "phones":[
+      {
+        "number":"5959559",
+        "phoneType":"celular"
+      }
+    ]
+  },
+  {
+    "name":"Vinicius",
+    "lastName":"Lima",
+    "address":{
+      "street":"Almirante Barroso",
+      "district":"São Brás",
+      "city":"Belém",
+      "state":"Pa"
+    },
+    "phones":[
+      {
+        "number":"2222222",
+        "phoneType":"celular"
+      }
+    ]
+  },
+  {
+    "name":"Vinicius",
+    "lastName":"Lima",
+    "address":{
+      "street":"Almirante Barroso",
+      "district":"São Brás",
+      "city":"Belém",
+      "state":"Pa"
+    },
+    "phones":[
+      {
+        "number":"3333333",
+        "phoneType":"celular"
+      }
+    ]
+  }
+]
