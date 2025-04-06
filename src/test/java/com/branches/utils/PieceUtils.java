@@ -30,7 +30,7 @@ public class PieceUtils {
     }
 
     public static PiecePostRequest newPiecePostRequest() {
-        return PiecePostRequest.builder().name("Pastilha de freio").unitValue(120).stock(55).build();
+        return PiecePostRequest.builder().name("Pastilha de freio").unitValue(120D).stock(55).build();
     }
 
     public static PiecePostResponse newPiecePostResponse() {

@@ -11,6 +11,6 @@ public class PiecePostRequest {
     @NotBlank(message = "The field name is required")
     private String name;
     @NotNull(message = "The field unitValue is required")
-    private double unitValue;
+    private Double unitValue;
     private int stock;
 }

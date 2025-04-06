@@ -11,5 +11,5 @@ public class CategoryPostRequest {
     @NotBlank(message = "The field name is required")
     private String name;
     @NotNull(message = "The field hourlyPrice is required")
-    private double hourlyPrice;
+    private Double hourlyPrice;
 }
