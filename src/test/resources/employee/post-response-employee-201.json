@@ -1,0 +1,24 @@
+{
+  "id": 4,
+  "name": "Chispirito",
+  "lastName": "Costa",
+  "category": {
+    "id": 4,
+    "name": "Vidraceiro",
+    "hourlyPrice": 50.0
+  },
+  "address": {
+    "id": 4,
+    "street": "Almirante Barroso",
+    "district": "São Brás",
+    "city": "Belém",
+    "state": "Pa"
+  },
+  "phones": [
+    {
+      "id":4,
+      "number": "21121521",
+      "phoneType": "celular"
+    }
+  ]
+}

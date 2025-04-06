@@ -1,0 +1,17 @@
+{
+  "name": "Chispirito",
+  "lastName": "Costa",
+  "categoryId": 4,
+  "address": {
+    "street": "Almirante Barroso",
+    "district": "São Brás",
+    "city": "Belém",
+    "state": "Pa"
+  },
+  "phones": [
+    {
+      "number": "21121521",
+      "phoneType": "celular"
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+[
+  {
+    "name":"Marcus",
+    "lastName":"Branches",
+    "category":{
+      "name":"Vidraceiro",
+      "hourlyPrice":50.0
+    },
+    "address":{
+      "street":"Almirante Barroso",
+      "district":"São Brás",
+      "city":"Belém",
+      "state":"Pa"
+    },"phones":[
+      {
+        "number":"5959559",
+        "phoneType":"celular"
+      }
+    ]
+  },
+  {
+    "name":"Vinicius",
+    "lastName":"Lima",
+    "category":{
+      "name":"Vidraceiro",
+      "hourlyPrice":50.0
+    },
+    "address":{
+      "street":"Almirante Barroso",
+      "district":"São Brás",
+      "city":"Belém",
+      "state":"Pa"
+    },
+    "phones":[
+      {
+        "number":"2222222",
+        "phoneType":"celular"
+      }
+    ]
+  },
+  {
+    "name":"Vinicius",
+    "lastName":"Lima",
+    "category":{
+      "name":"Vidraceiro",
+      "hourlyPrice":50.0
+    },
+    "address":{
+      "street":"Almirante Barroso",
+      "district":"São Brás",
+      "city":"Belém",
+      "state":"Pa"
+    },
+    "phones":[
+      {
+        "number":"3333333",
+        "phoneType":"celular"
+      }
+    ]
+  }
+]
