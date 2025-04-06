@@ -31,7 +31,7 @@ public class EmployeeUtils {
 
     public static List<EmployeeGetResponse> newEmployeeGetResponseList() {
         AddressGetResponse addressGetResponse = AddressGetResponse.builder().street("Almirante Barroso").district("São Brás").city("Belém").state("Pa").build();;
-        CategoryGetResponse categoryGetResponse = CategoryGetResponse.builder().name("Mecânico").hourlyPrice(50.0).build();
+        CategoryGetResponse categoryGetResponse = CategoryUtils.newCategoryGetResponse();
 
         EmployeeGetResponse employee1 = EmployeeGetResponse.builder().name("Marcus").lastName("Branches").category(categoryGetResponse).address(addressGetResponse).build();
         PhoneGetResponse phone1 = PhoneGetResponse.builder().number("5959559").phoneType(PhoneType.celular).build();
@@ -41,7 +41,7 @@ public class EmployeeUtils {
         PhoneGetResponse phone2 = PhoneGetResponse.builder().number("2222222").phoneType(PhoneType.celular).build();
         employee2.setPhones(List.of(phone2));
 
-        EmployeeGetResponse employee3 = EmployeeGetResponse.builder().name("Vinicius").lastName("Lima").address(addressGetResponse).build();
+        EmployeeGetResponse employee3 = EmployeeGetResponse.builder().name("Vinicius").lastName("Lima").category(categoryGetResponse).address(addressGetResponse).build();
         PhoneGetResponse phone3 = PhoneGetResponse.builder().number("3333333").phoneType(PhoneType.celular).build();
         employee3.setPhones(List.of(phone3));
 
