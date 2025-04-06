@@ -67,7 +67,7 @@ class ClientServiceTest {
 
         List<Client> expectedResponseRepository = List.of(clientList.getFirst());
 
-        BDDMockito.when(repository.findByNameContaining(nameToSearch)).thenReturn(expectedResponseRepository);
+        BDDMockito.when(repository.findAllByNameContaining(nameToSearch)).thenReturn(expectedResponseRepository);
         BDDMockito.when(mapper.toClientGetResponseList(ArgumentMatchers.anyList())).thenReturn(expectedResponse);
 
         List<ClientGetResponse> response = service.findAll(nameToSearch);
@@ -84,7 +84,7 @@ class ClientServiceTest {
     void findAll_ReturnsEmptyList_WhenGivenArgumentIsNotFound() {
         String randomName = "name invalid";
 
-        BDDMockito.when(repository.findByNameContaining(randomName)).thenReturn(Collections.emptyList());
+        BDDMockito.when(repository.findAllByNameContaining(randomName)).thenReturn(Collections.emptyList());
         BDDMockito.when(mapper.toClientGetResponseList(ArgumentMatchers.anyList())).thenReturn(Collections.emptyList());
 
         List<ClientGetResponse> response = service.findAll(randomName);

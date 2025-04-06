@@ -22,7 +22,7 @@ public class ClientService {
     private final AddressService addressService;
 
     public List<ClientGetResponse> findAll(String firstName) {
-        List<Client> response = firstName == null ? repository.findAll() : repository.findByNameContaining(firstName);
+        List<Client> response = firstName == null ? repository.findAll() : repository.findAllByNameContaining(firstName);
         return mapper.toClientGetResponseList(response);
     }
 
