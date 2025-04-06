@@ -2,6 +2,7 @@ package com.branches.request;
 
 import com.branches.model.VehicleType;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,6 +15,6 @@ public class VehiclePostRequest {
     private String brand;
     @NotBlank(message = "The field model is required")
     private String model;
-    @NotBlank(message = "The field clientId is required")
+    @NotNull(message = "The field clientId is required")
     private Long clientId;
 }

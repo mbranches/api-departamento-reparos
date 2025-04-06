@@ -1,6 +1,7 @@
 package com.branches.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,6 +10,6 @@ import lombok.Data;
 public class CategoryPostRequest {
     @NotBlank(message = "The field name is required")
     private String name;
-    @NotBlank(message = "The field hourlyPrice is required")
+    @NotNull(message = "The field hourlyPrice is required")
     private double hourlyPrice;
 }

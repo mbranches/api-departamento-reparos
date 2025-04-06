@@ -1,6 +1,7 @@
 package com.branches.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,7 +10,7 @@ import lombok.Data;
 public class PiecePostRequest {
     @NotBlank(message = "The field name is required")
     private String name;
-    @NotBlank(message = "The field unitValue is required")
+    @NotNull(message = "The field unitValue is required")
     private double unitValue;
     private int stock;
 }
