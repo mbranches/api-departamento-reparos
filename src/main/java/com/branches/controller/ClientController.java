@@ -4,6 +4,7 @@ import com.branches.request.ClientPostRequest;
 import com.branches.response.ClientGetResponse;
 import com.branches.response.ClientPostResponse;
 import com.branches.service.ClientService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<ClientPostResponse> save(@RequestBody ClientPostRequest postRequest) {
+    public ResponseEntity<ClientPostResponse> save(@Valid @RequestBody ClientPostRequest postRequest) {
         ClientPostResponse response = service.save(postRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

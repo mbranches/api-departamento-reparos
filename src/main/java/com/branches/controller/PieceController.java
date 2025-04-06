@@ -4,6 +4,7 @@ import com.branches.request.PiecePostRequest;
 import com.branches.response.PieceGetResponse;
 import com.branches.response.PiecePostResponse;
 import com.branches.service.PieceService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class PieceController {
     }
 
     @PostMapping
-    public ResponseEntity<PiecePostResponse> save(@RequestBody PiecePostRequest postRequest) {
+    public ResponseEntity<PiecePostResponse> save(@Valid @RequestBody PiecePostRequest postRequest) {
         PiecePostResponse response = service.save(postRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

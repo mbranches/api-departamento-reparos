@@ -4,6 +4,7 @@ import com.branches.request.VehiclePostRequest;
 import com.branches.response.VehicleGetResponse;
 import com.branches.response.VehiclePostResponse;
 import com.branches.service.VehicleService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class VehicleController {
     }
 
     @PostMapping
-    public ResponseEntity<VehiclePostResponse> save(@RequestBody VehiclePostRequest postRequest) {
+    public ResponseEntity<VehiclePostResponse> save(@Valid @RequestBody VehiclePostRequest postRequest) {
         VehiclePostResponse response = service.save(postRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

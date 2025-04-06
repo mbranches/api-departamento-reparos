@@ -4,6 +4,7 @@ import com.branches.request.CategoryPostRequest;
 import com.branches.response.CategoryGetResponse;
 import com.branches.response.CategoryPostResponse;
 import com.branches.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryPostResponse> save(@RequestBody CategoryPostRequest postRequest) {
+    public ResponseEntity<CategoryPostResponse> save(@Valid @RequestBody CategoryPostRequest postRequest) {
         CategoryPostResponse response = service.save(postRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

@@ -4,6 +4,7 @@ import com.branches.request.EmployeePostRequest;
 import com.branches.response.EmployeeGetResponse;
 import com.branches.response.EmployeePostResponse;
 import com.branches.service.EmployeeService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<EmployeePostResponse> save(@RequestBody EmployeePostRequest postRequest) {
+    public ResponseEntity<EmployeePostResponse> save(@Valid @RequestBody EmployeePostRequest postRequest) {
         EmployeePostResponse response = service.save(postRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
