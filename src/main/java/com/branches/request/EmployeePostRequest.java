@@ -14,7 +14,7 @@ import java.util.List;
 public class EmployeePostRequest {
     @NotBlank(message = "The field name is required")
     private String name;
-    @NotNull(message = "The field lastName is required")
+    @NotBlank(message = "The field lastName is required")
     private String lastName;
     @NotNull(message = "The field categoryId is required")
     private Long categoryId;
