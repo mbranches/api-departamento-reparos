@@ -123,7 +123,7 @@ class EmployeeServiceTest {
 
     @Test
     @DisplayName("save throws not found exception when given category does not exists")
-    @Order(4)
+    @Order(5)
     void save_ThrowsNotFoundException_WhenGivenCategoryNotExists() {
         EmployeePostRequest employeePostRequest = EmployeeUtils.newEmployeePostRequest();
 
