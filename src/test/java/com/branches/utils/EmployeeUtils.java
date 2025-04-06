@@ -51,7 +51,7 @@ public class EmployeeUtils {
     public static EmployeePostRequest newEmployeePostRequest() {
         Address address = AddressUtils.newAddressToSave();
 
-        EmployeePostRequest employee = EmployeePostRequest.builder().name("Chispirito").lastName("Costa").categoryId(1L).address(address).build();
+        EmployeePostRequest employee = EmployeePostRequest.builder().name("Chispirito").lastName("Costa").categoryId(4L).address(address).build();
         Phone phone = PhoneUtils.newPhone(4L);
         employee.setPhones(List.of(phone));
 
