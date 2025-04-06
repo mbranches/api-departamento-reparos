@@ -4,6 +4,7 @@ import com.branches.mapper.EmployeeMapper;
 import com.branches.model.Address;
 import com.branches.model.Category;
 import com.branches.model.Employee;
+import com.branches.model.Phone;
 import com.branches.repository.EmployeeRepository;
 import com.branches.request.EmployeePostRequest;
 import com.branches.response.EmployeeGetResponse;
@@ -35,13 +36,15 @@ public class EmployeeService {
         employeeToSave.setCategory(category);
 
         Address address = employeeToSave.getAddress();
+        if (postRequest.getAddress() != null) {
+            Optional<Address> addressSearched = addressService.findAddress(address);
 
-        Optional<Address> addressSearched = addressService.findAddress(address);
-        Address addressSaved = addressSearched.orElseGet(() -> addressService.save(address));
-        employeeToSave.setAddress(addressSaved);
+            Address addressSaved = addressSearched.orElseGet(() -> addressService.save(address));
+            employeeToSave.setAddress(addressSaved);
+        }
 
-        employeeToSave.getPhones()
-                .forEach(phone -> phone.setEmployee(employeeToSave));
+        List<Phone> phones = employeeToSave.getPhones();
+        if (phones != null) phones.forEach(phone -> phone.setEmployee(employeeToSave));
 
         Employee response = repository.save(employeeToSave);
 

@@ -4,6 +4,7 @@ import com.branches.exception.NotFoundException;
 import com.branches.mapper.ClientMapper;
 import com.branches.model.Address;
 import com.branches.model.Client;
+import com.branches.model.Phone;
 import com.branches.repository.ClientRepository;
 import com.branches.request.ClientPostRequest;
 import com.branches.response.ClientGetResponse;
@@ -41,13 +42,15 @@ public class ClientService {
         Client clientToSave = mapper.toClient(postRequest);
 
         Address address = clientToSave.getAddress();
+        if (address != null) {
+            Optional<Address> addressSearched = addressService.findAddress(address);
 
-        Optional<Address> addressSearched = addressService.findAddress(address);
-        Address addressSaved = addressSearched.orElseGet(() -> addressService.save(address));
-        clientToSave.setAddress(addressSaved);
+            Address addressSaved = addressSearched.orElseGet(() -> addressService.save(address));
+            clientToSave.setAddress(addressSaved);
+        }
 
-        clientToSave.getPhones()
-            .forEach(phone -> phone.setClient(clientToSave));
+        List<Phone> phones = clientToSave.getPhones();
+        if (phones != null) phones.forEach(phone -> phone.setClient(clientToSave));
 
         Client response = repository.save(clientToSave);
 
