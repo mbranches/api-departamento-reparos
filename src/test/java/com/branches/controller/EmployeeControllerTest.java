@@ -1,15 +1,9 @@
 package com.branches.controller;
 
 import com.branches.exception.NotFoundException;
-import com.branches.mapper.EmployeeMapperImpl;
-import com.branches.model.Address;
-import com.branches.model.Employee;
-import com.branches.repository.EmployeeRepository;
-import com.branches.service.AddressService;
-import com.branches.service.CategoryService;
+import com.branches.request.EmployeePostRequest;
+import com.branches.response.EmployeeGetResponse;
 import com.branches.service.EmployeeService;
-import com.branches.utils.AddressUtils;
-import com.branches.utils.CategoryUtils;
 import com.branches.utils.EmployeeUtils;
 import com.branches.utils.FileUtils;
 import org.junit.jupiter.api.*;
@@ -27,35 +21,30 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @WebMvcTest(controllers = EmployeeController.class)
-@Import({EmployeeService.class, EmployeeMapperImpl.class, FileUtils.class})
+@Import(FileUtils.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class EmployeeControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockitoBean
-    private EmployeeRepository repository;
-    @MockitoBean
-    private AddressService addressService;
-    @MockitoBean
-    private CategoryService categoryService;
+    private EmployeeService service;
     @Autowired
     private FileUtils fileUtils;
     private final String URL = "/v1/employees";
-    private List<Employee> employeeList;
+    private List<EmployeeGetResponse> employeeGetResponseList;
 
     @BeforeEach
     void init() {
-        employeeList = EmployeeUtils.newEmployeeList();
+        employeeGetResponseList = EmployeeUtils.newEmployeeGetResponseList();
     }
 
     @Test
     @DisplayName("GET /v1/employees returns all employees when the given argument is null")
     @Order(1)
     void findAll_ReturnsAllEmployees_WhenGivenArgumentIsNull() throws Exception {
-        BDDMockito.when(repository.findAll()).thenReturn(employeeList);
+        BDDMockito.when(service.findAll(null)).thenReturn(employeeGetResponseList);
         String expectedResponse = fileUtils.readResourceFile("employee/get-employees-null-name-200.json");
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL))
@@ -69,7 +58,7 @@ class EmployeeControllerTest {
     @Order(2)
     void findAll_ReturnsFoundEmployees_WhenArgumentIsGiven() throws Exception {
         String nameToSearch = "Marcus";
-        BDDMockito.when(repository.findByNameContaining(nameToSearch)).thenReturn(List.of(employeeList.getFirst()));
+        BDDMockito.when(service.findAll(nameToSearch)).thenReturn(List.of(employeeGetResponseList.getFirst()));
         String expectedResponse = fileUtils.readResourceFile("employee/get-employees-marcus-name-200.json");
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL).param("firstName", nameToSearch))
@@ -83,7 +72,7 @@ class EmployeeControllerTest {
     @Order(3)
     void findAll_ReturnsEmptyList_WhenGivenArgumentIsNotFound() throws Exception {
         String randomName = "nameNotRegistered";
-        BDDMockito.when(repository.findByNameContaining(randomName)).thenReturn(Collections.emptyList());
+        BDDMockito.when(service.findAll(randomName)).thenReturn(Collections.emptyList());
         String expectedResponse = fileUtils.readResourceFile("employee/get-employees-nameNotRegistered-name-200.json");
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL).param("firstName", randomName))
@@ -96,14 +85,7 @@ class EmployeeControllerTest {
     @DisplayName("POST /v1/employees returns saved employee when successful")
     @Order(4)
     void save_ReturnsSavedEmployee_WhenGivenSuccessful() throws Exception {
-        Employee employeeSaved = EmployeeUtils.newEmployeeToSave();
-
-        Address addressToSave = AddressUtils.newAddressToSave();
-        addressToSave.setId(null);
-
-        BDDMockito.when(categoryService.findByIdOrElseThrowsNotFoundException(ArgumentMatchers.anyLong())).thenReturn(CategoryUtils.newCategoryToSave());
-        BDDMockito.when(addressService.findAddress(addressToSave)).thenReturn(Optional.of(AddressUtils.newAddressToSave()));
-        BDDMockito.when(repository.save(ArgumentMatchers.any(Employee.class))).thenReturn(employeeSaved);
+        BDDMockito.when(service.save(ArgumentMatchers.any(EmployeePostRequest.class))).thenReturn(EmployeeUtils.newEmployeePostResponse());
 
         String request = fileUtils.readResourceFile("employee/post-request-employee-valid-category-200.json");
         String expectedResponse = fileUtils.readResourceFile("employee/post-response-employee-201.json");
@@ -123,7 +105,7 @@ class EmployeeControllerTest {
     @Order(5)
     void save_ThrowsNotFoundException_WhenGivenCategoryNotExists() throws Exception {
 
-        BDDMockito.when(categoryService.findByIdOrElseThrowsNotFoundException(ArgumentMatchers.anyLong())).thenThrow(new NotFoundException("Category not Found"));
+        BDDMockito.when(service.save(ArgumentMatchers.any(EmployeePostRequest.class))).thenThrow(new NotFoundException("Category not Found"));
 
         String request = fileUtils.readResourceFile("employee/post-request-employee-invalid-category-200.json");
         String expectedResponse = fileUtils.readResourceFile("employee/post-response-employee-404.json");
