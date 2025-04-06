@@ -30,4 +30,9 @@ public class Phone {
     @ManyToOne
     @JsonIgnore
     private Employee employee;
+
+    @Override
+    public String toString() {
+        return "Phone(id=" + this.getId() + ", number=" + this.getNumber() + ", phoneType=" + this.getPhoneType() + ")";
+    }
 }
