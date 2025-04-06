@@ -45,7 +45,7 @@ public class PieceControllerTest {
     @Order(1)
     void findAll_ReturnsAllPieces_WhenGivenArgumentIsNull() throws Exception {
         BDDMockito.when(repository.findAll()).thenReturn(pieceList);
-        String expectedResponse = fileUtils.readResourceFile("piece/get-pieces-null-name.json");
+        String expectedResponse = fileUtils.readResourceFile("piece/get-pieces-null-name-200.json");
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL))
                 .andDo(MockMvcResultHandlers.print())
@@ -59,7 +59,7 @@ public class PieceControllerTest {
     void findAll_ReturnsFoundPieces_WhenArgumentIsGiven() throws Exception {
         String nameToSearch = "Óleo de motor";
         BDDMockito.when(repository.findAllByNameContaining(nameToSearch)).thenReturn(List.of(pieceList.getFirst()));
-        String expectedResponse = fileUtils.readResourceFile("piece/get-pieces-oleoDeMotor-name.json");
+        String expectedResponse = fileUtils.readResourceFile("piece/get-pieces-oleoDeMotor-name-200.json");
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL).param("name", nameToSearch))
                 .andDo(MockMvcResultHandlers.print())
