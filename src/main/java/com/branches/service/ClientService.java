@@ -11,6 +11,7 @@ import com.branches.response.ClientGetResponse;
 import com.branches.response.ClientPostResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +39,7 @@ public class ClientService {
                 .orElseThrow(() -> new NotFoundException("Client not Found"));
     }
 
+    @Transactional
     public ClientPostResponse save(ClientPostRequest postRequest) {
         Client clientToSave = mapper.toClient(postRequest);
 

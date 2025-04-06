@@ -11,6 +11,7 @@ import com.branches.response.EmployeeGetResponse;
 import com.branches.response.EmployeePostResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +30,7 @@ public class EmployeeService {
         return mapper.toEmployeeGetResponseList(response);
     }
 
+    @Transactional
     public EmployeePostResponse save(EmployeePostRequest postRequest) {
         Category category = categoryService.findByIdOrElseThrowsNotFoundException(postRequest.getCategoryId());
 
