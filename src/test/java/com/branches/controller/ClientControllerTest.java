@@ -6,7 +6,11 @@ import com.branches.response.ClientGetResponse;
 import com.branches.service.ClientService;
 import com.branches.utils.ClientUtils;
 import com.branches.utils.FileUtils;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +19,14 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 @WebMvcTest(controllers = ClientController.class)
 @Import(FileUtils.class)
@@ -130,5 +136,38 @@ class ClientControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
     }
-    
+
+    @ParameterizedTest
+    @MethodSource("postClientBadRequestSource")
+    @DisplayName("save return BadRequest when fields are invalid")
+    @Order(7)
+    void save_ReturnsBadRequest_WhenFieldAreInvalid(String fileName, List<String> expectedErrors) throws Exception {
+        String request = fileUtils.readResourceFile("client/%s".formatted(fileName));
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post(URL)
+                                .content(request)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn();
+
+        Exception exception = mvcResult.getResolvedException();
+
+        Assertions.assertThat(exception.getMessage())
+                .isNotNull()
+                .contains(expectedErrors);
+    }
+
+    private static Stream<Arguments> postClientBadRequestSource() {
+        String nameRequiredError = "The field name is required";
+        String lastNameRequiredError = "The field lastName is required";
+
+        List<String> expectedErrors = List.of(nameRequiredError, lastNameRequiredError);
+        return Stream.of(
+                Arguments.of("post-request-client-empty-fields-400.json", expectedErrors),
+                Arguments.of("post-request-client-blank-fields-400.json", expectedErrors)
+        );
+    }    
 }

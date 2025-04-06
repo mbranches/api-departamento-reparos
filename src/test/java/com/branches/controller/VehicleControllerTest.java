@@ -6,7 +6,11 @@ import com.branches.response.VehicleGetResponse;
 import com.branches.service.VehicleService;
 import com.branches.utils.FileUtils;
 import com.branches.utils.VehicleUtils;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +19,13 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @WebMvcTest(controllers = VehicleController.class)
 @Import(FileUtils.class)
@@ -88,5 +94,41 @@ class VehicleControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
+    @ParameterizedTest
+    @MethodSource("postVehicleBadRequestSource")
+    @DisplayName("save return BadRequest when fields are invalid")
+    @Order(7)
+    void save_ReturnsBadRequest_WhenFieldAreInvalid(String fileName, List<String> expectedErrors) throws Exception {
+        String request = fileUtils.readResourceFile("vehicle/%s".formatted(fileName));
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post(URL)
+                                .content(request)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn();
+
+        Exception exception = mvcResult.getResolvedException();
+
+        Assertions.assertThat(exception.getMessage())
+                .isNotNull()
+                .contains(expectedErrors);
+    }
+
+    private static Stream<Arguments> postVehicleBadRequestSource() {
+        String vehicleTypeRequiredError = "The field vehicleType is required";
+        String brandRequiredError = "The field brand is required";
+        String modelRequiredError = "The field model is required";
+        String clientIdRequiredError = "The field clientId is required";
+
+        List<String> expectedErrors = List.of(vehicleTypeRequiredError, brandRequiredError, modelRequiredError, clientIdRequiredError);
+        return Stream.of(
+                Arguments.of("post-request-vehicle-empty-fields-400.json", expectedErrors),
+                Arguments.of("post-request-vehicle-blank-fields-400.json", expectedErrors)
+        );
     }
 }
