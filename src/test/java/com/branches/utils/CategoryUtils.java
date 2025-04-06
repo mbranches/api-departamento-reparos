@@ -36,4 +36,8 @@ public class CategoryUtils {
     public static CategoryPostResponse newCategoryPostResponse() {
         return CategoryPostResponse.builder().id(4L).name("Vidraceiro").hourlyPrice(50.0).build();
     }
+
+    public static CategoryGetResponse newCategoryGetResponse() {
+        return CategoryGetResponse.builder().name("Vidraceiro").hourlyPrice(50.0).build();
+    }
 }
