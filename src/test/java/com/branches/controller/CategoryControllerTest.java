@@ -1,12 +1,13 @@
 package com.branches.controller;
 
-import com.branches.mapper.CategoryMapperImpl;
-import com.branches.model.Category;
-import com.branches.repository.CategoryRepository;
+import com.branches.exception.NotFoundException;
+import com.branches.request.CategoryPostRequest;
+import com.branches.response.CategoryGetResponse;
 import com.branches.service.CategoryService;
 import com.branches.utils.CategoryUtils;
 import com.branches.utils.FileUtils;
 import org.junit.jupiter.api.*;
+import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -20,31 +21,30 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @WebMvcTest(controllers = CategoryController.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@Import({CategoryMapperImpl.class, CategoryService.class, FileUtils.class})
+@Import(FileUtils.class)
 class CategoryControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockitoBean
-    private CategoryRepository repository;
+    private CategoryService service;
     @Autowired
     private FileUtils fileUtils;
     private final String URL = "/v1/categories";
-    private List<Category> categoryList;
+    private List<CategoryGetResponse> categoryGetResponseList;
 
     @BeforeEach
     void init() {
-        categoryList = CategoryUtils.newCategoryList();
+        categoryGetResponseList = CategoryUtils.newCategoryGetResponseList();
     }
 
     @Test
     @DisplayName("GET /v1/categories returns all categories when the given argument is null")
     @Order(1)
     void findAll_ReturnsAllCategories_WhenGivenArgumentIsNull() throws Exception {
-        BDDMockito.when(repository.findAll()).thenReturn(CategoryUtils.newCategoryList());
+        BDDMockito.when(service.findAll(null)).thenReturn(categoryGetResponseList);
         String expectedResponse = fileUtils.readResourceFile("category/get-category-null-name-200.json");
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL))
@@ -59,7 +59,7 @@ class CategoryControllerTest {
     void findAll_ReturnsFoundCategories_WhenArgumentIsGiven() throws Exception {
         String nameToSearch = "mecânico";
 
-        BDDMockito.when(repository.findAllByNameContaining(nameToSearch)).thenReturn(List.of(categoryList.getFirst()));
+        BDDMockito.when(service.findAll(nameToSearch)).thenReturn(List.of(categoryGetResponseList.getFirst()));
         String expectedResponse = fileUtils.readResourceFile("category/get-category-mecanico-name-200.json");
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL).param("name", nameToSearch))
@@ -76,7 +76,7 @@ class CategoryControllerTest {
     void findAll_ReturnsEmptyList_WhenGivenArgumentIsNotFound() throws Exception {
         String randomName = "nameNotRegistered";
 
-        BDDMockito.when(repository.findAllByNameContaining(randomName)).thenReturn(Collections.emptyList());
+        BDDMockito.when(service.findAll(randomName)).thenReturn(Collections.emptyList());
 
         String expectedResponse = fileUtils.readResourceFile("category/get-category-nameNotRegistered-name-200.json");
 
@@ -90,10 +90,10 @@ class CategoryControllerTest {
     @DisplayName("GET /v1/categories/1 returns found Category when successful")
     @Order(4)
     void findById_ReturnsFoundCategory_WhenSuccessful() throws Exception {
-        Category expectedCategory = categoryList.getFirst();
-        long idToSearch = expectedCategory.getId();
+        CategoryGetResponse expectedCategory = categoryGetResponseList.getFirst();
+        long idToSearch = 1L;
 
-        BDDMockito.when(repository.findById(idToSearch)).thenReturn(Optional.of(expectedCategory));
+        BDDMockito.when(service.findById(idToSearch)).thenReturn(expectedCategory);
         String expectedResponse = fileUtils.readResourceFile("category/get-category-by-id-200.json");
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{id}", idToSearch))
@@ -108,7 +108,7 @@ class CategoryControllerTest {
     void findById_ThrowsNotFoundException_WhenIdIsNotFound() throws Exception {
         long randomId = 131222L;
 
-        BDDMockito.when(repository.findById(randomId)).thenReturn(Optional.empty());
+        BDDMockito.when(service.findById(randomId)).thenThrow(new NotFoundException("Category not Found"));
         String expectedResponse = fileUtils.readResourceFile("category/get-category-by-id-404.json");
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{id}", randomId))
@@ -121,11 +121,7 @@ class CategoryControllerTest {
     @DisplayName("POST /v1/categories returns saved category when successful")
     @Order(6)
     void save_ReturnsSavedCategory_WhenSuccessful() throws Exception {
-        Category categoryToSave = CategoryUtils.newCategoryToSave();
-        categoryToSave.setId(null);
-        Category categorySaved = CategoryUtils.newCategoryToSave();
-
-        BDDMockito.when(repository.save(categoryToSave)).thenReturn(categorySaved);
+        BDDMockito.when(service.save(ArgumentMatchers.any(CategoryPostRequest.class))).thenReturn(CategoryUtils.newCategoryPostResponse());
         String request = fileUtils.readResourceFile("category/post-request-category-200.json");
         String expectedResponse = fileUtils.readResourceFile("category/post-response-category-201.json");
 
