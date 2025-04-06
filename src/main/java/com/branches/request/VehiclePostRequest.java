@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @Builder
 public class VehiclePostRequest {
-    @NotBlank(message = "The field vehicleType is required")
+    @NotNull(message = "The field vehicleType is required")
     private VehicleType vehicleType;
     @NotBlank(message = "The field brand is required")
     private String brand;
