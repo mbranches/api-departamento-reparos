@@ -58,7 +58,7 @@ class VehicleServiceTest {
     @Test
     @DisplayName("save returns saved vehicle when successful")
     @Order(2)
-    void save_ReturnsSavedVehicle_WhenGivenAddressExists() {
+    void save_ReturnsSavedVehicle_WhenSuccessful() {
         Vehicle vehicleToSave = VehicleUtils.newVehicleToSave();
         VehiclePostRequest vehiclePostRequest = VehicleUtils.newVehiclePostRequest();
 
@@ -79,7 +79,7 @@ class VehicleServiceTest {
     @Test
     @DisplayName("save throws not found exception when given client does not exists")
     @Order(3)
-    void save_ThrowsNotFoundException_WhenGivenCategoryNotExists() {
+    void save_ThrowsNotFoundException_WhenGivenClientNotExists() {
         VehiclePostRequest vehiclePostRequest = VehicleUtils.newVehiclePostRequest();
 
         BDDMockito.when(clientService.findByIdOrElseThrowsNotFoundException(vehiclePostRequest.getClientId())).thenThrow(NotFoundException.class);

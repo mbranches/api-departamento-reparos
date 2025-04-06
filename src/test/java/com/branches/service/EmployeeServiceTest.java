@@ -100,7 +100,7 @@ class EmployeeServiceTest {
     @Test
     @DisplayName("save returns saved employee when successful")
     @Order(4)
-    void save_ReturnsSavedEmployee_WhenGivenAddressExists() {
+    void save_ReturnsSavedEmployee_WhenSuccessful() {
         Employee employeeToSave = EmployeeUtils.newEmployeeToSave();
         EmployeePostRequest employeePostRequest = EmployeeUtils.newEmployeePostRequest();
 

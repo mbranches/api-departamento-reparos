@@ -128,7 +128,7 @@ class ClientServiceTest {
     @Test
     @DisplayName("save returns saved client when successful")
     @Order(6)
-    void save_ReturnsSavedClient_WhenGivenAddressExists() {
+    void save_ReturnsSavedClient_WhenGivenSuccessful() {
         Client clientToSave = ClientUtils.newClientToSave();
         ClientPostRequest clientPostRequest = ClientUtils.newClientPostRequest();
 
