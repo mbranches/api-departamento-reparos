@@ -1,0 +1,65 @@
+[
+  {
+    "vehicleType": "carro",
+    "brand": "Fiat",
+    "model": "Toro",
+    "client": {
+      "name": "Chispirito",
+      "lastName": "Costa",
+      "address": {
+        "street": "Almirante Barroso",
+        "district": "São Brás",
+        "city": "Belém",
+        "state": "Pa"
+      },
+      "phones": [
+        {
+          "number": "21121521",
+          "phoneType": "celular"
+        }
+      ]
+    }
+  },
+  {
+    "vehicleType": "moto",
+    "brand": "Yamaha",
+    "model": "Mt-07",
+    "client": {
+      "name": "Chispirito",
+      "lastName": "Costa",
+      "address": {
+        "street": "Almirante Barroso",
+        "district": "São Brás",
+        "city": "Belém",
+        "state": "Pa"
+      },
+      "phones": [
+        {
+          "number": "21121521",
+          "phoneType": "celular"
+        }
+      ]
+    }
+  },
+  {
+    "vehicleType": "moto",
+    "brand": "Honda",
+    "model": "Biz",
+    "client": {
+      "name": "Chispirito",
+      "lastName": "Costa",
+      "address": {
+        "street": "Almirante Barroso",
+        "district": "São Brás",
+        "city": "Belém",
+        "state": "Pa"
+      },
+      "phones": [
+        {
+          "number": "21121521",
+          "phoneType": "celular"
+        }
+      ]
+    }
+  }
+]

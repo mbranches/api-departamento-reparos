@@ -1,0 +1,23 @@
+{
+  "id": 4,
+  "vehicleType": "caminhao",
+  "brand": "Scania",
+  "model": "T113",
+  "client": {
+    "id": 4,
+    "name": "Chispirito",
+    "lastName": "Costa",
+    "address": {
+      "street": "Almirante Barroso",
+      "district": "São Brás",
+      "city": "Belém",
+      "state": "Pa"
+    },
+    "phones": [
+      {
+        "number": "21121521",
+        "phoneType": "celular"
+      }
+    ]
+  }
+}
