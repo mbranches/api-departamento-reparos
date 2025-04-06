@@ -88,6 +88,37 @@ class EmployeeControllerTest {
     }
 
     @Test
+    @DisplayName("GET /v1/employees/1 returns found employee when successful")
+    @Order(4)
+    void findById_ReturnsFoundEmployee_WhenSuccessful() throws Exception {
+        EmployeeGetResponse expectedEmployee = employeeGetResponseList.getFirst();
+        long idToSearch = 1L;
+
+        BDDMockito.when(service.findById(idToSearch)).thenReturn(expectedEmployee);
+        String expectedResponse = fileUtils.readResourceFile("employee/get-employee-by-id-200.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{id}", idToSearch))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
+    @Test
+    @DisplayName("GET /v1/employees/ throws NotFoundException when id is not found")
+    @Order(5)
+    void findById_ThrowsNotFoundException_WhenIdIsNotFound() throws Exception {
+        long randomId = 131222L;
+
+        BDDMockito.when(service.findById(randomId)).thenThrow(new NotFoundException("Employee not Found"));
+        String expectedResponse = fileUtils.readResourceFile("employee/get-employee-by-id-404.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{id}", randomId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
+    @Test
     @DisplayName("POST /v1/employees returns saved employee when successful")
     @Order(4)
     void save_ReturnsSavedEmployee_WhenGivenSuccessful() throws Exception {

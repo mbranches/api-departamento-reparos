@@ -96,10 +96,42 @@ class EmployeeServiceTest {
                 .isNotNull()
                 .isEmpty();
     }
+
+    @Test
+    @DisplayName("findById returns found employee when successful")
+    @Order(4)
+    void findById_ReturnsFoundEmployee_WhenSuccessful() {
+        Employee expectedResponseRepository = employeeList.getFirst();
+        Long idToSearch = expectedResponseRepository.getId();
+
+        EmployeeGetResponse expectedResponse = employeeGetResponseList.getFirst();
+
+        BDDMockito.when(repository.findById(idToSearch)).thenReturn(Optional.of(expectedResponseRepository));
+        BDDMockito.when(mapper.toEmployeeGetResponse(expectedResponseRepository)).thenReturn(expectedResponse);
+
+        EmployeeGetResponse response = service.findById(idToSearch);
+
+        Assertions.assertThat(response)
+                .isNotNull()
+                .isEqualTo(expectedResponse);
+    }
+
+    @Test
+    @DisplayName("findById throws NotFoundException when id is not found")
+    @Order(5)
+    void findById_ThrowsNotFoundException_WhenIdIsNotFound() {
+        Long randomId = 4445511L;
+
+        BDDMockito.when(repository.findById(randomId)).thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> service.findById(randomId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Employee not Found");
+    }
     
     @Test
     @DisplayName("save returns saved employee when successful")
-    @Order(4)
+    @Order(6)
     void save_ReturnsSavedEmployee_WhenSuccessful() {
         Employee employeeToSave = EmployeeUtils.newEmployeeToSave();
         EmployeePostRequest employeePostRequest = EmployeeUtils.newEmployeePostRequest();
@@ -123,7 +155,7 @@ class EmployeeServiceTest {
 
     @Test
     @DisplayName("save throws not found exception when given category does not exists")
-    @Order(5)
+    @Order(7)
     void save_ThrowsNotFoundException_WhenGivenCategoryNotExists() {
         EmployeePostRequest employeePostRequest = EmployeeUtils.newEmployeePostRequest();
 
