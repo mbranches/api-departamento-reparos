@@ -159,9 +159,10 @@ class EmployeeServiceTest {
     void save_ThrowsNotFoundException_WhenGivenCategoryNotExists() {
         EmployeePostRequest employeePostRequest = EmployeeUtils.newEmployeePostRequest();
 
-        BDDMockito.when(categoryService.findByIdOrElseThrowsNotFoundException(employeePostRequest.getCategoryId())).thenThrow(NotFoundException.class);
+        BDDMockito.when(categoryService.findByIdOrElseThrowsNotFoundException(ArgumentMatchers.anyLong())).thenThrow(new NotFoundException("Category not Found"));
 
         Assertions.assertThatThrownBy(() -> service.save(employeePostRequest))
-                .isInstanceOf(NotFoundException.class);
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Category not Found");
     }
 }

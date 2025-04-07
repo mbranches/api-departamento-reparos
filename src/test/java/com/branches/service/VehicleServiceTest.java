@@ -137,9 +137,10 @@ class VehicleServiceTest {
     void save_ThrowsNotFoundException_WhenGivenClientNotExists() {
         VehiclePostRequest vehiclePostRequest = VehicleUtils.newVehiclePostRequest();
 
-        BDDMockito.when(clientService.findByIdOrElseThrowsNotFoundException(vehiclePostRequest.getClientId())).thenThrow(NotFoundException.class);
+        BDDMockito.when(clientService.findByIdOrElseThrowsNotFoundException(ArgumentMatchers.anyLong())).thenThrow(new NotFoundException("Client not Found"));
 
         Assertions.assertThatThrownBy(() -> service.save(vehiclePostRequest))
-                .isInstanceOf(NotFoundException.class);
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Client not Found");
     }
 }
