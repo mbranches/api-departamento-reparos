@@ -27,6 +27,4 @@ public class Client {
     private Address address;
     @OneToMany(mappedBy = "client", cascade = CascadeType.PERSIST)
     private List<Phone> phones;
-    @OneToMany(mappedBy = "client")
-    private List<Vehicle> vehicles;
 }

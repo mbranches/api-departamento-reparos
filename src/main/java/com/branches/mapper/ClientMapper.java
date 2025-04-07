@@ -19,7 +19,6 @@ public interface ClientMapper {
     ClientGetResponse toClientGetResponse(Client client);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "vehicles", ignore = true)
     Client toClient(ClientPostRequest postRequest);
 
     ClientPostResponse toClientPostResponse(Client client);
