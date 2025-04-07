@@ -10,5 +10,5 @@ public class VehicleGetResponse {
     private VehicleType vehicleType;
     private String brand;
     private String model;
-    private ClientVehicleGetResponse client;
+    private ClientByVehicleGetResponse client;
 }

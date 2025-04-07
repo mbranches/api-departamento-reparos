@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ClientVehicleGetResponse {
+public class ClientByVehicleGetResponse {
     private String name;
     private String lastName;
 }

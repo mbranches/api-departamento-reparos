@@ -2,7 +2,7 @@ package com.branches.mapper;
 
 import com.branches.model.Vehicle;
 import com.branches.request.VehiclePostRequest;
-import com.branches.response.VehicleClientGetResponse;
+import com.branches.response.VehicleByClientGetResponse;
 import com.branches.response.VehicleGetResponse;
 import com.branches.response.VehiclePostResponse;
 import org.mapstruct.Mapper;
@@ -23,5 +23,5 @@ public interface VehicleMapper {
 
     VehiclePostResponse toVehiclePostResponse(Vehicle vehicle);
 
-    List<VehicleClientGetResponse> toVehicleClientGetResponseList(List<Vehicle> VehicleClientGetResponseList);
+    List<VehicleByClientGetResponse> toVehicleClientGetResponseList(List<Vehicle> VehicleClientGetResponseList);
 }

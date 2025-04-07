@@ -21,11 +21,11 @@ public class VehicleUtils {
     }
 
     public static List<VehicleGetResponse> newVehicleGetResponseList() {
-        ClientVehicleGetResponse clientVehicleGetResponse = ClientUtils.newClientVehicleGetResponse();
+        ClientByVehicleGetResponse clientByVehicleGetResponse = ClientUtils.newClientVehicleGetResponse();
 
-        VehicleGetResponse vehicle1 = VehicleGetResponse.builder().vehicleType(VehicleType.carro).brand("Fiat").model("Toro").client(clientVehicleGetResponse).build();
-        VehicleGetResponse vehicle2 = VehicleGetResponse.builder().vehicleType(VehicleType.moto).brand("Yamaha").model("Mt-07").client(clientVehicleGetResponse).build();
-        VehicleGetResponse vehicle3 = VehicleGetResponse.builder().vehicleType(VehicleType.moto).brand("Honda").model("Biz").client(clientVehicleGetResponse).build();
+        VehicleGetResponse vehicle1 = VehicleGetResponse.builder().vehicleType(VehicleType.carro).brand("Fiat").model("Toro").client(clientByVehicleGetResponse).build();
+        VehicleGetResponse vehicle2 = VehicleGetResponse.builder().vehicleType(VehicleType.moto).brand("Yamaha").model("Mt-07").client(clientByVehicleGetResponse).build();
+        VehicleGetResponse vehicle3 = VehicleGetResponse.builder().vehicleType(VehicleType.moto).brand("Honda").model("Biz").client(clientByVehicleGetResponse).build();
 
         return new ArrayList<>(List.of(vehicle1, vehicle2, vehicle3));
     }
@@ -57,10 +57,10 @@ public class VehicleUtils {
                 .client(ClientUtils.newClientToSave()).build();
     }
 
-    public static List<VehicleClientGetResponse> newVehicleClientGetReponseList() {
-        VehicleClientGetResponse vehicle1 = VehicleClientGetResponse.builder().vehicleType(VehicleType.carro).brand("Fiat").model("Toro").build();
-        VehicleClientGetResponse vehicle2 = VehicleClientGetResponse.builder().vehicleType(VehicleType.moto).brand("Yamaha").model("Mt-07").build();
-        VehicleClientGetResponse vehicle3 = VehicleClientGetResponse.builder().vehicleType(VehicleType.moto).brand("Honda").model("Biz").build();
+    public static List<VehicleByClientGetResponse> newVehicleClientGetReponseList() {
+        VehicleByClientGetResponse vehicle1 = VehicleByClientGetResponse.builder().vehicleType(VehicleType.carro).brand("Fiat").model("Toro").build();
+        VehicleByClientGetResponse vehicle2 = VehicleByClientGetResponse.builder().vehicleType(VehicleType.moto).brand("Yamaha").model("Mt-07").build();
+        VehicleByClientGetResponse vehicle3 = VehicleByClientGetResponse.builder().vehicleType(VehicleType.moto).brand("Honda").model("Biz").build();
 
         return List.of(vehicle1, vehicle2, vehicle3);
     }

@@ -3,7 +3,7 @@ package com.branches.controller;
 import com.branches.request.ClientPostRequest;
 import com.branches.response.ClientGetResponse;
 import com.branches.response.ClientPostResponse;
-import com.branches.response.VehicleClientGetResponse;
+import com.branches.response.VehicleByClientGetResponse;
 import com.branches.service.ClientService;
 import com.branches.service.VehicleService;
 import jakarta.validation.Valid;
@@ -36,8 +36,8 @@ public class ClientController {
     }
 
     @GetMapping("/{clientId}/vehicles")
-    public ResponseEntity<List<VehicleClientGetResponse>> findVehiclesByClientId(@PathVariable Long clientId) {
-        List<VehicleClientGetResponse> response = vehicleService.findByClientId(clientId);
+    public ResponseEntity<List<VehicleByClientGetResponse>> findVehiclesByClientId(@PathVariable Long clientId) {
+        List<VehicleByClientGetResponse> response = vehicleService.findByClientId(clientId);
 
         return ResponseEntity.ok(response);
     }

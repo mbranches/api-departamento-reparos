@@ -68,8 +68,8 @@ public class ClientUtils {
         return client;
     }
 
-    public static ClientVehicleGetResponse newClientVehicleGetResponse() {
-        return ClientVehicleGetResponse.builder()
+    public static ClientByVehicleGetResponse newClientVehicleGetResponse() {
+        return ClientByVehicleGetResponse.builder()
                 .name("Chispirito")
                 .lastName("Costa")
                 .build();
