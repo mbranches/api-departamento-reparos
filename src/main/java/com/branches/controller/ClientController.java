@@ -38,6 +38,7 @@ public class ClientController {
     @GetMapping("/{clientId}/vehicles")
     public ResponseEntity<List<VehicleClientGetResponse>> findVehiclesByClientId(@PathVariable Long clientId) {
         List<VehicleClientGetResponse> response = vehicleService.findByClientId(clientId);
+
         return ResponseEntity.ok(response);
     }
 

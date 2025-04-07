@@ -1,0 +1,17 @@
+[
+  {
+    "vehicleType": "carro",
+    "brand": "Fiat",
+    "model": "Toro"
+  },
+  {
+    "vehicleType": "moto",
+    "brand": "Yamaha",
+    "model": "Mt-07"
+  },
+  {
+    "vehicleType": "moto",
+    "brand": "Honda",
+    "model": "Biz"
+  }
+]

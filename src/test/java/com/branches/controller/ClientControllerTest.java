@@ -4,8 +4,10 @@ import com.branches.exception.NotFoundException;
 import com.branches.request.ClientPostRequest;
 import com.branches.response.ClientGetResponse;
 import com.branches.service.ClientService;
+import com.branches.service.VehicleService;
 import com.branches.utils.ClientUtils;
 import com.branches.utils.FileUtils;
+import com.branches.utils.VehicleUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -36,6 +38,8 @@ class ClientControllerTest {
     private MockMvc mockMvc;
     @MockitoBean
     private ClientService service;
+    @MockitoBean
+    private VehicleService vehicleService;
     @Autowired
     private FileUtils fileUtils;
     private final String URL = "/v1/clients";
@@ -117,9 +121,55 @@ class ClientControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
     }
+
+    @Test
+    @DisplayName("GET /v1/clients/4/vehicles Returns all client vehicles when successful")
+    @Order(6)
+    void findVehiclesByClientId_ReturnsAllClientVehicles_WhenSuccessful() throws Exception {
+        long clientId = 4L;
+        String expectedResponse = fileUtils.readResourceFile("vehicle/get-vehicles-by-client-id-200.json");
+
+        BDDMockito.when(vehicleService.findByClientId(clientId)).thenReturn(VehicleUtils.newVehicleClientGetReponseList());
+
+        mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{clientId}/vehicles", clientId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
+    @Test
+    @DisplayName("GET /v1/clients/1/vehicles returns an empty list when client doesn't have vehicles")
+    @Order(7)
+    void findVehiclesByClientId_ReturnsEmptyList_WhenClientDoesNotHaveVehicles() throws Exception {
+        long clientId = 1L;
+        String expectedResponse = fileUtils.readResourceFile("vehicle/get-empty-list-by-client-id-200.json");
+
+        BDDMockito.when(vehicleService.findByClientId(clientId)).thenReturn(Collections.emptyList());
+
+        mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{clientId}/vehicles", clientId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
+    @Test
+    @DisplayName("GET /v1/clients/488/vehicles throws NotFoundException when client is not found")
+    @Order(8)
+    void findVehiclesByClientId_ThrowsNotFoundException_WhenClientIsNotFound() throws Exception {
+        long randomId = 1L;
+        String expectedResponse = fileUtils.readResourceFile("vehicle/get-vehicles-by-client-id-404.json");
+
+        BDDMockito.when(vehicleService.findByClientId(randomId)).thenThrow(new NotFoundException("Client not Found"));
+
+        mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{clientId}/vehicles", randomId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
     @Test
     @DisplayName("POST /v1/clients returns saved client when successful")
-    @Order(6)
+    @Order(9)
     void save_ReturnsSavedClient_WhenGivenSuccessful() throws Exception {
 
         BDDMockito.when(service.save(ArgumentMatchers.any(ClientPostRequest.class))).thenReturn(ClientUtils.newClientPostResponse());
@@ -140,7 +190,7 @@ class ClientControllerTest {
     @ParameterizedTest
     @MethodSource("postClientBadRequestSource")
     @DisplayName("save return BadRequest when fields are invalid")
-    @Order(7)
+    @Order(10)
     void save_ReturnsBadRequest_WhenFieldAreInvalid(String fileName, List<String> expectedErrors) throws Exception {
         String request = fileUtils.readResourceFile("client/%s".formatted(fileName));
 
