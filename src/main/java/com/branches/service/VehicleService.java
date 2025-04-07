@@ -5,6 +5,7 @@ import com.branches.model.Client;
 import com.branches.model.Vehicle;
 import com.branches.repository.VehicleRepository;
 import com.branches.request.VehiclePostRequest;
+import com.branches.response.VehicleClientGetResponse;
 import com.branches.response.VehicleGetResponse;
 import com.branches.response.VehiclePostResponse;
 import lombok.RequiredArgsConstructor;
@@ -34,5 +35,11 @@ public class VehicleService {
         Vehicle response = repository.save(vehicleToSave);
 
         return mapper.toVehiclePostResponse(response);
+    }
+
+    public List<VehicleClientGetResponse> findByClientId(Long clientId) {
+        List<Vehicle> foundVehicles = repository.findAllByClient(clientService.findByIdOrElseThrowsNotFoundException(clientId));
+
+        return mapper.toVehicleClientGetResponseList(foundVehicles);
     }
 }
