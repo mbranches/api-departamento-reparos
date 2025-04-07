@@ -2,9 +2,11 @@ package com.branches.service;
 
 import com.branches.exception.NotFoundException;
 import com.branches.mapper.VehicleMapper;
+import com.branches.model.Client;
 import com.branches.model.Vehicle;
 import com.branches.repository.VehicleRepository;
 import com.branches.request.VehiclePostRequest;
+import com.branches.response.VehicleByClientGetResponse;
 import com.branches.response.VehiclePostResponse;
 import com.branches.response.VehicleGetResponse;
 import com.branches.utils.ClientUtils;
@@ -18,6 +20,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
@@ -56,8 +59,60 @@ class VehicleServiceTest {
     }
 
     @Test
-    @DisplayName("save returns saved vehicle when successful")
+    @DisplayName("findVehiclesByClientId Returns all client vehicles when successful")
     @Order(2)
+    void findVehiclesByClientId_ReturnsAllClientVehicles_WhenSuccessful() {
+        Client client = ClientUtils.newClientToSave();
+        long clientId = client.getId();
+
+        List<Vehicle> vehicles = VehicleUtils.newVehicleList();
+        List<VehicleByClientGetResponse> expectedResponse = VehicleUtils.newVehicleClientGetReponseList();
+
+        BDDMockito.when(clientService.findByIdOrElseThrowsNotFoundException(clientId)).thenReturn(client);
+        BDDMockito.when(repository.findAllByClient(client)).thenReturn(vehicles);
+        BDDMockito.when(mapper.toVehicleClientGetResponseList(vehicles)).thenReturn(expectedResponse);
+
+        List<VehicleByClientGetResponse> response = service.findByClientId(clientId);
+
+        Assertions.assertThat(response)
+                .isNotNull()
+                .isNotEmpty()
+                .containsExactlyElementsOf(expectedResponse);
+    }
+
+    @Test
+    @DisplayName("findVehiclesByClientId returns an empty list when client doesn't have vehicles")
+    @Order(3)
+    void findVehiclesByClientId_ReturnsEmptyList_WhenClientDoesNotHaveVehicles() {
+        Client client = ClientUtils.newClientToSave();
+        long clientId = client.getId();
+
+        BDDMockito.when(clientService.findByIdOrElseThrowsNotFoundException(clientId)).thenReturn(client);
+        BDDMockito.when(repository.findAllByClient(client)).thenReturn(Collections.emptyList());
+
+        List<VehicleByClientGetResponse> response = service.findByClientId(clientId);
+
+        Assertions.assertThat(response)
+                .isNotNull()
+                .isEmpty();
+    }
+
+    @Test
+    @DisplayName("findVehiclesByClientId throws NotFoundException when client is not found")
+    @Order(4)
+    void findVehiclesByClientId_ThrowsNotFoundException_WhenClientIsNotFound() {
+        long randomClientId = 1234567L;
+
+        BDDMockito.when(clientService.findByIdOrElseThrowsNotFoundException(randomClientId)).thenThrow(new NotFoundException("Client not Found"));
+
+        Assertions.assertThatThrownBy(() -> service.findByClientId(randomClientId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Client not Found");
+    }
+
+    @Test
+    @DisplayName("save returns saved vehicle when successful")
+    @Order(5)
     void save_ReturnsSavedVehicle_WhenSuccessful() {
         Vehicle vehicleToSave = VehicleUtils.newVehicleToSave();
         VehiclePostRequest vehiclePostRequest = VehicleUtils.newVehiclePostRequest();
@@ -78,7 +133,7 @@ class VehicleServiceTest {
 
     @Test
     @DisplayName("save throws not found exception when given client does not exists")
-    @Order(3)
+    @Order(6)
     void save_ThrowsNotFoundException_WhenGivenClientNotExists() {
         VehiclePostRequest vehiclePostRequest = VehicleUtils.newVehiclePostRequest();
 
