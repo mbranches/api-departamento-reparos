@@ -4,10 +4,7 @@ import com.branches.model.Client;
 import com.branches.model.Vehicle;
 import com.branches.model.VehicleType;
 import com.branches.request.VehiclePostRequest;
-import com.branches.response.ClientGetResponse;
-import com.branches.response.ClientVehicleGetResponse;
-import com.branches.response.VehicleGetResponse;
-import com.branches.response.VehiclePostResponse;
+import com.branches.response.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,5 +55,13 @@ public class VehicleUtils {
                 .brand("Scania")
                 .model("T113")
                 .client(ClientUtils.newClientToSave()).build();
+    }
+
+    public static List<VehicleClientGetResponse> newVehicleClientGetReponseList() {
+        VehicleClientGetResponse vehicle1 = VehicleClientGetResponse.builder().vehicleType(VehicleType.carro).brand("Fiat").model("Toro").build();
+        VehicleClientGetResponse vehicle2 = VehicleClientGetResponse.builder().vehicleType(VehicleType.moto).brand("Yamaha").model("Mt-07").build();
+        VehicleClientGetResponse vehicle3 = VehicleClientGetResponse.builder().vehicleType(VehicleType.moto).brand("Honda").model("Biz").build();
+
+        return List.of(vehicle1, vehicle2, vehicle3);
     }
 }
