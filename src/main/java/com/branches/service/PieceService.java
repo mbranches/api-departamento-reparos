@@ -25,12 +25,12 @@ public class PieceService {
     }
 
     public PieceGetResponse findById(Long id) {
-        Piece foundPiece = findByIdOrElseThrowsNotFoundException(id);
+        Piece foundPiece = findByIdOrThrowsNotFoundException(id);
 
         return mapper.toPieceGetResponse(foundPiece);
     }
 
-    public Piece findByIdOrElseThrowsNotFoundException(Long id) {
+    public Piece findByIdOrThrowsNotFoundException(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Piece not Found"));
     }

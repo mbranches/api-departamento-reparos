@@ -68,7 +68,7 @@ class VehicleServiceTest {
         List<Vehicle> vehicles = VehicleUtils.newVehicleList();
         List<VehicleByClientGetResponse> expectedResponse = VehicleUtils.newVehicleClientGetReponseList();
 
-        BDDMockito.when(clientService.findByIdOrElseThrowsNotFoundException(clientId)).thenReturn(client);
+        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(clientId)).thenReturn(client);
         BDDMockito.when(repository.findAllByClient(client)).thenReturn(vehicles);
         BDDMockito.when(mapper.toVehicleClientGetResponseList(vehicles)).thenReturn(expectedResponse);
 
@@ -87,7 +87,7 @@ class VehicleServiceTest {
         Client client = ClientUtils.newClientToSave();
         long clientId = client.getId();
 
-        BDDMockito.when(clientService.findByIdOrElseThrowsNotFoundException(clientId)).thenReturn(client);
+        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(clientId)).thenReturn(client);
         BDDMockito.when(repository.findAllByClient(client)).thenReturn(Collections.emptyList());
 
         List<VehicleByClientGetResponse> response = service.findByClientId(clientId);
@@ -103,7 +103,7 @@ class VehicleServiceTest {
     void findVehiclesByClientId_ThrowsNotFoundException_WhenClientIsNotFound() {
         long randomClientId = 1234567L;
 
-        BDDMockito.when(clientService.findByIdOrElseThrowsNotFoundException(randomClientId)).thenThrow(new NotFoundException("Client not Found"));
+        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(randomClientId)).thenThrow(new NotFoundException("Client not Found"));
 
         Assertions.assertThatThrownBy(() -> service.findByClientId(randomClientId))
                 .isInstanceOf(NotFoundException.class)
@@ -119,7 +119,7 @@ class VehicleServiceTest {
 
         VehiclePostResponse expectedResponse = VehicleUtils.newVehiclePostResponse();
 
-        BDDMockito.when(clientService.findByIdOrElseThrowsNotFoundException(vehiclePostRequest.getClientId())).thenReturn(ClientUtils.newClientToSave());
+        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(vehiclePostRequest.getClientId())).thenReturn(ClientUtils.newClientToSave());
         BDDMockito.when(mapper.toVehicle(vehiclePostRequest)).thenReturn(vehicleToSave);
         BDDMockito.when(repository.save(vehicleToSave)).thenReturn(vehicleToSave);
         BDDMockito.when(mapper.toVehiclePostResponse(vehicleToSave)).thenReturn(expectedResponse);
@@ -137,7 +137,7 @@ class VehicleServiceTest {
     void save_ThrowsNotFoundException_WhenGivenClientNotExists() {
         VehiclePostRequest vehiclePostRequest = VehicleUtils.newVehiclePostRequest();
 
-        BDDMockito.when(clientService.findByIdOrElseThrowsNotFoundException(ArgumentMatchers.anyLong())).thenThrow(new NotFoundException("Client not Found"));
+        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(ArgumentMatchers.anyLong())).thenThrow(new NotFoundException("Client not Found"));
 
         Assertions.assertThatThrownBy(() -> service.save(vehiclePostRequest))
                 .isInstanceOf(NotFoundException.class)

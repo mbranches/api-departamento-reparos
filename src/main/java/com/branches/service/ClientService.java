@@ -29,12 +29,12 @@ public class ClientService {
     }
 
     public ClientGetResponse findById(Long id) {
-        Client clientFound = findByIdOrElseThrowsNotFoundException(id);
+        Client clientFound = findByIdOrThrowsNotFoundException(id);
 
         return mapper.toClientGetResponse(clientFound);
     }
 
-    public Client findByIdOrElseThrowsNotFoundException(Long id) {
+    public Client findByIdOrThrowsNotFoundException(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Client not Found"));
     }

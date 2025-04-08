@@ -27,7 +27,7 @@ public class VehicleService {
     }
 
     public VehiclePostResponse save(VehiclePostRequest postRequest) {
-        Client clientFound = clientService.findByIdOrElseThrowsNotFoundException(postRequest.getClientId());
+        Client clientFound = clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId());
 
         Vehicle vehicleToSave = mapper.toVehicle(postRequest);
         vehicleToSave.setClient(clientFound);
@@ -38,7 +38,7 @@ public class VehicleService {
     }
 
     public List<VehicleByClientGetResponse> findByClientId(Long clientId) {
-        List<Vehicle> foundVehicles = repository.findAllByClient(clientService.findByIdOrElseThrowsNotFoundException(clientId));
+        List<Vehicle> foundVehicles = repository.findAllByClient(clientService.findByIdOrThrowsNotFoundException(clientId));
 
         return mapper.toVehicleClientGetResponseList(foundVehicles);
     }

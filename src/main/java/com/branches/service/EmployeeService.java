@@ -33,7 +33,7 @@ public class EmployeeService {
 
     @Transactional
     public EmployeePostResponse save(EmployeePostRequest postRequest) {
-        Category category = categoryService.findByIdOrElseThrowsNotFoundException(postRequest.getCategoryId());
+        Category category = categoryService.findByIdOrThrowsNotFoundException(postRequest.getCategoryId());
 
         Employee employeeToSave = mapper.toEmployee(postRequest);
         employeeToSave.setCategory(category);
@@ -55,12 +55,12 @@ public class EmployeeService {
     }
 
     public EmployeeGetResponse findById(Long id) {
-        Employee foundEmployee = findByIdOrThrowsNotFoundException(id);
+        Employee foundEmployee = findByIdOrNotFoundException(id);
 
         return mapper.toEmployeeGetResponse(foundEmployee);
     }
 
-    private Employee findByIdOrThrowsNotFoundException(Long id) {
+    private Employee findByIdOrNotFoundException(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Employee not Found"));
     }

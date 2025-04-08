@@ -18,7 +18,7 @@ public class CategoryService {
     private final CategoryRepository repository;
     private final CategoryMapper mapper;
 
-    public Category findByIdOrElseThrowsNotFoundException(Long id) {
+    public Category findByIdOrThrowsNotFoundException(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Category not Found"));
     }
@@ -30,7 +30,7 @@ public class CategoryService {
     }
 
     public CategoryGetResponse findById(Long id) {
-        Category foundCategory = findByIdOrElseThrowsNotFoundException(id);
+        Category foundCategory = findByIdOrThrowsNotFoundException(id);
 
         return mapper.toCategoryGetResponse(foundCategory);
     }
