@@ -9,7 +9,7 @@ public class RepairEmployee {
     @EmbeddedId
     private RepairEmployeeKey id;
     @ManyToOne
-    @MapsId("employeeId")
+    @MapsId("repairId")
     @JoinColumn(name = "reparacaoid")
     private Repair repair;
     @ManyToOne
