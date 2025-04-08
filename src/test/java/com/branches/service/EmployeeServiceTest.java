@@ -140,7 +140,7 @@ class EmployeeServiceTest {
 
         EmployeePostResponse expectedResponse = EmployeeUtils.newEmployeePostResponse();
 
-        BDDMockito.when(categoryService.findByIdOrElseThrowsNotFoundException(employeePostRequest.getCategoryId())).thenReturn(CategoryUtils.newCategoryToSave());
+        BDDMockito.when(categoryService.findByIdOrThrowsNotFoundException(employeePostRequest.getCategoryId())).thenReturn(CategoryUtils.newCategoryToSave());
         BDDMockito.when(mapper.toEmployee(employeePostRequest)).thenReturn(employeeToSave);
         BDDMockito.when(addressService.findAddress(employeeAddress)).thenReturn(Optional.of(employeeAddress));
         BDDMockito.when(repository.save(employeeToSave)).thenReturn(employeeToSave);
@@ -159,7 +159,7 @@ class EmployeeServiceTest {
     void save_ThrowsNotFoundException_WhenGivenCategoryNotExists() {
         EmployeePostRequest employeePostRequest = EmployeeUtils.newEmployeePostRequest();
 
-        BDDMockito.when(categoryService.findByIdOrElseThrowsNotFoundException(ArgumentMatchers.anyLong())).thenThrow(new NotFoundException("Category not Found"));
+        BDDMockito.when(categoryService.findByIdOrThrowsNotFoundException(ArgumentMatchers.anyLong())).thenThrow(new NotFoundException("Category not Found"));
 
         Assertions.assertThatThrownBy(() -> service.save(employeePostRequest))
                 .isInstanceOf(NotFoundException.class)
