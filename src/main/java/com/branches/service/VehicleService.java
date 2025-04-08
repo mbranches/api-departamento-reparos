@@ -1,5 +1,6 @@
 package com.branches.service;
 
+import com.branches.exception.NotFoundException;
 import com.branches.mapper.VehicleMapper;
 import com.branches.model.Client;
 import com.branches.model.Vehicle;
@@ -24,6 +25,11 @@ public class VehicleService {
         return mapper.toVehicleGetResponseList(
                 repository.findAll()
         );
+    }
+
+    public Vehicle findByIdOrThrowsNotFoundException(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Vehicle not Found"));
     }
 
     public VehiclePostResponse save(VehiclePostRequest postRequest) {
