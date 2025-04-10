@@ -1,0 +1,41 @@
+{
+  "id": 4,
+  "client": {
+    "name": "Chispirito",
+    "lastName": "Costa"
+  },
+  "vehicle": {
+    "vehicleType": "caminhao",
+    "brand": "Scania",
+    "model": "T113"
+  },
+  "pieces": [
+    {
+      "piece": {
+        "id": 4,
+        "name": "Pastilha de freio",
+        "unitValue": 120.0,
+        "stock": 55
+      },
+      "quantity": 5,
+      "totalValue": 600.0
+    }
+  ],
+  "employees": [
+    {
+      "employee": {
+        "name": "Chispirito",
+        "lastName": "Costa",
+        "category": {
+          "id": 4,
+          "name": "Vidraceiro",
+          "hourlyPrice": 50.0
+        }
+      },
+      "hoursWorked": 5,
+      "totalValue": 250.0
+    }
+  ],
+  "totalValue": 850.0,
+  "endDate": "2025-02-12"
+}
