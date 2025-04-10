@@ -1,12 +1,19 @@
 package com.branches.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity(name = "reparacao")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Repair {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +25,10 @@ public class Repair {
     @ManyToOne
     @JoinColumn(name = "fk_veiculo_reparacao", referencedColumnName = "idveiculo")
     private Vehicle vehicle;
+//    @OneToMany(mappedBy = "repair", cascade = CascadeType.ALL)
+//    private List<RepairPiece> pieces;
+//    @OneToMany(mappedBy = "repair", cascade = CascadeType.ALL)
+//    private List<RepairEmployee> employees;
     @Column(name = "valor_total", columnDefinition = "DECIMAL")
     private double totalValue;
     @Column(name = "data_finalizacao")

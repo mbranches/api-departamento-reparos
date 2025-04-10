@@ -60,7 +60,7 @@ public class EmployeeService {
         return mapper.toEmployeeGetResponse(foundEmployee);
     }
 
-    private Employee findByIdOrNotFoundException(Long id) {
+    public Employee findByIdOrNotFoundException(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Employee not Found"));
     }
