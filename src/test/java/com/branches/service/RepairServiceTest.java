@@ -81,7 +81,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save throws NotFoundException when client is not found")
-    @Order(3)
+    @Order(2)
     void save_ThrowsNotFoundException_WhenClientIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
@@ -94,7 +94,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save throws NotFoundException when vehicle is not found")
-    @Order(4)
+    @Order(3)
     void save_ThrowsNotFoundException_WhenVehicleIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
@@ -108,7 +108,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save throws BadRequestException when some piece is not found")
-    @Order(5)
+    @Order(4)
     void save_ThrowsBadRequestException_WhenSomePieceIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
@@ -124,7 +124,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save throws BadRequestException when some employee is not found")
-    @Order(6)
+    @Order(5)
     void save_ThrowsBadRequestException_WhenSomeEmployeeIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
