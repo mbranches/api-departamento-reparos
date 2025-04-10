@@ -1,6 +1,5 @@
 package com.branches.request;
 
-import com.branches.model.Employee;
 import lombok.Builder;
 import lombok.Data;
 
