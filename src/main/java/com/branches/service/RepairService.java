@@ -35,9 +35,9 @@ public class RepairService {
         Repair repairToSave = Repair.builder()
                 .client(client)
                 .vehicle(vehicle)
+                .totalValue(calculatesTotalValue(repairEmployeesToSave, repairPiecesToSave))
                 .build();
-
-        calculatesTotalValue(repairToSave, repairEmployeesToSave, repairPiecesToSave);
+        
         Repair savedRepair = repository.save(repairToSave);
 
         for (RepairPiece repairPiece : repairPiecesToSave) {
@@ -55,11 +55,10 @@ public class RepairService {
         return mapper.toRepairPostResponse(savedRepair, repairPieces, repairEmployees);
     }
 
-    private void calculatesTotalValue(Repair repair, List<RepairEmployee> employees, List<RepairPiece> pieces) {
+    private double calculatesTotalValue(List<RepairEmployee> employees, List<RepairPiece> pieces) {
         double totalValueEmployees = employees.stream().mapToDouble(RepairEmployee::getTotalValue).sum();
         double totalValuePieces = pieces.stream().mapToDouble(RepairPiece::getTotalValue).sum();
-        double totalValue = totalValueEmployees + totalValuePieces;
 
-        repair.setTotalValue(totalValue);
+        return totalValueEmployees + totalValuePieces;
     }
 }
