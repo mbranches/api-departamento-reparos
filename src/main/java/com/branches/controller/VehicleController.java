@@ -25,6 +25,12 @@ public class VehicleController {
         return ResponseEntity.ok(response);
     }
 
+    public ResponseEntity<VehicleGetResponse> findById(@PathVariable Long id) {
+        VehicleGetResponse response = service.findById(id);
+
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping
     public ResponseEntity<VehiclePostResponse> save(@Valid @RequestBody VehiclePostRequest postRequest) {
         VehiclePostResponse response = service.save(postRequest);

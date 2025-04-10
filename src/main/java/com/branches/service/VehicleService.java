@@ -48,4 +48,10 @@ public class VehicleService {
 
         return mapper.toVehicleClientGetResponseList(foundVehicles);
     }
+
+    public VehicleGetResponse findById(Long id) {
+        Vehicle foundVehicle = findByIdOrThrowsNotFoundException(id);
+
+        return mapper.toVehicleGetResponse(foundVehicle);
+    }
 }

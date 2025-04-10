@@ -24,4 +24,6 @@ public interface VehicleMapper {
     VehiclePostResponse toVehiclePostResponse(Vehicle vehicle);
 
     List<VehicleByClientGetResponse> toVehicleClientGetResponseList(List<Vehicle> VehicleClientGetResponseList);
+
+    VehicleGetResponse toVehicleGetResponse(Vehicle vehicle);
 }
