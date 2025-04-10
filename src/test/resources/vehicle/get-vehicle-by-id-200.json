@@ -1,0 +1,9 @@
+{
+  "vehicleType": "carro",
+  "brand": "Fiat",
+  "model": "Toro",
+  "client": {
+    "name": "Chispirito",
+    "lastName": "Costa"
+  }
+}

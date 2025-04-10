@@ -4,8 +4,10 @@ import com.branches.exception.NotFoundException;
 import com.branches.mapper.VehicleMapper;
 import com.branches.model.Client;
 import com.branches.model.Vehicle;
+import com.branches.model.Vehicle;
 import com.branches.repository.VehicleRepository;
 import com.branches.request.VehiclePostRequest;
+import com.branches.response.VehicleGetResponse;
 import com.branches.response.VehicleByClientGetResponse;
 import com.branches.response.VehiclePostResponse;
 import com.branches.response.VehicleGetResponse;
@@ -22,6 +24,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -59,8 +62,40 @@ class VehicleServiceTest {
     }
 
     @Test
-    @DisplayName("findVehiclesByClientId Returns all client vehicles when successful")
+    @DisplayName("findById returns found vehicle when successful")
     @Order(2)
+    void findById_ReturnsFoundVehicle_WhenSuccessful() {
+        Vehicle expectedResponseRepository = vehicleList.getFirst();
+        Long idToSearch = expectedResponseRepository.getId();
+
+        VehicleGetResponse expectedResponse = vehicleGetResponseList.getFirst();
+
+        BDDMockito.when(repository.findById(idToSearch)).thenReturn(Optional.of(expectedResponseRepository));
+        BDDMockito.when(mapper.toVehicleGetResponse(expectedResponseRepository)).thenReturn(expectedResponse);
+
+        VehicleGetResponse response = service.findById(idToSearch);
+
+        Assertions.assertThat(response)
+                .isNotNull()
+                .isEqualTo(expectedResponse);
+    }
+
+    @Test
+    @DisplayName("findById throws NotFoundException when id is not found")
+    @Order(3)
+    void findById_ThrowsNotFoundException_WhenIdIsNotFound() {
+        Long randomId = 4445511L;
+
+        BDDMockito.when(repository.findById(randomId)).thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> service.findById(randomId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Vehicle not Found");
+    }
+
+    @Test
+    @DisplayName("findVehiclesByClientId Returns all client vehicles when successful")
+    @Order(4)
     void findVehiclesByClientId_ReturnsAllClientVehicles_WhenSuccessful() {
         Client client = ClientUtils.newClientToSave();
         long clientId = client.getId();
@@ -82,7 +117,7 @@ class VehicleServiceTest {
 
     @Test
     @DisplayName("findVehiclesByClientId returns an empty list when client doesn't have vehicles")
-    @Order(3)
+    @Order(5)
     void findVehiclesByClientId_ReturnsEmptyList_WhenClientDoesNotHaveVehicles() {
         Client client = ClientUtils.newClientToSave();
         long clientId = client.getId();
@@ -99,7 +134,7 @@ class VehicleServiceTest {
 
     @Test
     @DisplayName("findVehiclesByClientId throws NotFoundException when client is not found")
-    @Order(4)
+    @Order(6)
     void findVehiclesByClientId_ThrowsNotFoundException_WhenClientIsNotFound() {
         long randomClientId = 1234567L;
 
@@ -112,7 +147,7 @@ class VehicleServiceTest {
 
     @Test
     @DisplayName("save returns saved vehicle when successful")
-    @Order(5)
+    @Order(7)
     void save_ReturnsSavedVehicle_WhenSuccessful() {
         Vehicle vehicleToSave = VehicleUtils.newVehicleToSave();
         VehiclePostRequest vehiclePostRequest = VehicleUtils.newVehiclePostRequest();
@@ -133,7 +168,7 @@ class VehicleServiceTest {
 
     @Test
     @DisplayName("save throws not found exception when given client does not exists")
-    @Order(6)
+    @Order(8)
     void save_ThrowsNotFoundException_WhenGivenClientNotExists() {
         VehiclePostRequest vehiclePostRequest = VehicleUtils.newVehiclePostRequest();
 

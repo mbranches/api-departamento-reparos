@@ -3,6 +3,7 @@ package com.branches.controller;
 import com.branches.exception.NotFoundException;
 import com.branches.request.VehiclePostRequest;
 import com.branches.response.VehicleGetResponse;
+import com.branches.response.VehicleGetResponse;
 import com.branches.service.VehicleService;
 import com.branches.utils.FileUtils;
 import com.branches.utils.VehicleUtils;
@@ -55,6 +56,37 @@ class VehicleControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get(URL))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+    
+    @Test
+    @DisplayName("GET /v1/vehicles/1 returns found vehicle when successful")
+    @Order(4)
+    void findById_ReturnsFoundVehicle_WhenSuccessful() throws Exception {
+        VehicleGetResponse expectedVehicle = vehicleGetResponseList.getFirst();
+        long idToSearch = 1L;
+
+        BDDMockito.when(service.findById(idToSearch)).thenReturn(expectedVehicle);
+        String expectedResponse = fileUtils.readResourceFile("vehicle/get-vehicle-by-id-200.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{id}", idToSearch))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
+    @Test
+    @DisplayName("GET /v1/vehicles/ throws NotFoundException when id is not found")
+    @Order(5)
+    void findById_ThrowsNotFoundException_WhenIdIsNotFound() throws Exception {
+        long randomId = 131222L;
+
+        BDDMockito.when(service.findById(randomId)).thenThrow(new NotFoundException("Vehicle not Found"));
+        String expectedResponse = fileUtils.readResourceFile("vehicle/get-vehicle-by-id-404.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{id}", randomId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
     }
 
