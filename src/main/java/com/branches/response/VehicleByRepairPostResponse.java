@@ -2,9 +2,9 @@ package com.branches.response;
 
 import com.branches.model.VehicleType;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 @Builder
 public class VehicleByRepairPostResponse {
     private VehicleType vehicleType;
