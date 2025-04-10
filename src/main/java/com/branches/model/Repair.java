@@ -25,10 +25,6 @@ public class Repair {
     @ManyToOne
     @JoinColumn(name = "fk_veiculo_reparacao", referencedColumnName = "idveiculo")
     private Vehicle vehicle;
-//    @OneToMany(mappedBy = "repair", cascade = CascadeType.ALL)
-//    private List<RepairPiece> pieces;
-//    @OneToMany(mappedBy = "repair", cascade = CascadeType.ALL)
-//    private List<RepairEmployee> employees;
     @Column(name = "valor_total", columnDefinition = "DECIMAL")
     private double totalValue;
     @Column(name = "data_finalizacao")
