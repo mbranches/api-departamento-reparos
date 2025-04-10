@@ -84,4 +84,11 @@ public class ClientUtils {
 
         return client;
     }
+
+    public static ClientByRepairPostResponse newClientByRepairPostResponse() {
+        return ClientByRepairPostResponse.builder()
+                .name("Chispirito")
+                .lastName("Costa")
+                .build();
+    }
 }

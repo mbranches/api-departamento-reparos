@@ -81,4 +81,14 @@ public class EmployeeUtils {
 
         return employee;
     }
+
+    public static EmployeeByRepairPostResponse newEmployeeByRepairPostResponse() {
+        Category category = CategoryUtils.newCategoryToSave();
+
+        return EmployeeByRepairPostResponse.builder()
+                .name("Chispirito")
+                .lastName("Costa")
+                .category(category)
+                .build();
+    }
 }

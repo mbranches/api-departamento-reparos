@@ -64,4 +64,12 @@ public class VehicleUtils {
 
         return List.of(vehicle1, vehicle2, vehicle3);
     }
+
+    public static VehicleByRepairPostResponse newVehicleByRepairPostResponse() {
+        return VehicleByRepairPostResponse.builder()
+                .vehicleType(VehicleType.caminhao)
+                .brand("Scania")
+                .model("T113")
+                .build();
+    }
 }
