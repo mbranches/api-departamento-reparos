@@ -30,11 +30,14 @@ public class RepairService {
     private final RepairEmployeeService repairEmployeeService;
 
     public RepairPostResponse save(RepairPostRequest postRequest) {
-        List<RepairPiece> repairPiecesToSave = repairPieceMapper.toRepairPieceList(postRequest.getPieces());
-        List<RepairEmployee> repairEmployeesToSave = repairEmployeeMapper.toRepairEmployeeList(postRequest.getEmployees());
-
         Client client = clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId());
         Vehicle vehicle = vehicleService.findByIdOrThrowsNotFoundException(postRequest.getVehicleId());
+
+        List<RepairPieceByRepairPostRequest> piecesRequest = Optional.ofNullable(postRequest.getPieces()).orElse(Collections.emptyList());
+        List<RepairPiece> repairPiecesToSave = repairPieceMapper.toRepairPieceList(piecesRequest);
+
+        List<RepairEmployeeByRepairPostRequest> employeesRequest = Optional.ofNullable(postRequest.getEmployees()).orElse(Collections.emptyList());
+        List<RepairEmployee> repairEmployeesToSave = repairEmployeeMapper.toRepairEmployeeList(employeesRequest);
 
         Repair repairToSave = Repair.builder()
                 .client(client)
