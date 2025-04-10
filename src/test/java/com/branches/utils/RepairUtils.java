@@ -6,6 +6,8 @@ import com.branches.model.Vehicle;
 import com.branches.request.RepairEmployeeByRepairPostRequest;
 import com.branches.request.RepairPieceByRepairPostRequest;
 import com.branches.request.RepairPostRequest;
+import com.branches.response.RepairEmployeeByRepairPostResponse;
+import com.branches.response.RepairPieceByRepairPostResponse;
 import com.branches.response.RepairPostResponse;
 
 import java.time.LocalDate;
@@ -53,7 +55,7 @@ public class RepairUtils {
     public static RepairPostResponse newRepairPostResponse() {
         LocalDate date = LocalDate.of(2025, 2, 12);
 
-        return RepairPostResponse.builder()
+        RepairPostResponse response = RepairPostResponse.builder()
                 .id(4L)
                 .client(ClientUtils.newClientByRepairPostResponse())
                 .vehicle(VehicleUtils.newVehicleByRepairPostResponse())
@@ -61,5 +63,16 @@ public class RepairUtils {
                 .employees(List.of(RepairEmployeeUtils.newRepairEmployeeByRepairPostResponse()))
                 .endDate(date)
                 .build();
+
+        List<RepairPieceByRepairPostResponse> pieces = response.getPieces();
+        double totalPieces = pieces.stream().mapToDouble(repair -> repair.getPiece().getUnitValue() * repair.getQuantity()).sum();
+
+        List<RepairEmployeeByRepairPostResponse> employees = response.getEmployees();
+        double totalEmployees = employees.stream().mapToDouble(repair -> repair.getEmployee().getCategory().getHourlyPrice() * repair.getHoursWorked()).sum();
+
+        double totalValue = totalPieces + totalEmployees;
+        response.setTotalValue(totalValue);
+
+        return response;
     }
 }
