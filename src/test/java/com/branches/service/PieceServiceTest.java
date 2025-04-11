@@ -1,5 +1,6 @@
 package com.branches.service;
 
+import com.branches.exception.BadRequestException;
 import com.branches.exception.NotFoundException;
 import com.branches.mapper.PieceMapper;
 import com.branches.model.Piece;
@@ -141,5 +142,38 @@ class PieceServiceTest {
         Assertions.assertThat(response)
                 .isNotNull()
                 .isEqualTo(expectedResponse);
+    }
+
+    @Test
+    @DisplayName("removesStock returns the piece with the removed stock when successful")
+    @Order(7)
+    void removesStock_ReturnsPieceWithRemovedStock_WhenSuccessful() {
+        Piece pieceToRemoveStock = pieceList.getFirst();
+        int quantityToRemove = 5;
+
+        Piece expectedResponse = pieceList.getFirst();
+        expectedResponse.setStock(expectedResponse.getStock() - quantityToRemove);
+
+        BDDMockito.when(repository.save(expectedResponse)).thenReturn(expectedResponse);
+
+        Piece response = service.removesStock(pieceToRemoveStock, quantityToRemove);
+
+        Assertions.assertThat(response)
+                .isNotNull()
+                .isEqualTo(expectedResponse);
+    }
+
+    @Test
+    @DisplayName("removeStock throws BadRequestException when quantity is greater than stock")
+    @Order(7)
+    void removesStock_ThrowsBadRequestException_WhenQuantityIsGreaterThanStock() {
+        Piece pieceToRemoveStock = pieceList.getFirst();
+        int quantityToRemove = 555555;
+
+        Piece expectedResponse = pieceList.getFirst();
+        expectedResponse.setStock(expectedResponse.getStock() - quantityToRemove);
+
+        Assertions.assertThatThrownBy(() -> service.removesStock(pieceToRemoveStock, quantityToRemove))
+                .isInstanceOf(BadRequestException.class);
     }
 }
