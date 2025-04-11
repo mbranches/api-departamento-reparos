@@ -13,6 +13,7 @@ import com.branches.response.RepairPostResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +29,12 @@ public class RepairService {
     private final VehicleService vehicleService;
     private final RepairPieceService repairPieceService;
     private final RepairEmployeeService repairEmployeeService;
+
+    public List<RepairGetResponse> findAll(LocalDate dateRepair) {
+        List<Repair> response = dateRepair == null ? repository.findAll() : repository.findByEndDateGreaterThanEqual(dateRepair);
+
+        return mapper.toRepairGetResponseList(response);
+    }
 
     public RepairPostResponse save(RepairPostRequest postRequest) {
         Client client = clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId());
@@ -67,11 +74,5 @@ public class RepairService {
         double totalValuePieces = pieces.stream().mapToDouble(RepairPiece::getTotalValue).sum();
 
         return totalValueEmployees + totalValuePieces;
-    }
-
-    public List<RepairGetResponse> findAll() {
-        List<Repair> response = repository.findAll();
-
-        return mapper.toRepairGetResponseList(response);
     }
 }

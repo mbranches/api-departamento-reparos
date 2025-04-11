@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -18,8 +19,8 @@ public class RepairController {
     private final RepairService service;
 
     @GetMapping
-    public ResponseEntity<List<RepairGetResponse>> findAll() {
-        List<RepairGetResponse> response = service.findAll();
+    public ResponseEntity<List<RepairGetResponse>> findAll(@RequestParam(required = false) LocalDate dateRepair) {
+        List<RepairGetResponse> response = service.findAll(dateRepair);
 
         return ResponseEntity.ok(response);
     }
