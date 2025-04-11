@@ -8,6 +8,7 @@ import com.branches.repository.RepairRepository;
 import com.branches.request.RepairEmployeeByRepairPostRequest;
 import com.branches.request.RepairPieceByRepairPostRequest;
 import com.branches.request.RepairPostRequest;
+import com.branches.response.RepairGetResponse;
 import com.branches.response.RepairPostResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -66,5 +67,11 @@ public class RepairService {
         double totalValuePieces = pieces.stream().mapToDouble(RepairPiece::getTotalValue).sum();
 
         return totalValueEmployees + totalValuePieces;
+    }
+
+    public List<RepairGetResponse> findAll() {
+        List<Repair> response = repository.findAll();
+
+        return mapper.toRepairGetResponseList(response);
     }
 }
