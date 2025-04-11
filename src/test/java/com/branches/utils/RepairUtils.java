@@ -1,6 +1,7 @@
 package com.branches.utils;
 
 import com.branches.model.Client;
+import com.branches.model.Piece;
 import com.branches.model.Repair;
 import com.branches.model.Vehicle;
 import com.branches.request.RepairEmployeeByRepairPostRequest;
@@ -65,11 +66,15 @@ public class RepairUtils {
     public static RepairPostResponse newRepairPostResponse() {
         LocalDate date = LocalDate.of(2025, 2, 12);
 
+        RepairPieceByRepairPostResponse repairPieceByRepairPostResponse = RepairPieceUtils.newRepairPieceByRepairPostResponse();
+        Piece piece = repairPieceByRepairPostResponse.getPiece();
+        piece.setStock(piece.getStock() - repairPieceByRepairPostResponse.getQuantity());
+
         RepairPostResponse response = RepairPostResponse.builder()
                 .id(4L)
                 .client(ClientUtils.newClientByRepairPostResponse())
                 .vehicle(VehicleUtils.newVehicleByRepairPostResponse())
-                .pieces(List.of(RepairPieceUtils.newRepairPieceByRepairPostResponse()))
+                .pieces(List.of(repairPieceByRepairPostResponse))
                 .employees(List.of(RepairEmployeeUtils.newRepairEmployeeByRepairPostResponse()))
                 .endDate(date)
                 .build();
