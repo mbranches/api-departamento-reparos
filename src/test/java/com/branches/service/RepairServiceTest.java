@@ -5,6 +5,7 @@ import com.branches.exception.NotFoundException;
 import com.branches.mapper.RepairEmployeeMapper;
 import com.branches.mapper.RepairMapper;
 import com.branches.mapper.RepairPieceMapper;
+import com.branches.model.Piece;
 import com.branches.model.Repair;
 import com.branches.model.RepairEmployee;
 import com.branches.model.RepairPiece;
@@ -76,6 +77,10 @@ class RepairServiceTest {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
         RepairPiece newRepairPiece = RepairPieceUtils.newRepairPiece();
+        RepairPiece savedRepairPiece = RepairPieceUtils.newRepairPiece();
+        Piece piece = savedRepairPiece.getPiece();
+        piece.setStock(piece.getStock() - savedRepairPiece.getQuantity());
+
         RepairEmployee newRepairEmployee = RepairEmployeeUtils.newRepairEmployee();
         Repair newRepair = RepairUtils.newRepair();
 
@@ -84,9 +89,9 @@ class RepairServiceTest {
         BDDMockito.when(repairPieceMapper.toRepairPieceList(postRequest.getPieces())).thenReturn(List.of(newRepairPiece));
         BDDMockito.when(repairEmployeeMapper.toRepairEmployeeList(postRequest.getEmployees())).thenReturn(List.of(newRepairEmployee));
         BDDMockito.when(repository.save(ArgumentMatchers.any(Repair.class))).thenReturn(newRepair);
-        BDDMockito.when(repairPieceService.saveAll(ArgumentMatchers.anyList())).thenReturn(List.of(newRepairPiece));
+        BDDMockito.when(repairPieceService.saveAll(ArgumentMatchers.anyList())).thenReturn(List.of(savedRepairPiece));
         BDDMockito.when(repairEmployeeService.saveAll(ArgumentMatchers.anyList())).thenReturn(List.of(newRepairEmployee));
-        BDDMockito.when(mapper.toRepairPostResponse(newRepair, List.of(newRepairPiece), List.of(newRepairEmployee))).thenReturn(RepairUtils.newRepairPostResponse());
+        BDDMockito.when(mapper.toRepairPostResponse(newRepair, List.of(savedRepairPiece), List.of(newRepairEmployee))).thenReturn(RepairUtils.newRepairPostResponse());
 
         RepairPostResponse expectedResponse = RepairUtils.newRepairPostResponse();
 
@@ -154,5 +159,28 @@ class RepairServiceTest {
         Assertions.assertThatThrownBy(() -> service.save(postRequest))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessageContaining("Error saving employees");
+    }
+
+    @Test
+    @DisplayName("save throws BadRequestException when quantity is greater than piece stock")
+    @Order(7)
+    void save_ThrowsBadRequestException_WhenQuantityIsGreaterThanPieceStock() {
+        RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
+
+        RepairPiece newRepairPiece = RepairPieceUtils.newRepairPiece();
+
+        RepairEmployee newRepairEmployee = RepairEmployeeUtils.newRepairEmployee();
+        Repair newRepair = RepairUtils.newRepair();
+
+        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId())).thenReturn(ClientUtils.newClientToSave());
+        BDDMockito.when(vehicleService.findByIdOrThrowsNotFoundException(postRequest.getVehicleId())).thenReturn(VehicleUtils.newVehicleToSave());
+        BDDMockito.when(repairPieceMapper.toRepairPieceList(postRequest.getPieces())).thenReturn(List.of(newRepairPiece));
+        BDDMockito.when(repairEmployeeMapper.toRepairEmployeeList(postRequest.getEmployees())).thenReturn(List.of(newRepairEmployee));
+        BDDMockito.when(repository.save(ArgumentMatchers.any(Repair.class))).thenReturn(newRepair);
+        BDDMockito.when(repairPieceService.saveAll(ArgumentMatchers.anyList())).thenThrow(BadRequestException.class);
+
+
+        Assertions.assertThatThrownBy(() -> service.save(postRequest))
+                .isInstanceOf(BadRequestException.class);
     }
 }
