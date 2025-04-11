@@ -10,6 +10,7 @@ import com.branches.model.RepairEmployee;
 import com.branches.model.RepairPiece;
 import com.branches.repository.RepairRepository;
 import com.branches.request.RepairPostRequest;
+import com.branches.response.RepairGetResponse;
 import com.branches.response.RepairPostResponse;
 import com.branches.utils.*;
 import org.assertj.core.api.Assertions;
@@ -45,15 +46,32 @@ class RepairServiceTest {
     @Mock
     private RepairEmployeeService repairEmployeeService;
     private List<Repair> repairList;
+    private List<RepairGetResponse> repairGetResponseList;
 
     @BeforeEach
     void init() {
         repairList = RepairUtils.newRepairList();
+        repairGetResponseList = RepairUtils.newRepairGetResponseList();
+    }
+
+    @Test
+    @DisplayName("findAll returns all repairs when successful")
+    @Order(1)
+    void findAll_ReturnsAllRepairs_WhenSuccessful() {
+        BDDMockito.when(repository.findAll()).thenReturn(repairList);
+        BDDMockito.when(mapper.toRepairGetResponseList(repairList)).thenReturn(repairGetResponseList);
+
+        List<RepairGetResponse> response = service.findAll();
+
+        Assertions.assertThat(response)
+                .isNotNull()
+                .isNotEmpty()
+                .containsExactlyElementsOf(repairGetResponseList);
     }
 
     @Test
     @DisplayName("save returns saved repair when successful")
-    @Order(1)
+    @Order(2)
     void save_ReturnsSavedRepair_WhenSuccessful() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
@@ -81,7 +99,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save throws NotFoundException when client is not found")
-    @Order(2)
+    @Order(3)
     void save_ThrowsNotFoundException_WhenClientIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
@@ -94,7 +112,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save throws NotFoundException when vehicle is not found")
-    @Order(3)
+    @Order(4)
     void save_ThrowsNotFoundException_WhenVehicleIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
@@ -108,7 +126,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save throws BadRequestException when some piece is not found")
-    @Order(4)
+    @Order(5)
     void save_ThrowsBadRequestException_WhenSomePieceIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
@@ -124,7 +142,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save throws BadRequestException when some employee is not found")
-    @Order(5)
+    @Order(6)
     void save_ThrowsBadRequestException_WhenSomeEmployeeIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 

@@ -75,6 +75,13 @@ public class ClientUtils {
                 .build();
     }
 
+    public static ClientByRepairGetResponse newClientByRepairGetResponse() {
+        return ClientByRepairGetResponse.builder()
+                .name("Chispirito")
+                .lastName("Costa")
+                .build();
+    }
+
     public static ClientPostResponse newClientPostResponse() {
         Address address = AddressUtils.newAddressToSave();
 

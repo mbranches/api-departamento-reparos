@@ -72,4 +72,12 @@ public class VehicleUtils {
                 .model("T113")
                 .build();
     }
+
+    public static VehicleByRepairGetResponse newVehicleByRepairGetResponse() {
+        return VehicleByRepairGetResponse.builder()
+                .vehicleType(VehicleType.caminhao)
+                .brand("Scania")
+                .model("T113")
+                .build();
+    }
 }

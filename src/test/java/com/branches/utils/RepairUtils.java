@@ -6,9 +6,7 @@ import com.branches.model.Vehicle;
 import com.branches.request.RepairEmployeeByRepairPostRequest;
 import com.branches.request.RepairPieceByRepairPostRequest;
 import com.branches.request.RepairPostRequest;
-import com.branches.response.RepairEmployeeByRepairPostResponse;
-import com.branches.response.RepairPieceByRepairPostResponse;
-import com.branches.response.RepairPostResponse;
+import com.branches.response.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -23,6 +21,18 @@ public class RepairUtils {
         Repair repair1 = Repair.builder().id(1L).client(client).vehicle(vehicle).totalValue(1000).endDate(date).build();
         Repair repair2 = Repair.builder().id(2L).client(client).vehicle(vehicle).totalValue(1000).endDate(date).build();
         Repair repair3 = Repair.builder().id(3L).client(client).vehicle(vehicle).totalValue(1000).endDate(date).build();
+
+        return new ArrayList<>(List.of(repair1, repair2, repair3));
+    }
+
+    public static List<RepairGetResponse> newRepairGetResponseList() {
+        ClientByRepairGetResponse client = ClientUtils.newClientByRepairGetResponse();
+        VehicleByRepairGetResponse vehicle = VehicleUtils.newVehicleByRepairGetResponse();
+        LocalDate date = LocalDate.of(2025, 2, 12);
+
+        RepairGetResponse repair1 = RepairGetResponse.builder().client(client).vehicle(vehicle).totalValue(1000).endDate(date).build();
+        RepairGetResponse repair2 = RepairGetResponse.builder().client(client).vehicle(vehicle).totalValue(1000).endDate(date).build();
+        RepairGetResponse repair3 = RepairGetResponse.builder().client(client).vehicle(vehicle).totalValue(1000).endDate(date).build();
 
         return new ArrayList<>(List.of(repair1, repair2, repair3));
     }
