@@ -2,10 +2,15 @@ package com.branches.controller;
 
 import com.branches.exception.BadRequestException;
 import com.branches.exception.NotFoundException;
+import com.branches.model.Piece;
+import com.branches.model.Repair;
+import com.branches.model.RepairEmployee;
+import com.branches.model.RepairPiece;
 import com.branches.request.RepairPostRequest;
 import com.branches.response.RepairGetResponse;
 import com.branches.service.RepairService;
 import com.branches.utils.*;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
@@ -136,6 +141,28 @@ class RepairControllerTest {
         String expectedResponse = fileUtils.readResourceFile("repair/post-response-repair-invalid-employee-400.json");
 
         BDDMockito.when(service.save(ArgumentMatchers.any(RepairPostRequest.class))).thenThrow(new BadRequestException("Error saving employees"));
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.post(URL)
+                                .content(request)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
+    @Test
+    @DisplayName("POST /v1/repairs throws BadRequestException when quantity is greater than piece stock")
+    @Order(7)
+    void save_ThrowsBadRequestException_WhenQuantityIsGreaterThanPieceStock() throws Exception {
+        Piece pieceToSave = PieceUtils.newPieceToSave();
+
+        String request = fileUtils.readResourceFile("repair/post-request-repair-invalid-piece-quantity-200.json");
+        String expectedResponse = fileUtils.readResourceFile("repair/post-response-repair-invalid-piece-quantity-400.json");
+
+        BDDMockito.when(service.save(ArgumentMatchers.any(RepairPostRequest.class))).thenThrow(new BadRequestException("'" + pieceToSave.getName() + "' has insufficient stock." +
+                " Available: " + pieceToSave.getStock() + ", Requested: " + 5000));
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post(URL)
