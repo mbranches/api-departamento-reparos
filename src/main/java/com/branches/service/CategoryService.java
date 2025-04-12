@@ -42,4 +42,9 @@ public class CategoryService {
 
         return mapper.toCategoryPostResponse(categorySaved);
     }
+
+    public void deleteById(Long id) {
+        Category categoryToDelete = findByIdOrThrowsNotFoundException(id);
+        repository.delete(categoryToDelete);
+    }
 }
