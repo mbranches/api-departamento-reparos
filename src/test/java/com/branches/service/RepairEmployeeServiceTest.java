@@ -45,7 +45,7 @@ class RepairEmployeeServiceTest {
     @Test
     @DisplayName("findAllByRepair returns all repair employees from given repair when successful")
     @Order(2)
-    void findAllByRepair_ReturnsAllRepairEmployeesFromGiveRepair_WhenSuccessful() {
+    void findAllByRepair_ReturnsAllRepairEmployeesFromGivenRepair_WhenSuccessful() {
         Repair repairToSearch = RepairUtils.newRepairList().getFirst();
         List<RepairEmployee> expectedResponse = List.of(RepairEmployeeUtils.newRepairEmployeeSaved());
 
@@ -62,7 +62,7 @@ class RepairEmployeeServiceTest {
     @Test
     @DisplayName("findAllByRepair returns an empty list when when given repair contain no employees")
     @Order(3)
-    void findAllByRepair_ReturnsEmptyList_WhenGivenRepairDoesNotContainEmployees() {
+    void findAllByRepair_ReturnsEmptyList_WhenGivenRepairContainNoEmployees() {
         Repair repairToSearch = RepairUtils.newRepairList().getLast();
 
         BDDMockito.when(repository.findAllByRepair(repairToSearch)).thenReturn(Collections.emptyList());
