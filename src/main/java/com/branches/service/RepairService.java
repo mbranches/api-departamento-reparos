@@ -31,6 +31,7 @@ public class RepairService {
     private final VehicleService vehicleService;
     private final RepairPieceService repairPieceService;
     private final RepairEmployeeService repairEmployeeService;
+    private final EmployeeService employeeService;
 
     public List<RepairGetResponse> findAll(LocalDate dateRepair) {
         List<Repair> response = dateRepair == null ? repository.findAll() : repository.findByEndDateGreaterThanEqual(dateRepair);
@@ -110,5 +111,12 @@ public class RepairService {
         Repair repairToDelete = findByIdOrThrowsNotFoundException(id);
 
         repository.delete(repairToDelete);
+    }
+
+    public void removesRepairEmployeeById(Long repairId, Long employeeId) {
+        Repair repair = findByIdOrThrowsNotFoundException(repairId);
+        Employee employee = employeeService.findByIdOrNotFoundException(employeeId);
+
+        repairEmployeeService.deleteByRepairAndEmployee(repair, employee);
     }
 }

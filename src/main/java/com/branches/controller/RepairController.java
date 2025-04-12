@@ -52,4 +52,11 @@ public class RepairController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/{repairId}/employee/{employeeId}")
+    public ResponseEntity<Void> removesRepairEmployeeById(@PathVariable Long repairId, @PathVariable Long employeeId) {
+        service.removesRepairEmployeeById(repairId, employeeId);
+
+        return ResponseEntity.noContent().build();
+    }
 }
