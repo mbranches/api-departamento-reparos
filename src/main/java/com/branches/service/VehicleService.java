@@ -54,4 +54,10 @@ public class VehicleService {
 
         return mapper.toVehicleGetResponse(foundVehicle);
     }
+
+    public void deleteById(Long id) {
+        Vehicle vehicleToDelete = findByIdOrThrowsNotFoundException(id);
+
+        repository.delete(vehicleToDelete);
+    }
 }
