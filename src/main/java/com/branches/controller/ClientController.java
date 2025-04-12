@@ -3,8 +3,10 @@ package com.branches.controller;
 import com.branches.request.ClientPostRequest;
 import com.branches.response.ClientGetResponse;
 import com.branches.response.ClientPostResponse;
+import com.branches.response.RepairGetResponse;
 import com.branches.response.VehicleByClientGetResponse;
 import com.branches.service.ClientService;
+import com.branches.service.RepairService;
 import com.branches.service.VehicleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import java.util.List;
 public class ClientController {
     private final ClientService service;
     private final VehicleService vehicleService;
+    private final RepairService repairService;
 
     @GetMapping
     public ResponseEntity<List<ClientGetResponse>> findAll(@RequestParam(required = false) String firstName) {
@@ -38,6 +41,13 @@ public class ClientController {
     @GetMapping("/{clientId}/vehicles")
     public ResponseEntity<List<VehicleByClientGetResponse>> findVehiclesByClientId(@PathVariable Long clientId) {
         List<VehicleByClientGetResponse> response = vehicleService.findByClientId(clientId);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{clientId}/repairs")
+    public ResponseEntity<List<RepairGetResponse>> findRepairsByClientId(@PathVariable Long clientId) {
+        List<RepairGetResponse> response = repairService.findAllByClientId(clientId);
 
         return ResponseEntity.ok(response);
     }

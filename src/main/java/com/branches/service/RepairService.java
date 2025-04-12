@@ -75,4 +75,12 @@ public class RepairService {
 
         return totalValueEmployees + totalValuePieces;
     }
+
+    public List<RepairGetResponse> findAllByClientId(Long clientId) {
+        Client client = clientService.findByIdOrThrowsNotFoundException(clientId);
+
+        List<Repair> response = repository.findAllByClient(client);
+
+        return mapper.toRepairGetResponseList(response);
+    }
 }
