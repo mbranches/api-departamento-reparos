@@ -1,5 +1,6 @@
 package com.branches.service;
 
+import com.branches.exception.NotFoundException;
 import com.branches.mapper.RepairEmployeeMapper;
 import com.branches.mapper.RepairMapper;
 import com.branches.mapper.RepairPieceMapper;
@@ -34,6 +35,17 @@ public class RepairService {
         List<Repair> response = dateRepair == null ? repository.findAll() : repository.findByEndDateGreaterThanEqual(dateRepair);
 
         return mapper.toRepairGetResponseList(response);
+    }
+
+    public RepairGetResponse findById(Long id) {
+        Repair foundRepair = findByIdOrThrowsNotFoundException(id);
+
+        return mapper.totoRepairGetResponse(foundRepair);
+    }
+
+    public Repair findByIdOrThrowsNotFoundException(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Repair not Found"));
     }
 
     public RepairPostResponse save(RepairPostRequest postRequest) {

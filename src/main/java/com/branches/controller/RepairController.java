@@ -26,6 +26,13 @@ public class RepairController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<RepairGetResponse> findById(@PathVariable Long id) {
+        RepairGetResponse response = service.findById(id);
+
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping
     public ResponseEntity<RepairPostResponse> save(@Valid @RequestBody RepairPostRequest postRequest) {
         RepairPostResponse response = service.save(postRequest);
