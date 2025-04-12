@@ -178,4 +178,31 @@ class VehicleServiceTest {
                 .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("Client not Found");
     }
+
+    @Test
+    @DisplayName("deleteById removes vehicle when successful")
+    @Order(9)
+    void deleteById_RemovesVehicle_WhenSuccessful() {
+        Vehicle vehicleToDelete = vehicleList.getFirst();
+        Long idToDelete = vehicleToDelete.getId();
+
+        BDDMockito.when(repository.findById(idToDelete)).thenReturn(Optional.of(vehicleToDelete));
+        BDDMockito.doNothing().when(repository).delete(ArgumentMatchers.any(Vehicle.class));
+
+        Assertions.assertThatCode(() -> service.deleteById(idToDelete))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("deleteById throws NotFoundException when given id is not found")
+    @Order(10)
+    void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() {
+        Long randomId = 15512366L;
+
+        BDDMockito.when(repository.findById(randomId)).thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> service.deleteById(randomId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Vehicle not Found");
+    }
 }

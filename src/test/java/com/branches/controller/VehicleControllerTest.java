@@ -1,8 +1,8 @@
 package com.branches.controller;
 
 import com.branches.exception.NotFoundException;
+import com.branches.model.Vehicle;
 import com.branches.request.VehiclePostRequest;
-import com.branches.response.VehicleGetResponse;
 import com.branches.response.VehicleGetResponse;
 import com.branches.service.VehicleService;
 import com.branches.utils.FileUtils;
@@ -162,5 +162,35 @@ class VehicleControllerTest {
                 Arguments.of("post-request-vehicle-empty-fields-400.json", expectedErrors),
                 Arguments.of("post-request-vehicle-blank-fields-400.json", expectedErrors)
         );
+    }
+
+    @Test
+    @DisplayName("DELETE /v1/vehicles/1 removes vehicle when successful")
+    @Order(5)
+    void deleteById_RemovesVehicle_WhenSuccessful() throws Exception {
+        Vehicle vehicleToDelete = VehicleUtils.newVehicleList().getFirst();
+        Long idToDelete = vehicleToDelete.getId();
+
+        BDDMockito.doNothing().when(service).deleteById(idToDelete);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{id}", idToDelete))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("DELETE /v1/vehicles/25256595 throws NotFoundException when given id is not found")
+    @Order(6)
+    void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() throws Exception {
+        Long randomId = 25256595L;
+
+        BDDMockito.doThrow(new NotFoundException("Vehicle not Found")).when(service).deleteById(randomId);
+
+        String expectedResponse = fileUtils.readResourceFile("vehicle/delete-vehicle-by-id-404.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{id}", randomId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
     }
 }
