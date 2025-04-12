@@ -86,7 +86,9 @@ CREATE TABLE reparacao (
 
 ALTER TABLE reparacao 
 ADD CONSTRAINT fk_cliente_reparacao
-FOREIGN KEY(fk_cliente_reparacao) REFERENCES cliente(idcliente);
+FOREIGN KEY(fk_cliente_reparacao) REFERENCES cliente(idcliente)
+ON DELETE SET NULL;
+
 
 ALTER TABLE reparacao 
 ADD CONSTRAINT fk_veiculo_reparacao
