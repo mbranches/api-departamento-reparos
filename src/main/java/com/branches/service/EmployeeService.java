@@ -64,4 +64,10 @@ public class EmployeeService {
         return repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Employee not Found"));
     }
+
+    public void deleteById(Long id) {
+        Employee exceptionToDelete = findByIdOrNotFoundException(id);
+
+        repository.delete(exceptionToDelete);
+    }
 }

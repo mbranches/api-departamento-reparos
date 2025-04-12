@@ -30,6 +30,6 @@ public class Employee {
     @JoinColumn(name = "fk_endereco_funcionario", referencedColumnName = "idendereco")
     @JsonManagedReference
     private Address address;
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     private List<Phone> phones;
 }
