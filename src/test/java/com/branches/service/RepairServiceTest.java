@@ -180,12 +180,11 @@ class RepairServiceTest {
     @DisplayName("findAllByRepairId throws NotFoundException when given id is not found")
     @Order(8)
     void findAllByRepairId_ThrowsNotFoundException_WhenGivenIdIsNotFound() {
-        Repair repair = repairList.getLast();
-        Long idToSearch = repair.getId();
+        Long randomId = 121123L;
 
-        BDDMockito.when(repository.findById(idToSearch)).thenReturn(Optional.empty());
+        BDDMockito.when(repository.findById(randomId)).thenReturn(Optional.empty());
 
-        Assertions.assertThatThrownBy(() -> service.findEmployeesByRepairId(idToSearch))
+        Assertions.assertThatThrownBy(() -> service.findEmployeesByRepairId(randomId))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("Repair not Found");
     }
