@@ -40,7 +40,7 @@ public class RepairService {
     public RepairGetResponse findById(Long id) {
         Repair foundRepair = findByIdOrThrowsNotFoundException(id);
 
-        return mapper.totoRepairGetResponse(foundRepair);
+        return mapper.toRepairGetResponse(foundRepair);
     }
 
     public Repair findByIdOrThrowsNotFoundException(Long id) {

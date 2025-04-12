@@ -23,6 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -103,8 +104,40 @@ class RepairServiceTest {
     }
 
     @Test
-    @DisplayName("findAllByClientId returns all client vehicles when successful")
+    @DisplayName("findById returns found repair when successful")
     @Order(4)
+    void findById_ReturnsFoundRepair_WhenSuccessful() {
+        Repair expectedResponseRepository = repairList.getFirst();
+        Long idToSearch = expectedResponseRepository.getId();
+
+        RepairGetResponse expectedResponse = repairGetResponseList.getFirst();
+
+        BDDMockito.when(repository.findById(idToSearch)).thenReturn(Optional.of(expectedResponseRepository));
+        BDDMockito.when(mapper.toRepairGetResponse(expectedResponseRepository)).thenReturn(expectedResponse);
+
+        RepairGetResponse response = service.findById(idToSearch);
+
+        Assertions.assertThat(response)
+                .isNotNull()
+                .isEqualTo(expectedResponse);
+    }
+
+    @Test
+    @DisplayName("findById throws NotFoundException when id is not found")
+    @Order(5)
+    void findById_ThrowsNotFoundException_WhenIdIsNotFound() {
+        Long randomId = 4445511L;
+
+        BDDMockito.when(repository.findById(randomId)).thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> service.findById(randomId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Repair not Found");
+    }
+
+    @Test
+    @DisplayName("findAllByClientId returns all client vehicles when successful")
+    @Order(6)
     void findAllByClientId_ReturnsAllClientRepairs_WhenSuccessful() {
         Client client = repairList.getFirst().getClient();
         Long clientId = client.getId();
@@ -123,7 +156,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("findAllByClientId returns an empty list when client doesn't have repairs")
-    @Order(5)
+    @Order(7)
     void findAllByClientId_ReturnsEmptyList_WhenClientDoesNotHaveRepair() {
         Client client = ClientUtils.newClientList().getLast();
         Long clientId = client.getId();
@@ -141,7 +174,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("findAllByClientId throws NotFoundException when client is not found")
-    @Order(6)
+    @Order(8)
     void findAllByClientId_ThrowsNotFoundException_WhenClientIsNotFound() {
         Long randomId = 1515151L;
 
@@ -154,7 +187,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save returns saved repair when successful")
-    @Order(7)
+    @Order(9)
     void save_ReturnsSavedRepair_WhenSuccessful() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
@@ -186,7 +219,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save throws NotFoundException when client is not found")
-    @Order(8)
+    @Order(10)
     void save_ThrowsNotFoundException_WhenClientIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
@@ -199,7 +232,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save throws NotFoundException when vehicle is not found")
-    @Order(9)
+    @Order(11)
     void save_ThrowsNotFoundException_WhenVehicleIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
@@ -213,7 +246,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save throws BadRequestException when some piece is not found")
-    @Order(10)
+    @Order(12)
     void save_ThrowsBadRequestException_WhenSomePieceIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
@@ -229,7 +262,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save throws BadRequestException when some employee is not found")
-    @Order(11)
+    @Order(13)
     void save_ThrowsBadRequestException_WhenSomeEmployeeIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
@@ -245,7 +278,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save throws BadRequestException when quantity is greater than piece stock")
-    @Order(12)
+    @Order(14)
     void save_ThrowsBadRequestException_WhenQuantityIsGreaterThanPieceStock() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 

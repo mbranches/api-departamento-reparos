@@ -103,8 +103,39 @@ class RepairControllerTest {
     }
 
     @Test
-    @DisplayName("POST /v1/repairs returns saved repair when successful")
+    @DisplayName("GET /v1/repairs/1 returns found repair when successful")
     @Order(4)
+    void findById_ReturnsFoundRepair_WhenSuccessful() throws Exception {
+        RepairGetResponse expectedRepair = repairGetResponseList.getFirst();
+        long idToSearch = 1L;
+
+        BDDMockito.when(service.findById(idToSearch)).thenReturn(expectedRepair);
+        String expectedResponse = fileUtils.readResourceFile("repair/get-repair-by-id-200.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{id}", idToSearch))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
+    @Test
+    @DisplayName("GET /v1/repairs/131222 throws NotFoundException when id is not found")
+    @Order(5)
+    void findById_ThrowsNotFoundException_WhenIdIsNotFound() throws Exception {
+        long randomId = 131222L;
+
+        BDDMockito.when(service.findById(randomId)).thenThrow(new NotFoundException("Repair not Found"));
+        String expectedResponse = fileUtils.readResourceFile("repair/get-repair-by-id-404.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{id}", randomId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
+    @Test
+    @DisplayName("POST /v1/repairs returns saved repair when successful")
+    @Order(6)
     void save_ReturnsSavedRepair_WhenSuccessful() throws Exception {
         String request = fileUtils.readResourceFile("repair/post-request-repair-200.json");
         String expectedResponse = fileUtils.readResourceFile("repair/post-response-repair-201.json");
@@ -123,7 +154,7 @@ class RepairControllerTest {
 
     @Test
     @DisplayName("POST /v1/repairs throws NotFoundException when client is not found")
-    @Order(5)
+    @Order(7)
     void save_ThrowsNotFoundException_WhenClientIsNotFound() throws Exception {
         String request = fileUtils.readResourceFile("repair/post-request-repair-invalid-client-200.json");
         String expectedResponse = fileUtils.readResourceFile("repair/post-response-repair-invalid-client-404.json");
@@ -142,7 +173,7 @@ class RepairControllerTest {
 
     @Test
     @DisplayName("POST /v1/repairs throws NotFoundException when vehicle is not found")
-    @Order(6)
+    @Order(8)
     void save_ThrowsNotFoundException_WhenVehicleIsNotFound() throws Exception {
         String request = fileUtils.readResourceFile("repair/post-request-repair-invalid-vehicle-200.json");
         String expectedResponse = fileUtils.readResourceFile("repair/post-response-repair-invalid-vehicle-404.json");
@@ -161,7 +192,7 @@ class RepairControllerTest {
 
     @Test
     @DisplayName("POST /v1/repairs throws BadRequestException when some piece is not found")
-    @Order(7)
+    @Order(9)
     void save_ThrowsBadRequestException_WhenSomePieceIsNotFound() throws Exception {
         String request = fileUtils.readResourceFile("repair/post-request-repair-invalid-piece-200.json");
         String expectedResponse = fileUtils.readResourceFile("repair/post-response-repair-invalid-piece-400.json");
@@ -180,7 +211,7 @@ class RepairControllerTest {
 
     @Test
     @DisplayName("POST /v1/repairs throws BadRequestException when some employee is not found")
-    @Order(8)
+    @Order(10)
     void save_ThrowsBadRequestException_WhenSomeEmployeeIsNotFound() throws Exception {
         String request = fileUtils.readResourceFile("repair/post-request-repair-invalid-employee-200.json");
         String expectedResponse = fileUtils.readResourceFile("repair/post-response-repair-invalid-employee-400.json");
@@ -199,7 +230,7 @@ class RepairControllerTest {
 
     @Test
     @DisplayName("POST /v1/repairs throws BadRequestException when quantity is greater than piece stock")
-    @Order(9)
+    @Order(11)
     void save_ThrowsBadRequestException_WhenQuantityIsGreaterThanPieceStock() throws Exception {
         Piece pieceToSave = PieceUtils.newPieceToSave();
 
@@ -222,7 +253,7 @@ class RepairControllerTest {
     @ParameterizedTest
     @MethodSource("postRepairBadRequestSource")
     @DisplayName("POST /v1/repairs return BadRequest when fields are invalid")
-    @Order(10)
+    @Order(12)
     void save_ReturnsBadRequest_WhenFieldAreInvalid(String fileName, List<String> expectedErrors) throws Exception {
         String request = fileUtils.readResourceFile("repair/%s".formatted(fileName));
 
