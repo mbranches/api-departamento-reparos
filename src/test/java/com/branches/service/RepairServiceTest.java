@@ -5,10 +5,7 @@ import com.branches.exception.NotFoundException;
 import com.branches.mapper.RepairEmployeeMapper;
 import com.branches.mapper.RepairMapper;
 import com.branches.mapper.RepairPieceMapper;
-import com.branches.model.Piece;
-import com.branches.model.Repair;
-import com.branches.model.RepairEmployee;
-import com.branches.model.RepairPiece;
+import com.branches.model.*;
 import com.branches.repository.RepairRepository;
 import com.branches.request.RepairPostRequest;
 import com.branches.response.RepairGetResponse;
@@ -106,8 +103,58 @@ class RepairServiceTest {
     }
 
     @Test
-    @DisplayName("save returns saved repair when successful")
+    @DisplayName("findAllByClientId returns all client vehicles when successful")
     @Order(4)
+    void findAllByClientId_ReturnsAllClientRepairs_WhenSuccessful() {
+        Client client = repairList.getFirst().getClient();
+        Long clientId = client.getId();
+
+        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(clientId)).thenReturn(client);
+        BDDMockito.when(repository.findAllByClient(client)).thenReturn(repairList);
+        BDDMockito.when(mapper.toRepairGetResponseList(repairList)).thenReturn(repairGetResponseList);
+
+        List<RepairGetResponse> response = service.findAllByClientId(clientId);
+
+        Assertions.assertThat(response)
+                .isNotNull()
+                .isNotEmpty()
+                .containsExactlyElementsOf(repairGetResponseList);
+    }
+
+    @Test
+    @DisplayName("findAllByClientId returns an empty list when client doesn't have repairs")
+    @Order(5)
+    void findAllByClientId_ReturnsEmptyList_WhenClientDoesNotHaveRepair() {
+        Client client = ClientUtils.newClientList().getLast();
+        Long clientId = client.getId();
+
+        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(clientId)).thenReturn(client);
+        BDDMockito.when(repository.findAllByClient(client)).thenReturn(Collections.emptyList());
+        BDDMockito.when(mapper.toRepairGetResponseList(Collections.emptyList())).thenReturn(Collections.emptyList());
+
+        List<RepairGetResponse> response = service.findAllByClientId(clientId);
+
+        Assertions.assertThat(response)
+                .isNotNull()
+                .isEmpty();
+    }
+
+    @Test
+    @DisplayName("findAllByClientId throws NotFoundException when client is not found")
+    @Order(6)
+    void findAllByClientId_ThrowsNotFoundException_WhenClientIsNotFound() {
+        Long randomId = 1515151L;
+
+        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(randomId)).thenThrow(new NotFoundException("Client not Found"));
+
+        Assertions.assertThatThrownBy(() -> service.findAllByClientId(randomId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Client not Found");
+    }
+
+    @Test
+    @DisplayName("save returns saved repair when successful")
+    @Order(7)
     void save_ReturnsSavedRepair_WhenSuccessful() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
@@ -139,7 +186,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save throws NotFoundException when client is not found")
-    @Order(5)
+    @Order(8)
     void save_ThrowsNotFoundException_WhenClientIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
@@ -152,7 +199,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save throws NotFoundException when vehicle is not found")
-    @Order(6)
+    @Order(9)
     void save_ThrowsNotFoundException_WhenVehicleIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
@@ -166,7 +213,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save throws BadRequestException when some piece is not found")
-    @Order(7)
+    @Order(10)
     void save_ThrowsBadRequestException_WhenSomePieceIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
@@ -182,7 +229,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save throws BadRequestException when some employee is not found")
-    @Order(8)
+    @Order(11)
     void save_ThrowsBadRequestException_WhenSomeEmployeeIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
@@ -198,7 +245,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save throws BadRequestException when quantity is greater than piece stock")
-    @Order(9)
+    @Order(12)
     void save_ThrowsBadRequestException_WhenQuantityIsGreaterThanPieceStock() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 

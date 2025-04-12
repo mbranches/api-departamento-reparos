@@ -4,9 +4,11 @@ import com.branches.exception.NotFoundException;
 import com.branches.request.ClientPostRequest;
 import com.branches.response.ClientGetResponse;
 import com.branches.service.ClientService;
+import com.branches.service.RepairService;
 import com.branches.service.VehicleService;
 import com.branches.utils.ClientUtils;
 import com.branches.utils.FileUtils;
+import com.branches.utils.RepairUtils;
 import com.branches.utils.VehicleUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
@@ -40,6 +42,8 @@ class ClientControllerTest {
     private ClientService service;
     @MockitoBean
     private VehicleService vehicleService;
+    @MockitoBean
+    private RepairService repairService;
     @Autowired
     private FileUtils fileUtils;
     private final String URL = "/v1/clients";
@@ -108,7 +112,7 @@ class ClientControllerTest {
     }
 
     @Test
-    @DisplayName("GET /v1/clients/ throws NotFoundException when id is not found")
+    @DisplayName("GET /v1/clients/131222 throws NotFoundException when id is not found")
     @Order(5)
     void findById_ThrowsNotFoundException_WhenIdIsNotFound() throws Exception {
         long randomId = 131222L;
@@ -168,8 +172,53 @@ class ClientControllerTest {
     }
 
     @Test
-    @DisplayName("POST /v1/clients returns saved client when successful")
+    @DisplayName("GET /v1/clients/4/repairs Returns all client repairs when successful")
     @Order(9)
+    void findRepairsByClientId_ReturnsAllClientRepairs_WhenSuccessful() throws Exception {
+        long clientId = 4L;
+        String expectedResponse = fileUtils.readResourceFile("repair/get-repairs-by-client-id-200.json");
+
+        BDDMockito.when(repairService.findAllByClientId(clientId)).thenReturn(RepairUtils.newRepairGetResponseList());
+
+        mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{clientId}/repairs", clientId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
+    @Test
+    @DisplayName("GET /v1/clients/1/repairs returns an empty list when client doesn't have repairs")
+    @Order(10)
+    void findRepairsByClientId_ReturnsEmptyList_WhenClientDoesNotHaveRepairs() throws Exception {
+        long clientId = 1L;
+        String expectedResponse = fileUtils.readResourceFile("repair/get-empty-list-by-client-id-200.json");
+
+        BDDMockito.when(vehicleService.findByClientId(clientId)).thenReturn(Collections.emptyList());
+
+        mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{clientId}/repairs", clientId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
+    @Test
+    @DisplayName("GET /v1/clients/488/repairs throws NotFoundException when client is not found")
+    @Order(11)
+    void findRepairsByClientId_ThrowsNotFoundException_WhenClientIsNotFound() throws Exception {
+        long randomId = 1L;
+        String expectedResponse = fileUtils.readResourceFile("repair/get-repairs-by-client-id-404.json");
+
+        BDDMockito.when(repairService.findAllByClientId(randomId)).thenThrow(new NotFoundException("Client not Found"));
+
+        mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{clientId}/repairs", randomId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
+    @Test
+    @DisplayName("POST /v1/clients returns saved client when successful")
+    @Order(12)
     void save_ReturnsSavedClient_WhenGivenSuccessful() throws Exception {
 
         BDDMockito.when(service.save(ArgumentMatchers.any(ClientPostRequest.class))).thenReturn(ClientUtils.newClientPostResponse());
@@ -190,7 +239,7 @@ class ClientControllerTest {
     @ParameterizedTest
     @MethodSource("postClientBadRequestSource")
     @DisplayName("save return BadRequest when fields are invalid")
-    @Order(10)
+    @Order(13)
     void save_ReturnsBadRequest_WhenFieldAreInvalid(String fileName, List<String> expectedErrors) throws Exception {
         String request = fileUtils.readResourceFile("client/%s".formatted(fileName));
 
