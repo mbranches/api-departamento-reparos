@@ -58,4 +58,10 @@ public class ClientService {
 
         return mapper.toClientPostResponse(response);
     }
+
+    public void deleteById(Long id) {
+        Client clientToDelete = findByIdOrThrowsNotFoundException(id);
+
+        repository.delete(clientToDelete);
+    }
 }

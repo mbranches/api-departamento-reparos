@@ -25,6 +25,8 @@ public class Client {
     @OneToOne
     @JoinColumn(name = "fk_endereco_cliente", referencedColumnName = "idendereco")
     private Address address;
-    @OneToMany(mappedBy = "client", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Phone> phones;
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    private List<Vehicle> vehicles;
 }

@@ -25,7 +25,7 @@ public class PieceController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<PieceGetResponse> findById(@PathVariable Long id) {
         PieceGetResponse response = service.findById(id);
 
