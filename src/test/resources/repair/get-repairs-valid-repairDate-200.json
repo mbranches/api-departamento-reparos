@@ -1,0 +1,41 @@
+[
+  {
+    "client": {
+      "name": "Chispirito",
+      "lastName": "Costa"
+    },
+    "vehicle": {
+      "vehicleType": "caminhao",
+      "brand": "Scania",
+      "model": "T113"
+    },
+    "totalValue": 1000,
+    "endDate": "2025-02-12"
+  },
+  {
+    "client": {
+      "name": "Chispirito",
+      "lastName": "Costa"
+    },
+    "vehicle": {
+      "vehicleType": "caminhao",
+      "brand": "Scania",
+      "model": "T113"
+    },
+    "totalValue": 1000,
+    "endDate": "2025-02-12"
+  },
+  {
+    "client": {
+      "name": "Chispirito",
+      "lastName": "Costa"
+    },
+    "vehicle": {
+      "vehicleType": "caminhao",
+      "brand": "Scania",
+      "model": "T113"
+    },
+    "totalValue": 1000,
+    "endDate": "2025-02-12"
+  }
+]
