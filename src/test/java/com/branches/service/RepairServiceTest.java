@@ -8,6 +8,7 @@ import com.branches.mapper.RepairPieceMapper;
 import com.branches.model.*;
 import com.branches.repository.RepairRepository;
 import com.branches.request.RepairPostRequest;
+import com.branches.response.RepairEmployeeByRepairResponse;
 import com.branches.response.RepairGetResponse;
 import com.branches.response.RepairPostResponse;
 import com.branches.utils.*;
@@ -136,8 +137,62 @@ class RepairServiceTest {
     }
 
     @Test
-    @DisplayName("findAllByClientId returns all client vehicles when successful")
+    @DisplayName("findAllByRepairId returns all repair employees from given repair id when successful")
     @Order(6)
+    void findEmployeesByRepairId_ReturnsAllRepairEmployeesFromGivenRepairId_WhenSuccessful() {
+        Repair repair = repairList.getFirst();
+        Long idToSearch = repair.getId();
+
+        List<RepairEmployee> foundRepairEmployees = List.of(RepairEmployeeUtils.newRepairEmployeeSaved());
+        List<RepairEmployeeByRepairResponse> expectedResponse = List.of(RepairEmployeeUtils.newRepairEmployeeByRepairGetEmployees());
+
+        BDDMockito.when(repository.findById(idToSearch)).thenReturn(Optional.of(repair));
+        BDDMockito.when(repairEmployeeService.findAllByRepair(repair)).thenReturn(foundRepairEmployees);
+        BDDMockito.when(repairEmployeeMapper.toRepairEmployeeByRepairResponseList(foundRepairEmployees)).thenReturn(expectedResponse);
+
+        List<RepairEmployeeByRepairResponse> response = service.findEmployeesByRepairId(idToSearch);
+
+        Assertions.assertThat(response)
+                .isNotNull()
+                .isNotEmpty()
+                .containsExactlyElementsOf(expectedResponse);
+    }
+
+    @Test
+    @DisplayName("findAllByRepairId returns an empty list when when repair contain no employees")
+    @Order(7)
+    void findAllByRepairId_ReturnsEmptyList_WhenRepairContainNoEmployees() {
+        Repair repair = repairList.getLast();
+        Long idToSearch = repair.getId();
+
+        BDDMockito.when(repository.findById(idToSearch)).thenReturn(Optional.of(repair));
+        BDDMockito.when(repairEmployeeService.findAllByRepair(repair)).thenReturn(Collections.emptyList());
+        BDDMockito.when(repairEmployeeMapper.toRepairEmployeeByRepairResponseList(Collections.emptyList())).thenReturn(Collections.emptyList());
+
+        List<RepairEmployeeByRepairResponse> response = service.findEmployeesByRepairId(idToSearch);
+
+        Assertions.assertThat(response)
+                .isNotNull()
+                .isEmpty();
+    }
+
+    @Test
+    @DisplayName("findAllByRepairId throws NotFoundException when given id is not found")
+    @Order(8)
+    void findAllByRepairId_ThrowsNotFoundException_WhenGivenIdIsNotFound() {
+        Repair repair = repairList.getLast();
+        Long idToSearch = repair.getId();
+
+        BDDMockito.when(repository.findById(idToSearch)).thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> service.findEmployeesByRepairId(idToSearch))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Repair not Found");
+    }
+
+    @Test
+    @DisplayName("findAllByClientId returns all client vehicles when successful")
+    @Order(9)
     void findAllByClientId_ReturnsAllClientRepairs_WhenSuccessful() {
         Client client = repairList.getFirst().getClient();
         Long clientId = client.getId();
@@ -156,7 +211,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("findAllByClientId returns an empty list when client doesn't have repairs")
-    @Order(7)
+    @Order(10)
     void findAllByClientId_ReturnsEmptyList_WhenClientDoesNotHaveRepair() {
         Client client = ClientUtils.newClientList().getLast();
         Long clientId = client.getId();
@@ -174,7 +229,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("findAllByClientId throws NotFoundException when client is not found")
-    @Order(8)
+    @Order(11)
     void findAllByClientId_ThrowsNotFoundException_WhenClientIsNotFound() {
         Long randomId = 1515151L;
 
@@ -187,7 +242,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save returns saved repair when successful")
-    @Order(9)
+    @Order(12)
     void save_ReturnsSavedRepair_WhenSuccessful() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
@@ -219,7 +274,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save throws NotFoundException when client is not found")
-    @Order(10)
+    @Order(13)
     void save_ThrowsNotFoundException_WhenClientIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
@@ -232,7 +287,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save throws NotFoundException when vehicle is not found")
-    @Order(11)
+    @Order(14)
     void save_ThrowsNotFoundException_WhenVehicleIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
@@ -246,7 +301,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save throws BadRequestException when some piece is not found")
-    @Order(12)
+    @Order(15)
     void save_ThrowsBadRequestException_WhenSomePieceIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
@@ -262,7 +317,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save throws BadRequestException when some employee is not found")
-    @Order(13)
+    @Order(16)
     void save_ThrowsBadRequestException_WhenSomeEmployeeIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
@@ -278,7 +333,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("save throws BadRequestException when quantity is greater than piece stock")
-    @Order(14)
+    @Order(17)
     void save_ThrowsBadRequestException_WhenQuantityIsGreaterThanPieceStock() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
@@ -301,7 +356,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("deleteById removes repair when successful")
-    @Order(15)
+    @Order(18)
     void deleteById_RemovesRepair_WhenSuccessful() {
         Repair repairToDelete = repairList.getFirst();
         Long idToDelete = repairToDelete.getId();
@@ -315,7 +370,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("deleteById throws NotFoundException when given id is not found")
-    @Order(16)
+    @Order(19)
     void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() {
         Long randomId = 15512366L;
 

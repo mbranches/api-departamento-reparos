@@ -41,4 +41,17 @@ public class RepairEmployeeUtils {
 
         return RepairEmployeeByRepairResponse.builder().employee(employee).hoursWorked(5).totalValue(employeeCategory.getHourlyPrice() * 5).build();
     }
+
+    public static RepairEmployeeByRepairResponse newRepairEmployeeByRepairGetEmployees() {
+        RepairEmployeeKey key = new RepairEmployeeKey(1L, 1L);
+
+        Employee employee = EmployeeUtils.newEmployeeList().getFirst();
+        int hoursWorked = 1;
+
+        return RepairEmployeeByRepairResponse.builder()
+                .employee(EmployeeUtils.newEmployeeByRepairPostResponse())
+                .hoursWorked(hoursWorked)
+                .totalValue(employee.getCategory().getHourlyPrice() * hoursWorked)
+                .build();
+    }
 }

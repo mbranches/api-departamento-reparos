@@ -91,4 +91,11 @@ public class EmployeeUtils {
                 .category(category)
                 .build();
     }
+
+    public static EmployeeByRepairResponse newEmployeeByRepairGetEmployees() {
+        Category category = CategoryUtils.newCategoryToSave();
+
+        return EmployeeByRepairResponse.builder()
+                .name("Marcus").lastName("Branches").category(category).build();
+    }
 }
