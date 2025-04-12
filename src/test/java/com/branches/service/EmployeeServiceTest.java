@@ -165,4 +165,31 @@ class EmployeeServiceTest {
                 .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("Category not Found");
     }
+
+    @Test
+    @DisplayName("deleteById removes employee when successful")
+    @Order(8)
+    void deleteById_RemovesEmployee_WhenSuccessful() {
+        Employee employeeToDelete = employeeList.getFirst();
+        Long idToDelete = employeeToDelete.getId();
+
+        BDDMockito.when(repository.findById(idToDelete)).thenReturn(Optional.of(employeeToDelete));
+        BDDMockito.doNothing().when(repository).delete(ArgumentMatchers.any(Employee.class));
+
+        Assertions.assertThatCode(() -> service.deleteById(idToDelete))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("deleteById throws NotFoundException when given id is not found")
+    @Order(9)
+    void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() {
+        Long randomId = 15512366L;
+
+        BDDMockito.when(repository.findById(randomId)).thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> service.deleteById(randomId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Employee not Found");
+    }
 }

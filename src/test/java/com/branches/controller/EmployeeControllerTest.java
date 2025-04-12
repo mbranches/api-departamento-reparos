@@ -1,6 +1,7 @@
 package com.branches.controller;
 
 import com.branches.exception.NotFoundException;
+import com.branches.model.Employee;
 import com.branches.request.EmployeePostRequest;
 import com.branches.response.EmployeeGetResponse;
 import com.branches.service.EmployeeService;
@@ -192,5 +193,35 @@ class EmployeeControllerTest {
                 Arguments.of("post-request-employee-empty-fields-400.json", expectedErrors),
                 Arguments.of("post-request-employee-blank-fields-400.json", expectedErrors)
         );
+    }
+
+    @Test
+    @DisplayName("delete /v1/employees/1 removes employee when successful")
+    @Order(8)
+    void deleteById_RemovesEmployee_WhenSuccessful() throws Exception {
+        Employee employeeToDelete = EmployeeUtils.newEmployeeList().getFirst();
+        Long idToDelete = employeeToDelete.getId();
+
+        BDDMockito.doNothing().when(service).deleteById(idToDelete);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{id}", idToDelete))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("delete /v1/employees/25256595 throws NotFoundException when given id is not found")
+    @Order(9)
+    void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() throws Exception {
+        Long randomId = 25256595L;
+
+        BDDMockito.doThrow(new NotFoundException("Employee not Found")).when(service).deleteById(randomId);
+
+            String expectedResponse = fileUtils.readResourceFile("employee/delete-employee-by-id-404.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{id}", randomId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
     }
 }
