@@ -34,9 +34,10 @@ CREATE TABLE funcionario (
     fk_endereco_funcionario BIGINT
 );
 
-ALTER TABLE funcionario 
-ADD CONSTRAINT fk_categoria_funcionario
-FOREIGN KEY(fk_categoria_funcionario) REFERENCES categoria(idcategoria);
+ALTER TABLE funcionario ADD CONSTRAINT fk_categoria_funcionario
+FOREIGN KEY (fk_categoria_funcionario)
+REFERENCES categoria(idcategoria)
+ON DELETE SET NULL;
 
 ALTER TABLE funcionario 
 ADD CONSTRAINT fk_endereco_funcionario
