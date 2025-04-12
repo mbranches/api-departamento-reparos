@@ -298,4 +298,31 @@ class RepairServiceTest {
         Assertions.assertThatThrownBy(() -> service.save(postRequest))
                 .isInstanceOf(BadRequestException.class);
     }
+
+    @Test
+    @DisplayName("deleteById removes repair when successful")
+    @Order(15)
+    void deleteById_RemovesRepair_WhenSuccessful() {
+        Repair repairToDelete = repairList.getFirst();
+        Long idToDelete = repairToDelete.getId();
+
+        BDDMockito.when(repository.findById(idToDelete)).thenReturn(Optional.of(repairToDelete));
+        BDDMockito.doNothing().when(repository).delete(ArgumentMatchers.any(Repair.class));
+
+        Assertions.assertThatCode(() -> service.deleteById(idToDelete))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("deleteById throws NotFoundException when given id is not found")
+    @Order(16)
+    void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() {
+        Long randomId = 15512366L;
+
+        BDDMockito.when(repository.findById(randomId)).thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> service.deleteById(randomId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Repair not Found");
+    }
 }

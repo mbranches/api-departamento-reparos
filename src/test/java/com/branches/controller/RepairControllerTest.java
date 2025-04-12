@@ -3,6 +3,7 @@ package com.branches.controller;
 import com.branches.exception.BadRequestException;
 import com.branches.exception.NotFoundException;
 import com.branches.model.Piece;
+import com.branches.model.Repair;
 import com.branches.request.RepairPostRequest;
 import com.branches.response.RepairGetResponse;
 import com.branches.service.RepairService;
@@ -282,5 +283,35 @@ class RepairControllerTest {
         return Stream.of(
                 Arguments.of("post-request-repair-null-fields-400.json", expectedErrors)
         );
+    }
+
+    @Test
+    @DisplayName("DELETE /v1/repairs/1 removes repair when successful")
+    @Order(13)
+    void deleteById_RemovesRepair_WhenSuccessful() throws Exception {
+        Repair repairToDelete = RepairUtils.newRepairList().getFirst();
+        Long idToDelete = repairToDelete.getId();
+
+        BDDMockito.doNothing().when(service).deleteById(idToDelete);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{id}", idToDelete))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("DELETE /v1/repairs/25256595 throws NotFoundException when given id is not found")
+    @Order(14)
+    void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() throws Exception {
+        Long randomId = 25256595L;
+
+        BDDMockito.doThrow(new NotFoundException("Repair not Found")).when(service).deleteById(randomId);
+
+        String expectedResponse = fileUtils.readResourceFile("repair/delete-repair-by-id-404.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{id}", randomId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
     }
 }
