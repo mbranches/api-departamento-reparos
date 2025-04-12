@@ -76,7 +76,7 @@ class VehicleControllerTest {
     }
 
     @Test
-    @DisplayName("GET /v1/vehicles/ throws NotFoundException when id is not found")
+    @DisplayName("GET /v1/vehicles/131222 throws NotFoundException when id is not found")
     @Order(5)
     void findById_ThrowsNotFoundException_WhenIdIsNotFound() throws Exception {
         long randomId = 131222L;
@@ -130,7 +130,7 @@ class VehicleControllerTest {
 
     @ParameterizedTest
     @MethodSource("postVehicleBadRequestSource")
-    @DisplayName("save return BadRequest when fields are invalid")
+    @DisplayName("POST /v1/vehicles return BadRequest when fields are invalid")
     @Order(4)
     void save_ReturnsBadRequest_WhenFieldAreInvalid(String fileName, List<String> expectedErrors) throws Exception {
         String request = fileUtils.readResourceFile("vehicle/%s".formatted(fileName));

@@ -221,7 +221,7 @@ class RepairControllerTest {
     
     @ParameterizedTest
     @MethodSource("postRepairBadRequestSource")
-    @DisplayName("save return BadRequest when fields are invalid")
+    @DisplayName("POST /v1/repairs return BadRequest when fields are invalid")
     @Order(10)
     void save_ReturnsBadRequest_WhenFieldAreInvalid(String fileName, List<String> expectedErrors) throws Exception {
         String request = fileUtils.readResourceFile("repair/%s".formatted(fileName));

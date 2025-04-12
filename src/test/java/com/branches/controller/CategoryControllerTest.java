@@ -144,7 +144,7 @@ class CategoryControllerTest {
 
     @ParameterizedTest
     @MethodSource("postCategoryBadRequestSource")
-    @DisplayName("POST return BadRequest when fields are invalid")
+    @DisplayName("POST /v1/categories return BadRequest when fields are invalid")
     @Order(7)
     void save_ReturnsBadRequest_WhenFieldsAreInvalid(String fileName, List<String> expectedErrors) throws Exception {
         String request = fileUtils.readResourceFile("category/%s".formatted(fileName));

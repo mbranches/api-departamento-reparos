@@ -138,7 +138,7 @@ public class PieceControllerTest {
 
     @ParameterizedTest
     @MethodSource("postPieceBadRequestSource")
-    @DisplayName("save return BadRequest when fields are invalid")
+    @DisplayName("POST /v1/pieces return BadRequest when fields are invalid")
     @Order(7)
     void save_ReturnsBadRequest_WhenFieldAreInvalid(String fileName, List<String> expectedErrors) throws Exception {
         String request = fileUtils.readResourceFile("piece/%s".formatted(fileName));

@@ -139,7 +139,7 @@ class EmployeeControllerTest {
     }
 
     @Test
-    @DisplayName("save throws not found exception when given category does not exists")
+    @DisplayName("POST /v1/employees throws not found exception when given category does not exists")
     @Order(5)
     void save_ThrowsNotFoundException_WhenGivenCategoryNotExists() throws Exception {
 
@@ -160,7 +160,7 @@ class EmployeeControllerTest {
 
     @ParameterizedTest
     @MethodSource("postEmployeeBadRequestSource")
-    @DisplayName("save return BadRequest when fields are invalid")
+    @DisplayName("POST /v1/employees return BadRequest when fields are invalid")
     @Order(7)
     void save_ReturnsBadRequest_WhenFieldAreInvalid(String fileName, List<String> expectedErrors) throws Exception {
         String request = fileUtils.readResourceFile("employee/%s".formatted(fileName));
@@ -196,7 +196,7 @@ class EmployeeControllerTest {
     }
 
     @Test
-    @DisplayName("delete /v1/employees/1 removes employee when successful")
+    @DisplayName("DELETE /v1/employees/1 removes employee when successful")
     @Order(8)
     void deleteById_RemovesEmployee_WhenSuccessful() throws Exception {
         Employee employeeToDelete = EmployeeUtils.newEmployeeList().getFirst();
@@ -210,7 +210,7 @@ class EmployeeControllerTest {
     }
 
     @Test
-    @DisplayName("delete /v1/employees/25256595 throws NotFoundException when given id is not found")
+    @DisplayName("DELETE /v1/employees/25256595 throws NotFoundException when given id is not found")
     @Order(9)
     void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() throws Exception {
         Long randomId = 25256595L;
