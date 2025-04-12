@@ -4,6 +4,7 @@ import com.branches.request.RepairPostRequest;
 import com.branches.response.RepairGetResponse;
 import com.branches.response.RepairPostResponse;
 import com.branches.service.RepairService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class RepairController {
     }
 
     @PostMapping
-    public ResponseEntity<RepairPostResponse> save(@RequestBody RepairPostRequest postRequest) {
+    public ResponseEntity<RepairPostResponse> save(@Valid @RequestBody RepairPostRequest postRequest) {
         RepairPostResponse response = service.save(postRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
