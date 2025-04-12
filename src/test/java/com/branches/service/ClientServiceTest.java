@@ -147,4 +147,31 @@ class ClientServiceTest {
                 .isNotNull()
                 .isEqualTo(expectedResponse);
     }
+
+    @Test
+    @DisplayName("deleteById removes client when successful")
+    @Order(7)
+    void deleteById_RemovesClient_WhenSuccessful() {
+        Client clientToDelete = clientList.getFirst();
+        Long idToDelete = clientToDelete.getId();
+
+        BDDMockito.when(repository.findById(idToDelete)).thenReturn(Optional.of(clientToDelete));
+        BDDMockito.doNothing().when(repository).delete(ArgumentMatchers.any(Client.class));
+
+        Assertions.assertThatCode(() -> service.deleteById(idToDelete))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("deleteById throws NotFoundException when given id is not found")
+    @Order(8)
+    void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() {
+        Long randomId = 15512366L;
+
+        BDDMockito.when(repository.findById(randomId)).thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> service.deleteById(randomId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Client not Found");
+    }
 }

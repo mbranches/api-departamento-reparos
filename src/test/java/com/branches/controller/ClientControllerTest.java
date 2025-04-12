@@ -1,15 +1,13 @@
 package com.branches.controller;
 
 import com.branches.exception.NotFoundException;
+import com.branches.model.Client;
 import com.branches.request.ClientPostRequest;
 import com.branches.response.ClientGetResponse;
 import com.branches.service.ClientService;
 import com.branches.service.RepairService;
 import com.branches.service.VehicleService;
-import com.branches.utils.ClientUtils;
-import com.branches.utils.FileUtils;
-import com.branches.utils.RepairUtils;
-import com.branches.utils.VehicleUtils;
+import com.branches.utils.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -238,7 +236,7 @@ class ClientControllerTest {
 
     @ParameterizedTest
     @MethodSource("postClientBadRequestSource")
-    @DisplayName("save return BadRequest when fields are invalid")
+    @DisplayName("POST /v1/clients return BadRequest when fields are invalid")
     @Order(13)
     void save_ReturnsBadRequest_WhenFieldAreInvalid(String fileName, List<String> expectedErrors) throws Exception {
         String request = fileUtils.readResourceFile("client/%s".formatted(fileName));
@@ -268,5 +266,35 @@ class ClientControllerTest {
                 Arguments.of("post-request-client-empty-fields-400.json", expectedErrors),
                 Arguments.of("post-request-client-blank-fields-400.json", expectedErrors)
         );
-    }    
+    }
+
+    @Test
+    @DisplayName("DELETE /v1/clients/1 removes client when successful")
+    @Order(14)
+    void deleteById_RemovesClient_WhenSuccessful() throws Exception {
+        Client clientToDelete = ClientUtils.newClientList().getFirst();
+        Long idToDelete = clientToDelete.getId();
+
+        BDDMockito.doNothing().when(service).deleteById(idToDelete);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{id}", idToDelete))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("DELETE /v1/clients/25256595 throws NotFoundException when given id is not found")
+    @Order(15)
+    void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() throws Exception {
+        Long randomId = 25256595L;
+
+        BDDMockito.doThrow(new NotFoundException("Client not Found")).when(service).deleteById(randomId);
+
+        String expectedResponse = fileUtils.readResourceFile("client/delete-client-by-id-404.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{id}", randomId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
 }
