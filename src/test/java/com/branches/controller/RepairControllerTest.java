@@ -135,8 +135,58 @@ class RepairControllerTest {
     }
 
     @Test
-    @DisplayName("POST /v1/repairs returns saved repair when successful")
+    @DisplayName("GET /v1/repairs/1/employees returns all repair employees from given repair id when successful")
     @Order(6)
+    void findEmployeesByRepairId_ReturnsAllRepairEmployeesFromGivenRepairId_WhenSuccessful() throws Exception {
+        Repair repairToSearch = RepairUtils.newRepairList().getFirst();
+        Long idToSearch = repairToSearch.getId();
+
+        BDDMockito.when(service.findEmployeesByRepairId(idToSearch)).thenReturn(List.of(RepairEmployeeUtils.newRepairEmployeeByRepairGetEmployees()));
+
+        String expectedResponse = fileUtils.readResourceFile("repair/get-employees-1-repairId-200.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{id}/employees", idToSearch))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
+    @Test
+    @DisplayName("GET /v1/repairs/3/employees returns an empty list when when repair contain no employees")
+    @Order(7)
+    void findAllByRepairId_ReturnsEmptyList_WhenRepairContainNoEmployees() throws Exception {
+        Repair repairToSearch = RepairUtils.newRepairList().getLast();
+        Long idToSearch = repairToSearch.getId();
+
+        BDDMockito.when(service.findEmployeesByRepairId(idToSearch)).thenReturn(Collections.emptyList());
+
+        String expectedResponse = fileUtils.readResourceFile("repair/get-employees-3-repairId-200.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{id}/employees", idToSearch))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
+    @Test
+    @DisplayName("GET /v1/repairs/121123/employees throws NotFoundException when given id is not found")
+    @Order(8)
+    void findAllByRepairId_ThrowsNotFoundException_WhenGivenIdIsNotFound() throws Exception {
+        Long randomId = 121123L;
+
+        BDDMockito.when(service.findEmployeesByRepairId(randomId)).thenThrow(new NotFoundException("Repair not Found"));
+
+        String expectedResponse = fileUtils.readResourceFile("repair/get-employees-invalid-repairId-404.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{id}/employees", randomId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
+    @Test
+    @DisplayName("POST /v1/repairs returns saved repair when successful")
+    @Order(9)
     void save_ReturnsSavedRepair_WhenSuccessful() throws Exception {
         String request = fileUtils.readResourceFile("repair/post-request-repair-200.json");
         String expectedResponse = fileUtils.readResourceFile("repair/post-response-repair-201.json");
@@ -155,7 +205,7 @@ class RepairControllerTest {
 
     @Test
     @DisplayName("POST /v1/repairs throws NotFoundException when client is not found")
-    @Order(7)
+    @Order(10)
     void save_ThrowsNotFoundException_WhenClientIsNotFound() throws Exception {
         String request = fileUtils.readResourceFile("repair/post-request-repair-invalid-client-200.json");
         String expectedResponse = fileUtils.readResourceFile("repair/post-response-repair-invalid-client-404.json");
@@ -174,7 +224,7 @@ class RepairControllerTest {
 
     @Test
     @DisplayName("POST /v1/repairs throws NotFoundException when vehicle is not found")
-    @Order(8)
+    @Order(11)
     void save_ThrowsNotFoundException_WhenVehicleIsNotFound() throws Exception {
         String request = fileUtils.readResourceFile("repair/post-request-repair-invalid-vehicle-200.json");
         String expectedResponse = fileUtils.readResourceFile("repair/post-response-repair-invalid-vehicle-404.json");
@@ -193,7 +243,7 @@ class RepairControllerTest {
 
     @Test
     @DisplayName("POST /v1/repairs throws BadRequestException when some piece is not found")
-    @Order(9)
+    @Order(12)
     void save_ThrowsBadRequestException_WhenSomePieceIsNotFound() throws Exception {
         String request = fileUtils.readResourceFile("repair/post-request-repair-invalid-piece-200.json");
         String expectedResponse = fileUtils.readResourceFile("repair/post-response-repair-invalid-piece-400.json");
@@ -212,7 +262,7 @@ class RepairControllerTest {
 
     @Test
     @DisplayName("POST /v1/repairs throws BadRequestException when some employee is not found")
-    @Order(10)
+    @Order(13)
     void save_ThrowsBadRequestException_WhenSomeEmployeeIsNotFound() throws Exception {
         String request = fileUtils.readResourceFile("repair/post-request-repair-invalid-employee-200.json");
         String expectedResponse = fileUtils.readResourceFile("repair/post-response-repair-invalid-employee-400.json");
@@ -231,7 +281,7 @@ class RepairControllerTest {
 
     @Test
     @DisplayName("POST /v1/repairs throws BadRequestException when quantity is greater than piece stock")
-    @Order(11)
+    @Order(14)
     void save_ThrowsBadRequestException_WhenQuantityIsGreaterThanPieceStock() throws Exception {
         Piece pieceToSave = PieceUtils.newPieceToSave();
 
@@ -254,7 +304,7 @@ class RepairControllerTest {
     @ParameterizedTest
     @MethodSource("postRepairBadRequestSource")
     @DisplayName("POST /v1/repairs return BadRequest when fields are invalid")
-    @Order(12)
+    @Order(15)
     void save_ReturnsBadRequest_WhenFieldAreInvalid(String fileName, List<String> expectedErrors) throws Exception {
         String request = fileUtils.readResourceFile("repair/%s".formatted(fileName));
 
@@ -287,7 +337,7 @@ class RepairControllerTest {
 
     @Test
     @DisplayName("DELETE /v1/repairs/1 removes repair when successful")
-    @Order(13)
+    @Order(16)
     void deleteById_RemovesRepair_WhenSuccessful() throws Exception {
         Repair repairToDelete = RepairUtils.newRepairList().getFirst();
         Long idToDelete = repairToDelete.getId();
@@ -301,7 +351,7 @@ class RepairControllerTest {
 
     @Test
     @DisplayName("DELETE /v1/repairs/25256595 throws NotFoundException when given id is not found")
-    @Order(14)
+    @Order(17)
     void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() throws Exception {
         Long randomId = 25256595L;
 

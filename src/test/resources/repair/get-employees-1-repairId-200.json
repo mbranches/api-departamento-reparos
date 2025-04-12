@@ -1,0 +1,15 @@
+[
+  {
+    "employee": {
+      "name": "Chispirito",
+      "lastName": "Costa",
+      "category": {
+        "id": 4,
+        "name": "Vidraceiro",
+        "hourlyPrice": 50.0
+      }
+    },
+    "hoursWorked": 1,
+    "totalValue": 50.0
+  }
+]
