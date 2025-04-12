@@ -43,8 +43,6 @@ public class RepairEmployeeUtils {
     }
 
     public static RepairEmployeeByRepairResponse newRepairEmployeeByRepairGetEmployees() {
-        RepairEmployeeKey key = new RepairEmployeeKey(1L, 1L);
-
         Employee employee = EmployeeUtils.newEmployeeList().getFirst();
         int hoursWorked = 1;
 
