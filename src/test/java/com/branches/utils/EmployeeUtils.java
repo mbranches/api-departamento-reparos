@@ -82,10 +82,10 @@ public class EmployeeUtils {
         return employee;
     }
 
-    public static EmployeeByRepairPostResponse newEmployeeByRepairPostResponse() {
+    public static EmployeeByRepairResponse newEmployeeByRepairPostResponse() {
         Category category = CategoryUtils.newCategoryToSave();
 
-        return EmployeeByRepairPostResponse.builder()
+        return EmployeeByRepairResponse.builder()
                 .name("Chispirito")
                 .lastName("Costa")
                 .category(category)

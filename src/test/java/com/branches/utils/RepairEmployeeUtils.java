@@ -4,7 +4,7 @@ import com.branches.model.Category;
 import com.branches.model.Employee;
 import com.branches.model.RepairEmployee;
 import com.branches.request.RepairEmployeeByRepairPostRequest;
-import com.branches.response.EmployeeByRepairPostResponse;
+import com.branches.response.EmployeeByRepairResponse;
 import com.branches.response.RepairEmployeeByRepairResponse;
 
 public class RepairEmployeeUtils {
@@ -20,7 +20,7 @@ public class RepairEmployeeUtils {
     }
 
     public static RepairEmployeeByRepairResponse newRepairEmployeeByRepairPostResponse() {
-        EmployeeByRepairPostResponse employee = EmployeeUtils.newEmployeeByRepairPostResponse();
+        EmployeeByRepairResponse employee = EmployeeUtils.newEmployeeByRepairPostResponse();
         Category employeeCategory = employee.getCategory();
 
         return RepairEmployeeByRepairResponse.builder().employee(employee).hoursWorked(5).totalValue(employeeCategory.getHourlyPrice() * 5).build();

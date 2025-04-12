@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class EmployeeByRepairPostResponse {
+public class EmployeeByRepairResponse {
     private String name;
     private String lastName;
     private Category category;
