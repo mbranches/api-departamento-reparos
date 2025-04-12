@@ -82,7 +82,7 @@ public class RepairUtils {
         List<RepairPieceByRepairPostResponse> pieces = response.getPieces();
         double totalPieces = pieces.stream().mapToDouble(repair -> repair.getPiece().getUnitValue() * repair.getQuantity()).sum();
 
-        List<RepairEmployeeByRepairPostResponse> employees = response.getEmployees();
+        List<RepairEmployeeByRepairResponse> employees = response.getEmployees();
         double totalEmployees = employees.stream().mapToDouble(repair -> repair.getEmployee().getCategory().getHourlyPrice() * repair.getHoursWorked()).sum();
 
         double totalValue = totalPieces + totalEmployees;

@@ -1,11 +1,5 @@
 package com.branches.response;
 
-import com.branches.model.Client;
-import com.branches.model.RepairEmployee;
-import com.branches.model.RepairPiece;
-import com.branches.model.Vehicle;
-import com.branches.request.RepairEmployeeByRepairPostRequest;
-import com.branches.request.RepairPieceByRepairPostRequest;
 import lombok.Builder;
 import lombok.Data;
 
@@ -19,7 +13,7 @@ public class RepairPostResponse {
     private ClientByRepairPostResponse client;
     private VehicleByRepairPostResponse vehicle;
     private List<RepairPieceByRepairPostResponse> pieces;
-    private List<RepairEmployeeByRepairPostResponse> employees;
+    private List<RepairEmployeeByRepairResponse> employees;
     private double totalValue;
     private LocalDate endDate;
 }
