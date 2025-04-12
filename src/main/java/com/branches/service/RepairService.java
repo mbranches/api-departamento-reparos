@@ -96,4 +96,10 @@ public class RepairService {
 
         return mapper.toRepairGetResponseList(response);
     }
+
+    public void deleteById(Long id) {
+        Repair repairToDelete = findByIdOrThrowsNotFoundException(id);
+
+        repository.delete(repairToDelete);
+    }
 }
