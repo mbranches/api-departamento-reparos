@@ -142,4 +142,31 @@ class CategoryServiceTest {
                 .isNotNull()
                 .isEqualTo(expectedResponse);
     }
+
+    @Test
+    @DisplayName("deleteById removes category when successful")
+    @Order(7)
+    void deleteById_RemovesCategory_WhenSuccessful() {
+        Category categoryToDelete = categoryList.getFirst();
+        Long idToDelete = categoryToDelete.getId();
+
+        BDDMockito.when(repository.findById(idToDelete)).thenReturn(Optional.of(categoryToDelete));
+        BDDMockito.doNothing().when(repository).delete(ArgumentMatchers.any(Category.class));
+
+        Assertions.assertThatCode(() -> service.deleteById(idToDelete))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("deleteById throws NotFoundException when given id is not found")
+    @Order(8)
+    void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() {
+        Long randomId = 15512366L;
+
+        BDDMockito.when(repository.findById(randomId)).thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> service.deleteById(randomId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Category not Found");
+    }
 }

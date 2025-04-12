@@ -1,6 +1,7 @@
 package com.branches.controller;
 
 import com.branches.exception.NotFoundException;
+import com.branches.model.Category;
 import com.branches.request.CategoryPostRequest;
 import com.branches.response.CategoryGetResponse;
 import com.branches.service.CategoryService;
@@ -143,7 +144,7 @@ class CategoryControllerTest {
 
     @ParameterizedTest
     @MethodSource("postCategoryBadRequestSource")
-    @DisplayName("save return BadRequest when fields are invalid")
+    @DisplayName("POST return BadRequest when fields are invalid")
     @Order(7)
     void save_ReturnsBadRequest_WhenFieldsAreInvalid(String fileName, List<String> expectedErrors) throws Exception {
         String request = fileUtils.readResourceFile("category/%s".formatted(fileName));
@@ -175,5 +176,35 @@ class CategoryControllerTest {
                 Arguments.of("post-request-category-empty-fields-400.json", expectedErrors),
                 Arguments.of("post-request-category-blank-fields-400.json", expectedErrors)
         );
+    }
+
+    @Test
+    @DisplayName("DELETE /v1/categories/1 removes category when successful")
+    @Order(8)
+    void deleteById_RemovesCategory_WhenSuccessful() throws Exception {
+        Category categoryToDelete = CategoryUtils.newCategoryList().getFirst();
+        Long idToDelete = categoryToDelete.getId();
+
+        BDDMockito.doNothing().when(service).deleteById(idToDelete);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{id}", idToDelete))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("DELETE /v1/categories/25256595 throws NotFoundException when given id is not found")
+    @Order(9)
+    void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() throws Exception {
+        Long randomId = 25256595L;
+
+        BDDMockito.doThrow(new NotFoundException("Category not Found")).when(service).deleteById(randomId);
+
+        String expectedResponse = fileUtils.readResourceFile("category/delete-category-by-id-404.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{id}", randomId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
     }
 }
