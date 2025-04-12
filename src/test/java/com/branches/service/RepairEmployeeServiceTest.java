@@ -1,8 +1,11 @@
 package com.branches.service;
 
+import com.branches.exception.NotFoundException;
+import com.branches.model.Employee;
 import com.branches.model.Repair;
 import com.branches.model.RepairEmployee;
 import com.branches.repository.RepairEmployeeRepository;
+import com.branches.utils.EmployeeUtils;
 import com.branches.utils.RepairEmployeeUtils;
 import com.branches.utils.RepairUtils;
 import org.assertj.core.api.Assertions;
@@ -15,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -72,5 +76,67 @@ class RepairEmployeeServiceTest {
         Assertions.assertThat(response)
                 .isNotNull()
                 .isEmpty();
+    }
+
+    @Test
+    @DisplayName("findByRepairAndEmployeeOrThrowsNotFoundException returns found RepairEmployee when successful")
+    @Order(4)
+    void findByRepairAndEmployeeOrThrowsNotFoundException_ReturnsFoundRepairEmployee_WhenSuccessful() {
+        Repair repair = RepairUtils.newRepairList().getFirst();
+        Employee employee = EmployeeUtils.newEmployeeList().getFirst();
+
+        RepairEmployee expectedResponse = RepairEmployeeUtils.newRepairEmployeeSaved();
+
+        BDDMockito.when(repository.findByRepairAndEmployee(repair, employee)).thenReturn(Optional.of(expectedResponse));
+
+        RepairEmployee response = service.findByRepairAndEmployeeOrThrowsNotFoundException(repair, employee);
+
+        Assertions.assertThat(response)
+                .isNotNull()
+                .isEqualTo(expectedResponse);
+    }
+
+    @Test
+    @DisplayName("findByRepairAndEmployeeOrThrowsNotFoundException throws NotFoundException when employee is not found in repair")
+    @Order(5)
+    void findByRepairAndEmployeeOrThrowsNotFoundException_ThrowsNotFoundException_WhenEmployeeIsNotFoundInRepair() {
+        Repair repair = RepairUtils.newRepairList().getFirst();
+        Employee employee = EmployeeUtils.newEmployeeList().getLast();
+
+        BDDMockito.when(repository.findByRepairAndEmployee(repair, employee)).thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> service.findByRepairAndEmployeeOrThrowsNotFoundException(repair, employee))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("The employee was not found in the repair");
+    }
+
+    @Test
+    @DisplayName("deleteByRepairAndEmployee removes repair employee when successful")
+    @Order(6)
+    void deleteByRepairAndEmployee_RemovesRepairEmployee_WhenSuccessful() {
+        Repair repair = RepairUtils.newRepairList().getFirst();
+        Employee employee = EmployeeUtils.newEmployeeList().getFirst();
+
+        RepairEmployee repairEmployee = RepairEmployeeUtils.newRepairEmployeeSaved();
+
+        BDDMockito.when(repository.findByRepairAndEmployee(repair, employee)).thenReturn(Optional.of(repairEmployee));
+        BDDMockito.doNothing().when(repository).delete(repairEmployee);
+
+        Assertions.assertThatCode(() -> service.deleteByRepairAndEmployee(repair, employee))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("deleteByRepairAndEmployee throws NotFoundException when employee is not found in repair")
+    @Order(7)
+    void deleteByRepairAndEmployee_ThrowsNotFoundException_WhenEmployeeIsNotFoundInRepair() {
+        Repair repair = RepairUtils.newRepairList().getFirst();
+        Employee employee = EmployeeUtils.newEmployeeList().getLast();
+
+        BDDMockito.when(repository.findByRepairAndEmployee(repair, employee)).thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> service.deleteByRepairAndEmployee(repair, employee))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("The employee was not found in the repair");
     }
 }
