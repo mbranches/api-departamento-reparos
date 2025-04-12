@@ -19,7 +19,7 @@ public interface RepairMapper {
     @Mapping(source = "repairPieces", target = "pieces")
     RepairPostResponse toRepairPostResponse(Repair repair, List<RepairPiece> repairPieces, List<RepairEmployee> repairEmployees);
 
-    RepairGetResponse totoRepairGetResponse(Repair repair);
+    RepairGetResponse toRepairGetResponse(Repair repair);
 
     List<RepairGetResponse> toRepairGetResponseList(List<Repair> repairList);
 }
