@@ -127,9 +127,9 @@ class RepairEmployeeServiceTest {
     }
 
     @Test
-    @DisplayName("deleteByRepairAndEmployee throws NotFoundException when employee is not found in repair")
+    @DisplayName("deleteByRepairAndEmployee throws NotFoundException when employee is not found in the repair")
     @Order(7)
-    void deleteByRepairAndEmployee_ThrowsNotFoundException_WhenEmployeeIsNotFoundInRepair() {
+    void deleteByRepairAndEmployee_ThrowsNotFoundException_WhenEmployeeIsNotFoundInTheRepair() {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Employee employee = EmployeeUtils.newEmployeeList().getLast();
 
