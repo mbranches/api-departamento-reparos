@@ -50,6 +50,7 @@ public class RepairService {
                 .client(client)
                 .vehicle(vehicle)
                 .totalValue(calculatesTotalValue(repairEmployeesToSave, repairPiecesToSave))
+                .endDate(postRequest.getEndDate())
                 .build();
         
         Repair savedRepair = repository.save(repairToSave);
