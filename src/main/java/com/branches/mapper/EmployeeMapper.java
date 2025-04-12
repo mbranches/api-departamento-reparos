@@ -2,6 +2,7 @@ package com.branches.mapper;
 
 import com.branches.model.Employee;
 import com.branches.request.EmployeePostRequest;
+import com.branches.response.EmployeeByRepairResponse;
 import com.branches.response.EmployeeGetResponse;
 import com.branches.response.EmployeePostResponse;
 import org.mapstruct.Mapper;
@@ -22,5 +23,7 @@ public interface EmployeeMapper {
 
     EmployeePostResponse toEmployeePostResponse(Employee employee);
 
-    EmployeeGetResponse toEmployeeGetResponse(Employee foundEmployee);
+    EmployeeGetResponse toEmployeeGetResponse(Employee employee);
+
+    EmployeeByRepairResponse toEmployeeByRepairResponse(Employee employee);
 }

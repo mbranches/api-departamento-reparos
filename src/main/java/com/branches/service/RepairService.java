@@ -48,6 +48,14 @@ public class RepairService {
                 .orElseThrow(() -> new NotFoundException("Repair not Found"));
     }
 
+    public List<RepairEmployeeByRepairResponse> findEmployeesByRepairId(Long repairId) {
+        Repair repair = findByIdOrThrowsNotFoundException(repairId);
+
+        List<RepairEmployee> response = repairEmployeeService.findAllByRepair(repair);
+
+        return repairEmployeeMapper.toRepairEmployeeByRepairResponseList(response);
+    }
+
     public RepairPostResponse save(RepairPostRequest postRequest) {
         Client client = clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId());
         Vehicle vehicle = vehicleService.findByIdOrThrowsNotFoundException(postRequest.getVehicleId());

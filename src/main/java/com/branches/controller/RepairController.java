@@ -1,8 +1,7 @@
 package com.branches.controller;
 
 import com.branches.request.RepairPostRequest;
-import com.branches.response.RepairGetResponse;
-import com.branches.response.RepairPostResponse;
+import com.branches.response.*;
 import com.branches.service.RepairService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +28,13 @@ public class RepairController {
     @GetMapping("/{id}")
     public ResponseEntity<RepairGetResponse> findById(@PathVariable Long id) {
         RepairGetResponse response = service.findById(id);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{repairId}/employees")
+    public ResponseEntity<List<RepairEmployeeByRepairResponse>> findEmployeesByRepairId(@PathVariable Long repairId){
+        List<RepairEmployeeByRepairResponse> response = service.findEmployeesByRepairId(repairId);
 
         return ResponseEntity.ok(response);
     }
