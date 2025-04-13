@@ -139,7 +139,7 @@ class RepairServiceTest {
     }
 
     @Test
-    @DisplayName("findAllByRepairId returns all repair employees from given repair id when successful")
+    @DisplayName("findEmployeesByRepairId returns all repair employees from given repair id when successful")
     @Order(6)
     void findEmployeesByRepairId_ReturnsAllRepairEmployeesFromGivenRepairId_WhenSuccessful() {
         Repair repair = repairList.getFirst();
@@ -161,9 +161,9 @@ class RepairServiceTest {
     }
 
     @Test
-    @DisplayName("findAllByRepairId returns an empty list when when repair contain no employees")
+    @DisplayName("findEmployeesByRepairId returns an empty list when when repair contain no employees")
     @Order(7)
-    void findAllByRepairId_ReturnsEmptyList_WhenRepairContainNoEmployees() {
+    void findEmployeesByRepairId_ReturnsEmptyList_WhenRepairContainNoEmployees() {
         Repair repair = repairList.getLast();
         Long idToSearch = repair.getId();
 
@@ -179,9 +179,9 @@ class RepairServiceTest {
     }
 
     @Test
-    @DisplayName("findAllByRepairId throws NotFoundException when given id is not found")
+    @DisplayName("findEmployeesByRepairId throws NotFoundException when given id is not found")
     @Order(8)
-    void findAllByRepairId_ThrowsNotFoundException_WhenGivenIdIsNotFound() {
+    void findEmployeesByRepairId_ThrowsNotFoundException_WhenGivenIdIsNotFound() {
         Long randomId = 121123L;
 
         BDDMockito.when(repository.findById(randomId)).thenReturn(Optional.empty());
