@@ -155,7 +155,7 @@ class RepairControllerTest {
     @Test
     @DisplayName("GET /v1/repairs/3/employees returns an empty list when when repair contain no employees")
     @Order(7)
-    void findAllByRepairId_ReturnsEmptyList_WhenRepairContainNoEmployees() throws Exception {
+    void findEmployeesByRepairId_ReturnsEmptyList_WhenRepairContainNoEmployees() throws Exception {
         Repair repairToSearch = RepairUtils.newRepairList().getLast();
         Long idToSearch = repairToSearch.getId();
 
@@ -172,7 +172,7 @@ class RepairControllerTest {
     @Test
     @DisplayName("GET /v1/repairs/121123/employees throws NotFoundException when given id is not found")
     @Order(8)
-    void findAllByRepairId_ThrowsNotFoundException_WhenGivenIdIsNotFound() throws Exception {
+    void findEmployeesByRepairId_ThrowsNotFoundException_WhenGivenIdIsNotFound() throws Exception {
         Long randomId = 121123L;
 
         BDDMockito.when(service.findEmployeesByRepairId(randomId)).thenThrow(new NotFoundException("Repair not Found"));
