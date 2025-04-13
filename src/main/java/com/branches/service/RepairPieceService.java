@@ -1,6 +1,7 @@
 package com.branches.service;
 
 import com.branches.model.Piece;
+import com.branches.model.Repair;
 import com.branches.model.RepairPiece;
 import com.branches.repository.RepairPieceRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,5 +24,9 @@ public class RepairPieceService {
         repairPiece.setPiece(piece);
 
         return repository.save(repairPiece);
+    }
+
+    public List<RepairPiece> findAllByRepair(Repair repair) {
+        return repository.findAllByRepair(repair);
     }
 }

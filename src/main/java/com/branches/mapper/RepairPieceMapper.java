@@ -4,6 +4,7 @@ import com.branches.exception.BadRequestException;
 import com.branches.model.Piece;
 import com.branches.model.RepairPiece;
 import com.branches.request.RepairPieceByRepairPostRequest;
+import com.branches.response.RepairPieceByRepairResponse;
 import com.branches.service.PieceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -33,5 +34,17 @@ public class RepairPieceMapper {
         repairPiece.setTotalValue(piece.getUnitValue() * quantity);
 
         return repairPiece;
+    }
+
+    public RepairPieceByRepairResponse toRepairPieceByRepairResponse(RepairPiece repairPiece) {
+        return RepairPieceByRepairResponse.builder()
+                .piece(repairPiece.getPiece())
+                .quantity(repairPiece.getQuantity())
+                .totalValue(repairPiece.getTotalValue())
+                .build();
+    }
+
+    public List<RepairPieceByRepairResponse> toRepairPieceByRepairResponseList(List<RepairPiece> repairPieceList) {
+        return repairPieceList.stream().map(this::toRepairPieceByRepairResponse).toList();
     }
 }
