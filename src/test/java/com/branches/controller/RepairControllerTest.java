@@ -2,6 +2,7 @@ package com.branches.controller;
 
 import com.branches.exception.BadRequestException;
 import com.branches.exception.NotFoundException;
+import com.branches.model.Employee;
 import com.branches.model.Piece;
 import com.branches.model.Repair;
 import com.branches.request.RepairPostRequest;
@@ -363,5 +364,66 @@ class RepairControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+    @Test
+    @DisplayName("DELETE /v1/repairs/1/employees/1 removes employee from repair when successful")
+    @Order(18)
+    void removesRepairEmployeeById_RemovesEmployeeFromRepair_WhenSuccessful() throws Exception {
+        Repair repair = RepairUtils.newRepairList().getFirst();
+        Long repairId = repair.getId();
+        Employee employee = EmployeeUtils.newEmployeeList().getFirst();
+        Long employeeId = employee.getId();
+
+        BDDMockito.doNothing().when(service).removesRepairEmployeeById(repairId, employeeId);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{repairId}/employees/{employeeId}", repairId, employeeId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("DELETE /v1/repairs/25256595/employees/1 throws NotFoundException when repair is not found")
+    @Order(19)
+    void removesRepairEmployeeById_ThrowsNotFoundException_WhenRepairIsNotFound() throws Exception {
+        Long randomRepairId = 25256595L;
+        Employee employee = EmployeeUtils.newEmployeeList().getFirst();
+        Long employeeId = employee.getId();
+
+        BDDMockito.doThrow(new NotFoundException("Repair not Found")).when(service).removesRepairEmployeeById(randomRepairId, employeeId);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{repairId}/employees/{employeeId}", randomRepairId, employeeId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("DELETE /v1/repairs/1/employees/25256595 throws NotFoundException when employee is not found")
+    @Order(20)
+    void removesRepairEmployeeById_ThrowsNotFoundException_WhenEmployeeIsNotFound() throws Exception {
+        Repair repair = RepairUtils.newRepairList().getFirst();
+        Long repairId = repair.getId();
+        Long randomEmployeeId = 25256595L;
+
+        BDDMockito.doThrow(new NotFoundException("Employee not Found")).when(service).removesRepairEmployeeById(repairId, randomEmployeeId);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{repairId}/employees/{employeeId}", repairId, randomEmployeeId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("DELETE /v1/repairs/1/employees/3 throws NotFoundException when employee is not found in the repair")
+    @Order(21)
+    void removesRepairEmployeeById_ThrowsNotFoundException_WhenEmployeeIsNotFoundInTheRepair() throws Exception {
+        Repair repair = RepairUtils.newRepairList().getFirst();
+        Long repairId = repair.getId();
+        Employee employee = EmployeeUtils.newEmployeeList().getLast();
+        Long employeeId = employee.getId();
+
+        BDDMockito.doThrow(new NotFoundException("The employee was not found in the repair")).when(service).removesRepairEmployeeById(repairId, employeeId);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{repairId}/employees/{employeeId}", repairId, employeeId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }

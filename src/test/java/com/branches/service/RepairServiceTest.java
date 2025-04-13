@@ -47,6 +47,8 @@ class RepairServiceTest {
     private RepairPieceService repairPieceService;
     @Mock
     private RepairEmployeeService repairEmployeeService;
+    @Mock
+    private EmployeeService employeeService;
     private List<Repair> repairList;
     private List<RepairGetResponse> repairGetResponseList;
 
@@ -378,5 +380,76 @@ class RepairServiceTest {
         Assertions.assertThatThrownBy(() -> service.deleteById(randomId))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("Repair not Found");
+    }
+
+    @Test
+    @DisplayName("removesRepairEmployeeById removes employee from repair when successful")
+    @Order(20)
+    void removesRepairEmployeeById_RemovesEmployeeFromRepair_WhenSuccessful() {
+        Repair repair = RepairUtils.newRepairList().getFirst();
+        Long repairId = repair.getId();
+
+        Employee employee = EmployeeUtils.newEmployeeList().getFirst();
+        Long employeeId = employee.getId();
+
+        BDDMockito.when(repository.findById(repairId)).thenReturn(Optional.of(repair));
+        BDDMockito.when(employeeService.findByIdOrNotFoundException(employeeId)).thenReturn(employee);
+        BDDMockito.doNothing().when(repairEmployeeService).deleteByRepairAndEmployee(repair, employee);
+
+        Assertions.assertThatCode(() -> service.removesRepairEmployeeById(repairId, employeeId))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("removesRepairEmployeeById throws NotFoundException when repair is not found")
+    @Order(21)
+    void removesRepairEmployeeById_ThrowsNotFoundException_WhenRepairIsNotFound() {
+        Long randomRepairId = 5514121L;
+
+        Employee employee = EmployeeUtils.newEmployeeList().getFirst();
+        Long employeeId = employee.getId();
+
+
+        BDDMockito.when(repository.findById(randomRepairId)).thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> service.removesRepairEmployeeById(randomRepairId, employeeId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Repair not Found");
+    }
+
+    @Test
+    @DisplayName("removesRepairEmployeeById throws NotFoundException when employee is not found")
+    @Order(22)
+    void removesRepairEmployeeById_ThrowsNotFoundException_WhenEmployeeIsNotFound() {
+        Repair repair = RepairUtils.newRepairList().getFirst();
+        Long repairId = repair.getId();
+
+        Long randomEmployeeId = 5514121L;
+
+        BDDMockito.when(repository.findById(repairId)).thenReturn(Optional.of(repair));
+        BDDMockito.when(employeeService.findByIdOrNotFoundException(randomEmployeeId)).thenThrow(new NotFoundException("Employee not Found"));
+
+        Assertions.assertThatThrownBy(() -> service.removesRepairEmployeeById(repairId, randomEmployeeId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Employee not Found");
+    }
+
+    @Test
+    @DisplayName("removesRepairEmployeeById throws NotFoundException when employee is not found in the repair")
+    @Order(23)
+    void removesRepairEmployeeById_ThrowsNotFoundException_WhenEmployeeIsNotFoundInTheRepair() {
+        Repair repair = RepairUtils.newRepairList().getFirst();
+        Long repairId = repair.getId();
+
+        Employee employee = EmployeeUtils.newEmployeeList().getLast();
+        Long employeeId = employee.getId();
+
+        BDDMockito.when(repository.findById(repairId)).thenReturn(Optional.of(repair));
+        BDDMockito.when(employeeService.findByIdOrNotFoundException(employeeId)).thenReturn(employee);
+        BDDMockito.doThrow(new NotFoundException("The employee was not found in the repair")).when(repairEmployeeService).deleteByRepairAndEmployee(repair, employee);
+
+        Assertions.assertThatCode(() -> service.removesRepairEmployeeById(repairId, employeeId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("The employee was not found in the repair");
     }
 }
