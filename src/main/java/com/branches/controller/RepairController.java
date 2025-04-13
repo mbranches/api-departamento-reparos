@@ -53,7 +53,7 @@ public class RepairController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{repairId}/employee/{employeeId}")
+    @DeleteMapping("/{repairId}/employees/{employeeId}")
     public ResponseEntity<Void> removesRepairEmployeeById(@PathVariable Long repairId, @PathVariable Long employeeId) {
         service.removesRepairEmployeeById(repairId, employeeId);
 
