@@ -66,7 +66,7 @@ public class RepairUtils {
     public static RepairPostResponse newRepairPostResponse() {
         LocalDate date = LocalDate.of(2025, 2, 12);
 
-        RepairPieceByRepairPostResponse repairPieceByRepairPostResponse = RepairPieceUtils.newRepairPieceByRepairPostResponse();
+        RepairPieceByRepairResponse repairPieceByRepairPostResponse = RepairPieceUtils.newRepairPieceByRepairPostResponse();
         Piece piece = repairPieceByRepairPostResponse.getPiece();
         piece.setStock(piece.getStock() - repairPieceByRepairPostResponse.getQuantity());
 
@@ -79,7 +79,7 @@ public class RepairUtils {
                 .endDate(date)
                 .build();
 
-        List<RepairPieceByRepairPostResponse> pieces = response.getPieces();
+        List<RepairPieceByRepairResponse> pieces = response.getPieces();
         double totalPieces = pieces.stream().mapToDouble(repair -> repair.getPiece().getUnitValue() * repair.getQuantity()).sum();
 
         List<RepairEmployeeByRepairResponse> employees = response.getEmployees();

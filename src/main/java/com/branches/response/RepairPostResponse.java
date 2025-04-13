@@ -12,7 +12,7 @@ public class RepairPostResponse {
     private Long id;
     private ClientByRepairPostResponse client;
     private VehicleByRepairPostResponse vehicle;
-    private List<RepairPieceByRepairPostResponse> pieces;
+    private List<RepairPieceByRepairResponse> pieces;
     private List<RepairEmployeeByRepairResponse> employees;
     private double totalValue;
     private LocalDate endDate;
