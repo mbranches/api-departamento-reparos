@@ -50,6 +50,8 @@ class RepairServiceTest {
     private RepairEmployeeService repairEmployeeService;
     @Mock
     private EmployeeService employeeService;
+    @Mock
+    private PieceService pieceService;
     private List<Repair> repairList;
     private List<RepairGetResponse> repairGetResponseList;
 
@@ -505,5 +507,76 @@ class RepairServiceTest {
         Assertions.assertThatCode(() -> service.removesRepairEmployeeById(repairId, employeeId))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("The employee was not found in the repair");
+    }
+
+    @Test
+    @DisplayName("removesRepairPieceById removes piece from repair when successful")
+    @Order(27)
+    void removesRepairPieceById_RemovesPieceFromRepair_WhenSuccessful() {
+        Repair repair = RepairUtils.newRepairList().getFirst();
+        Long repairId = repair.getId();
+
+        Piece piece = PieceUtils.newPieceList().getFirst();
+        Long pieceId = piece.getId();
+
+        BDDMockito.when(repository.findById(repairId)).thenReturn(Optional.of(repair));
+        BDDMockito.when(pieceService.findByIdOrThrowsNotFoundException(pieceId)).thenReturn(piece);
+        BDDMockito.doNothing().when(repairPieceService).deleteByRepairAndPiece(repair, piece);
+
+        Assertions.assertThatCode(() -> service.removesRepairPieceById(repairId, pieceId))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("removesRepairPieceById throws NotFoundException when repair is not found")
+    @Order(28)
+    void removesRepairPieceById_ThrowsNotFoundException_WhenRepairIsNotFound() {
+        Long randomRepairId = 5514121L;
+
+        Piece piece = PieceUtils.newPieceList().getFirst();
+        Long pieceId = piece.getId();
+
+
+        BDDMockito.when(repository.findById(randomRepairId)).thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> service.removesRepairPieceById(randomRepairId, pieceId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Repair not Found");
+    }
+
+    @Test
+    @DisplayName("removesRepairPieceById throws NotFoundException when piece is not found")
+    @Order(29)
+    void removesRepairPieceById_ThrowsNotFoundException_WhenPieceIsNotFound() {
+        Repair repair = RepairUtils.newRepairList().getFirst();
+        Long repairId = repair.getId();
+
+        Long randomPieceId = 5514121L;
+
+        BDDMockito.when(repository.findById(repairId)).thenReturn(Optional.of(repair));
+        BDDMockito.when(pieceService.findByIdOrThrowsNotFoundException(randomPieceId)).thenThrow(new NotFoundException("Piece not Found"));
+
+        Assertions.assertThatThrownBy(() -> service.removesRepairPieceById(repairId, randomPieceId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Piece not Found");
+    }
+
+    @Test
+    @DisplayName("removesRepairPieceById throws NotFoundException when piece is not found in the repair")
+    @Order(30)
+    void removesRepairPieceById_ThrowsNotFoundException_WhenPieceIsNotFoundInTheRepair() {
+        Repair repair = RepairUtils.newRepairList().getFirst();
+        Long repairId = repair.getId();
+
+        Piece piece = PieceUtils.newPieceList().getLast();
+        Long pieceId = piece.getId();
+
+        BDDMockito.when(repository.findById(repairId)).thenReturn(Optional.of(repair));
+        BDDMockito.when(pieceService.findByIdOrThrowsNotFoundException(pieceId)).thenReturn(piece);
+        BDDMockito.doThrow(new NotFoundException("The piece was not found in the repair")).when(repairPieceService).deleteByRepairAndPiece(repair, piece);
+
+        Assertions.assertThatCode(() -> service.removesRepairPieceById(repairId, pieceId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("The piece was not found in the repair");
     }
 }

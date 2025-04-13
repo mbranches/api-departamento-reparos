@@ -415,6 +415,7 @@ class RepairControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
     }
+
     @Test
     @DisplayName("DELETE /v1/repairs/1/employees/1 removes employee from repair when successful")
     @Order(21)
@@ -481,6 +482,77 @@ class RepairControllerTest {
         String expectedResponse = fileUtils.readResourceFile("repair/delete-repairEmployee-invalid-repairEmployee-404.json");
 
         mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{repairId}/employees/{employeeId}", repairId, employeeId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
+    @Test
+    @DisplayName("DELETE /v1/repairs/1/pieces/1 removes piece from repair when successful")
+    @Order(21)
+    void removesRepairPieceById_RemovesPieceFromRepair_WhenSuccessful() throws Exception {
+        Repair repair = RepairUtils.newRepairList().getFirst();
+        Long repairId = repair.getId();
+        Piece piece = PieceUtils.newPieceList().getFirst();
+        Long pieceId = piece.getId();
+
+        BDDMockito.doNothing().when(service).removesRepairPieceById(repairId, pieceId);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{repairId}/pieces/{pieceId}", repairId, pieceId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("DELETE /v1/repairs/25256595/pieces/1 throws NotFoundException when repair is not found")
+    @Order(22)
+    void removesRepairPieceById_ThrowsNotFoundException_WhenRepairIsNotFound() throws Exception {
+        Long randomRepairId = 25256595L;
+        Piece piece = PieceUtils.newPieceList().getFirst();
+        Long pieceId = piece.getId();
+
+        BDDMockito.doThrow(new NotFoundException("Repair not Found")).when(service).removesRepairPieceById(randomRepairId, pieceId);
+
+        String expectedResponse = fileUtils.readResourceFile("repair/delete-repairPiece-invalid-repair-404.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{repairId}/pieces/{pieceId}", randomRepairId, pieceId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
+    @Test
+    @DisplayName("DELETE /v1/repairs/1/pieces/25256595 throws NotFoundException when piece is not found")
+    @Order(23)
+    void removesRepairPieceById_ThrowsNotFoundException_WhenPieceIsNotFound() throws Exception {
+        Repair repair = RepairUtils.newRepairList().getFirst();
+        Long repairId = repair.getId();
+        Long randomPieceId = 25256595L;
+
+        BDDMockito.doThrow(new NotFoundException("Piece not Found")).when(service).removesRepairPieceById(repairId, randomPieceId);
+
+        String expectedResponse = fileUtils.readResourceFile("repair/delete-repairPiece-invalid-piece-404.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{repairId}/pieces/{pieceId}", repairId, randomPieceId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
+    @Test
+    @DisplayName("DELETE /v1/repairs/1/pieces/3 throws NotFoundException when piece is not found in the repair")
+    @Order(24)
+    void removesRepairPieceById_ThrowsNotFoundException_WhenPieceIsNotFoundInTheRepair() throws Exception {
+        Repair repair = RepairUtils.newRepairList().getFirst();
+        Long repairId = repair.getId();
+        Piece piece = PieceUtils.newPieceList().getLast();
+        Long pieceId = piece.getId();
+
+        BDDMockito.doThrow(new NotFoundException("The piece was not found in the repair")).when(service).removesRepairPieceById(repairId, pieceId);
+
+        String expectedResponse = fileUtils.readResourceFile("repair/delete-repairPiece-invalid-repairPiece-404.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{repairId}/pieces/{pieceId}", repairId, pieceId))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
