@@ -86,6 +86,7 @@ public class EmployeeUtils {
         Category category = CategoryUtils.newCategoryToSave();
 
         return EmployeeByRepairResponse.builder()
+                .id(4L)
                 .name("Chispirito")
                 .lastName("Costa")
                 .category(category)
@@ -96,6 +97,10 @@ public class EmployeeUtils {
         Category category = CategoryUtils.newCategoryToSave();
 
         return EmployeeByRepairResponse.builder()
-                .name("Marcus").lastName("Branches").category(category).build();
+                .id(1L)
+                .name("Marcus")
+                .lastName("Branches")
+                .category(category)
+                .build();
     }
 }
