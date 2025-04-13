@@ -47,7 +47,7 @@ public class RepairEmployeeUtils {
         int hoursWorked = 1;
 
         return RepairEmployeeByRepairResponse.builder()
-                .employee(EmployeeUtils.newEmployeeByRepairPostResponse())
+                .employee(EmployeeUtils.newEmployeeByRepairGetEmployees())
                 .hoursWorked(hoursWorked)
                 .totalValue(employee.getCategory().getHourlyPrice() * hoursWorked)
                 .build();
