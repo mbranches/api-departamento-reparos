@@ -391,9 +391,13 @@ class RepairControllerTest {
 
         BDDMockito.doThrow(new NotFoundException("Repair not Found")).when(service).removesRepairEmployeeById(randomRepairId, employeeId);
 
+        String expectedResponse = fileUtils.readResourceFile("repair/delete-repairEmployee-invalid-repair-404.json");
+
         mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{repairId}/employees/{employeeId}", randomRepairId, employeeId))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
     }
 
     @Test
@@ -406,9 +410,12 @@ class RepairControllerTest {
 
         BDDMockito.doThrow(new NotFoundException("Employee not Found")).when(service).removesRepairEmployeeById(repairId, randomEmployeeId);
 
+        String expectedResponse = fileUtils.readResourceFile("repair/delete-repairEmployee-invalid-employee-404.json");
+
         mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{repairId}/employees/{employeeId}", repairId, randomEmployeeId))
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
     }
 
     @Test
@@ -422,8 +429,11 @@ class RepairControllerTest {
 
         BDDMockito.doThrow(new NotFoundException("The employee was not found in the repair")).when(service).removesRepairEmployeeById(repairId, employeeId);
 
+        String expectedResponse = fileUtils.readResourceFile("repair/delete-repairEmployee-invalid-repairEmployee-404.json");
+
         mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{repairId}/employees/{employeeId}", repairId, employeeId))
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
     }
 }
