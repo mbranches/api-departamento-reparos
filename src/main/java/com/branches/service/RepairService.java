@@ -33,6 +33,7 @@ public class RepairService {
     private final RepairPieceService repairPieceService;
     private final RepairEmployeeService repairEmployeeService;
     private final EmployeeService employeeService;
+    private final PieceService pieceService;
 
     public List<RepairGetResponse> findAll(LocalDate dateRepair) {
         List<Repair> response = dateRepair == null ? repository.findAll() : repository.findByEndDateGreaterThanEqual(dateRepair);
@@ -135,6 +136,15 @@ public class RepairService {
         Employee employee = employeeService.findByIdOrThrowsNotFoundException(employeeId);
 
         repairEmployeeService.deleteByRepairAndEmployee(repair, employee);
+
+        updateTotalValue(repair);
+    }
+
+    public void removesRepairPieceById(Long repairId, Long pieceId) {
+        Repair repair = findByIdOrThrowsNotFoundException(repairId);
+        Piece piece = pieceService.findByIdOrThrowsNotFoundException(pieceId);
+
+        repairPieceService.deleteByRepairAndPiece(repair, piece);
 
         updateTotalValue(repair);
     }

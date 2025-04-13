@@ -1,5 +1,6 @@
 package com.branches.service;
 
+import com.branches.exception.NotFoundException;
 import com.branches.model.Piece;
 import com.branches.model.Repair;
 import com.branches.model.RepairPiece;
@@ -15,6 +16,15 @@ public class RepairPieceService {
     private final RepairPieceRepository repository;
     private final PieceService pieceService;
 
+    public List<RepairPiece> findAllByRepair(Repair repair) {
+        return repository.findAllByRepair(repair);
+    }
+
+    public RepairPiece findByRepairAndPieceOrThrowsNotFoundException(Repair repair, Piece piece) {
+        return repository.findByRepairAndPiece(repair, piece)
+                .orElseThrow(() -> new NotFoundException("The piece was not found in the repair"));
+    }
+
     public List<RepairPiece> saveAll(List<RepairPiece> repairPiecesToSave) {
         return repairPiecesToSave.stream().map(this::save).toList();
     }
@@ -26,7 +36,7 @@ public class RepairPieceService {
         return repository.save(repairPiece);
     }
 
-    public List<RepairPiece> findAllByRepair(Repair repair) {
-        return repository.findAllByRepair(repair);
+    public void deleteByRepairAndPiece(Repair repair, Piece piece) {
+        repository.delete(findByRepairAndPieceOrThrowsNotFoundException(repair, piece));
     }
 }
