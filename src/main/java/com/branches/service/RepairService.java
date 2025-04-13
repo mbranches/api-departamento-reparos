@@ -11,6 +11,7 @@ import com.branches.request.RepairPieceByRepairPostRequest;
 import com.branches.request.RepairPostRequest;
 import com.branches.response.RepairEmployeeByRepairResponse;
 import com.branches.response.RepairGetResponse;
+import com.branches.response.RepairPieceByRepairResponse;
 import com.branches.response.RepairPostResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -53,9 +54,25 @@ public class RepairService {
     public List<RepairEmployeeByRepairResponse> findEmployeesByRepairId(Long repairId) {
         Repair repair = findByIdOrThrowsNotFoundException(repairId);
 
-        List<RepairEmployee> response = repairEmployeeService.findAllByRepair(repair);
+        List<RepairEmployee> response = findEmployeesByRepair(repair);
 
         return repairEmployeeMapper.toRepairEmployeeByRepairResponseList(response);
+    }
+
+    public List<RepairEmployee> findEmployeesByRepair(Repair repair) {
+        return repairEmployeeService.findAllByRepair(repair);
+    }
+
+    public List<RepairPieceByRepairResponse> findPiecesByRepairId(Long repairId) {
+        Repair repair = findByIdOrThrowsNotFoundException(repairId);
+
+        List<RepairPiece> response = findPiecesByRepair(repair);
+
+        return repairPieceMapper.toRepairPieceByRepairResponseList(response);
+    }
+
+    private List<RepairPiece> findPiecesByRepair(Repair repair) {
+        return repairPieceService.findAllByRepair(repair);
     }
 
     public RepairPostResponse save(RepairPostRequest postRequest) {
@@ -118,5 +135,16 @@ public class RepairService {
         Employee employee = employeeService.findByIdOrNotFoundException(employeeId);
 
         repairEmployeeService.deleteByRepairAndEmployee(repair, employee);
+
+        updateTotalValue(repair);
+    }
+
+    public void updateTotalValue(Repair repair) {
+        List<RepairEmployee> repairEmployees = findEmployeesByRepair(repair);
+        List<RepairPiece> repairPieces = findPiecesByRepair(repair);
+
+        repair.setTotalValue(calculatesTotalValue(repairEmployees, repairPieces));
+
+        repository.save(repair);
     }
 }
