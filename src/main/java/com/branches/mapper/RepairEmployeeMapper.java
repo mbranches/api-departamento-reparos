@@ -26,7 +26,7 @@ public class RepairEmployeeMapper {
     }
 
     public RepairEmployee toRepairEmployee(RepairEmployeeByRepairPostRequest postRequest) {
-        Employee employee = employeeService.findByIdOrNotFoundException(postRequest.getEmployeeId());
+        Employee employee = employeeService.findByIdOrThrowsNotFoundException(postRequest.getEmployeeId());
         int hoursWorked = postRequest.getHoursWorked();
 
         RepairEmployee repairEmployee = new RepairEmployee();

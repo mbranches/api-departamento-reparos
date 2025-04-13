@@ -55,18 +55,18 @@ public class EmployeeService {
     }
 
     public EmployeeGetResponse findById(Long id) {
-        Employee foundEmployee = findByIdOrNotFoundException(id);
+        Employee foundEmployee = findByIdOrThrowsNotFoundException(id);
 
         return mapper.toEmployeeGetResponse(foundEmployee);
     }
 
-    public Employee findByIdOrNotFoundException(Long id) {
+    public Employee findByIdOrThrowsNotFoundException(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Employee not Found"));
     }
 
     public void deleteById(Long id) {
-        Employee exceptionToDelete = findByIdOrNotFoundException(id);
+        Employee exceptionToDelete = findByIdOrThrowsNotFoundException(id);
 
         repository.delete(exceptionToDelete);
     }

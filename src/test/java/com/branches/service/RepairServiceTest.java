@@ -447,7 +447,7 @@ class RepairServiceTest {
         Long employeeId = employee.getId();
 
         BDDMockito.when(repository.findById(repairId)).thenReturn(Optional.of(repair));
-        BDDMockito.when(employeeService.findByIdOrNotFoundException(employeeId)).thenReturn(employee);
+        BDDMockito.when(employeeService.findByIdOrThrowsNotFoundException(employeeId)).thenReturn(employee);
         BDDMockito.doNothing().when(repairEmployeeService).deleteByRepairAndEmployee(repair, employee);
 
         Assertions.assertThatCode(() -> service.removesRepairEmployeeById(repairId, employeeId))
@@ -481,7 +481,7 @@ class RepairServiceTest {
         Long randomEmployeeId = 5514121L;
 
         BDDMockito.when(repository.findById(repairId)).thenReturn(Optional.of(repair));
-        BDDMockito.when(employeeService.findByIdOrNotFoundException(randomEmployeeId)).thenThrow(new NotFoundException("Employee not Found"));
+        BDDMockito.when(employeeService.findByIdOrThrowsNotFoundException(randomEmployeeId)).thenThrow(new NotFoundException("Employee not Found"));
 
         Assertions.assertThatThrownBy(() -> service.removesRepairEmployeeById(repairId, randomEmployeeId))
                 .isInstanceOf(NotFoundException.class)
@@ -499,7 +499,7 @@ class RepairServiceTest {
         Long employeeId = employee.getId();
 
         BDDMockito.when(repository.findById(repairId)).thenReturn(Optional.of(repair));
-        BDDMockito.when(employeeService.findByIdOrNotFoundException(employeeId)).thenReturn(employee);
+        BDDMockito.when(employeeService.findByIdOrThrowsNotFoundException(employeeId)).thenReturn(employee);
         BDDMockito.doThrow(new NotFoundException("The employee was not found in the repair")).when(repairEmployeeService).deleteByRepairAndEmployee(repair, employee);
 
         Assertions.assertThatCode(() -> service.removesRepairEmployeeById(repairId, employeeId))

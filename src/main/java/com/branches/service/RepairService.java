@@ -132,7 +132,7 @@ public class RepairService {
 
     public void removesRepairEmployeeById(Long repairId, Long employeeId) {
         Repair repair = findByIdOrThrowsNotFoundException(repairId);
-        Employee employee = employeeService.findByIdOrNotFoundException(employeeId);
+        Employee employee = employeeService.findByIdOrThrowsNotFoundException(employeeId);
 
         repairEmployeeService.deleteByRepairAndEmployee(repair, employee);
 
