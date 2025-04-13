@@ -1,0 +1,12 @@
+[
+  {
+    "piece": {
+      "id": 1,
+      "name": "Óleo de motor",
+      "unitValue": 50,
+      "stock": 50
+    },
+    "quantity": 5,
+    "totalValue": 250
+  }
+]

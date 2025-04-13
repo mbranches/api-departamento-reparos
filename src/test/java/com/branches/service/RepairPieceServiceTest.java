@@ -2,9 +2,11 @@ package com.branches.service;
 
 import com.branches.exception.BadRequestException;
 import com.branches.model.Piece;
+import com.branches.model.Repair;
 import com.branches.model.RepairPiece;
 import com.branches.repository.RepairPieceRepository;
 import com.branches.utils.RepairPieceUtils;
+import com.branches.utils.RepairUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,8 +29,41 @@ class RepairPieceServiceTest {
     private PieceService pieceService;
 
     @Test
-    @DisplayName("saveAll returns saved RepairPieces when successful")
+    @DisplayName("findAllByRepair returns all repair pieces from given repair when successful")
     @Order(1)
+    void findAllByRepair_ReturnsAllRepairPiecesFromGivenRepair_WhenSuccessful() {
+        Repair repairToSearch = RepairUtils.newRepairList().getFirst();
+        List<RepairPiece> expectedResponse = List.of(RepairPieceUtils.newRepairPieceSaved());
+
+        BDDMockito.when(repository.findAllByRepair(repairToSearch)).thenReturn(expectedResponse);
+
+        List<RepairPiece> response = service.findAllByRepair(repairToSearch);
+
+        Assertions.assertThat(response)
+                .isNotNull()
+                .isNotEmpty()
+                .containsExactlyElementsOf(expectedResponse);
+    }
+
+    @Test
+    @DisplayName("findAllByRepair returns an empty list when when given repair contain no pieces")
+    @Order(2)
+    void findAllByRepair_ReturnsEmptyList_WhenGivenRepairContainNoPieces() {
+        Repair repairToSearch = RepairUtils.newRepairList().getLast();
+
+        BDDMockito.when(repository.findAllByRepair(repairToSearch)).thenReturn(Collections.emptyList());
+
+        List<RepairPiece> response = service.findAllByRepair(repairToSearch);
+
+        Assertions.assertThat(response)
+                .isNotNull()
+                .isEmpty();
+    }
+
+
+    @Test
+    @DisplayName("saveAll returns saved RepairPieces when successful")
+    @Order(3)
     void saveAll_ReturnsSavedRepairPieces_WhenSuccessful() {
         RepairPiece repairPieceToSave = RepairPieceUtils.newRepairPiece();
         List<RepairPiece> repairPieceList = List.of(repairPieceToSave);
@@ -56,7 +92,7 @@ class RepairPieceServiceTest {
 
     @Test
     @DisplayName("saveAll throws BadRequestException when quantity is greater than piece stock")
-    @Order(2)
+    @Order(4)
     void saveAll_ThrowsBadRequestException_WhenQuantityIsGreaterThanPieceStock() {
         RepairPiece repairPieceToSave = RepairPieceUtils.newRepairPiece();
         repairPieceToSave.setQuantity(212131);
@@ -77,7 +113,7 @@ class RepairPieceServiceTest {
 
     @Test
     @DisplayName("save returns saved RepairPieces when successful")
-    @Order(3)
+    @Order(5)
     void save_ReturnsSavedRepairPieces_WhenSuccessful() {
         RepairPiece repairPieceToSave = RepairPieceUtils.newRepairPiece();
 
@@ -104,7 +140,7 @@ class RepairPieceServiceTest {
 
     @Test
     @DisplayName("save throws BadRequestException when quantity is greater than piece stock")
-    @Order(4)
+    @Order(6)
     void save_ThrowsBadRequestException_WhenQuantityIsGreaterThanPieceStock() {
         RepairPiece repairPieceToSave = RepairPieceUtils.newRepairPiece();
         repairPieceToSave.setQuantity(212131);
