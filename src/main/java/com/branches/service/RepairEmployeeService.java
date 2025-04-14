@@ -1,6 +1,5 @@
 package com.branches.service;
 
-import com.branches.exception.BadRequestException;
 import com.branches.exception.NotFoundException;
 import com.branches.model.Employee;
 import com.branches.model.Repair;
@@ -25,8 +24,8 @@ public class RepairEmployeeService {
                 .orElseThrow(() -> new NotFoundException("The employee was not found in the repair"));
     }
 
-    public List<RepairEmployee> saveAll(List<RepairEmployee> repairPiecesToSave) {
-        return repository.saveAll(repairPiecesToSave);
+    public List<RepairEmployee> saveAll(List<RepairEmployee> repairEmployeesToSave) {
+        return repository.saveAll(repairEmployeesToSave);
     }
 
     public void deleteByRepairAndEmployee(Repair repair, Employee employee) {
