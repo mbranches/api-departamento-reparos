@@ -13,6 +13,7 @@ import com.branches.response.RepairEmployeeByRepairResponse;
 import com.branches.response.RepairGetResponse;
 import com.branches.response.RepairPieceByRepairResponse;
 import com.branches.response.RepairPostResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -76,6 +77,14 @@ public class RepairService {
         return repairPieceService.findAllByRepair(repair);
     }
 
+    public List<RepairGetResponse> findAllByClientId(Long clientId) {
+        Client client = clientService.findByIdOrThrowsNotFoundException(clientId);
+
+        List<Repair> response = repository.findAllByClient(client);
+
+        return mapper.toRepairGetResponseList(response);
+    }
+
     public RepairPostResponse save(RepairPostRequest postRequest) {
         Client client = clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId());
         Vehicle vehicle = vehicleService.findByIdOrThrowsNotFoundException(postRequest.getVehicleId());
@@ -92,7 +101,7 @@ public class RepairService {
                 .totalValue(calculatesTotalValue(repairEmployeesToSave, repairPiecesToSave))
                 .endDate(postRequest.getEndDate())
                 .build();
-        
+
         Repair savedRepair = repository.save(repairToSave);
 
         for (RepairPiece repairPiece : repairPiecesToSave) {
@@ -115,14 +124,6 @@ public class RepairService {
         double totalValuePieces = pieces.stream().mapToDouble(RepairPiece::getTotalValue).sum();
 
         return totalValueEmployees + totalValuePieces;
-    }
-
-    public List<RepairGetResponse> findAllByClientId(Long clientId) {
-        Client client = clientService.findByIdOrThrowsNotFoundException(clientId);
-
-        List<Repair> response = repository.findAllByClient(client);
-
-        return mapper.toRepairGetResponseList(response);
     }
 
     public void deleteById(Long id) {
