@@ -1,5 +1,6 @@
 package com.branches.controller;
 
+import com.branches.request.RepairEmployeeByRepairPostRequest;
 import com.branches.request.RepairPostRequest;
 import com.branches.response.*;
 import com.branches.service.RepairService;
@@ -49,6 +50,13 @@ public class RepairController {
     @PostMapping
     public ResponseEntity<RepairPostResponse> save(@Valid @RequestBody RepairPostRequest postRequest) {
         RepairPostResponse response = service.save(postRequest);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/{repairId}/employees")
+    public ResponseEntity<List<RepairEmployeeByRepairResponse>> addEmployee(@PathVariable Long repairId, @Valid @RequestBody List<RepairEmployeeByRepairPostRequest> postRequests) {
+        List<RepairEmployeeByRepairResponse> response = service.addEmployee(repairId, postRequests);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

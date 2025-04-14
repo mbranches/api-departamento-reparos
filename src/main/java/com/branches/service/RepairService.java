@@ -13,7 +13,6 @@ import com.branches.response.RepairEmployeeByRepairResponse;
 import com.branches.response.RepairGetResponse;
 import com.branches.response.RepairPieceByRepairResponse;
 import com.branches.response.RepairPostResponse;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -159,5 +158,38 @@ public class RepairService {
         repair.setTotalValue(calculatesTotalValue(repairEmployees, repairPieces));
 
         repository.save(repair);
+    }
+
+    @Transactional
+    public List<RepairEmployeeByRepairResponse> addEmployee(Long repairId, List<RepairEmployeeByRepairPostRequest> postRequestList) {
+        Repair repair = findByIdOrThrowsNotFoundException(repairId);
+
+        List<RepairEmployee> repairEmployeeToSaveList = repairEmployeeMapper.toRepairEmployeeList(postRequestList);
+
+        List<RepairEmployee> employees = repairEmployeeService.findAllByRepair(repair);
+
+        for (RepairEmployee repairEmployeeToSave : repairEmployeeToSaveList) {
+            repairEmployeeToSave.setRepair(repair);
+            repairEmployeeToSave.setId(
+                    new RepairEmployeeKey(repairId, repairEmployeeToSave.getEmployee().getId())
+            );
+            Category category = repairEmployeeToSave.getEmployee().getCategory();
+
+            if (employees.contains(repairEmployeeToSave)) {
+                RepairEmployee repairEmployeeToUpdate = employees.get(employees.indexOf(repairEmployeeToSave));
+
+                repairEmployeeToUpdate.setHoursWorked(repairEmployeeToUpdate.getHoursWorked() + repairEmployeeToSave.getHoursWorked());
+                repairEmployeeToUpdate.setTotalValue(category.getHourlyPrice() * repairEmployeeToUpdate.getHoursWorked());
+            } else {
+                repairEmployeeToSave.setTotalValue(category.getHourlyPrice() * repairEmployeeToSave.getHoursWorked());
+                employees.add(repairEmployeeToSave);
+            }
+        }
+
+        List<RepairEmployee> repairEmployeesSaved = repairEmployeeService.saveAll(employees);
+
+        updateTotalValue(repair);
+
+        return repairEmployeeMapper.toRepairEmployeeByRepairResponseList(repairEmployeesSaved);
     }
 }
