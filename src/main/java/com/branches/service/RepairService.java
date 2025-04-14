@@ -16,6 +16,7 @@ import com.branches.response.RepairPostResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -85,6 +86,7 @@ public class RepairService {
         return mapper.toRepairGetResponseList(response);
     }
 
+    @Transactional
     public RepairPostResponse save(RepairPostRequest postRequest) {
         Client client = clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId());
         Vehicle vehicle = vehicleService.findByIdOrThrowsNotFoundException(postRequest.getVehicleId());
