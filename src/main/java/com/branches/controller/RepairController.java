@@ -1,6 +1,7 @@
 package com.branches.controller;
 
 import com.branches.request.RepairEmployeeByRepairPostRequest;
+import com.branches.request.RepairPieceByRepairPostRequest;
 import com.branches.request.RepairPostRequest;
 import com.branches.response.*;
 import com.branches.service.RepairService;
@@ -57,6 +58,13 @@ public class RepairController {
     @PostMapping("/{repairId}/employees")
     public ResponseEntity<List<RepairEmployeeByRepairResponse>> addEmployee(@PathVariable Long repairId, @Valid @RequestBody List<RepairEmployeeByRepairPostRequest> postRequests) {
         List<RepairEmployeeByRepairResponse> response = service.addEmployee(repairId, postRequests);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/{repairId}/pieces")
+    public ResponseEntity<List<RepairPieceByRepairResponse>> addPiece(@PathVariable Long repairId, @Valid @RequestBody List<RepairPieceByRepairPostRequest> postRequests) {
+        List<RepairPieceByRepairResponse> response = service.addPiece(repairId, postRequests);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

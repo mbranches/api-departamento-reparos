@@ -29,11 +29,29 @@ public class RepairPieceService {
         return repairPiecesToSave.stream().map(this::save).toList();
     }
 
-    public RepairPiece save(RepairPiece repairPiece) {
-        Piece piece = pieceService.removesStock(repairPiece.getPiece(), repairPiece.getQuantity());
-        repairPiece.setPiece(piece);
+    public RepairPiece save(RepairPiece repairPieceToSave) {
+        Piece piece;
 
-        return repository.save(repairPiece);
+        List<RepairPiece> repairPieces = findAllByRepair(repairPieceToSave.getRepair());
+
+        if (repairPieces.contains(repairPieceToSave)) {
+            RepairPiece repairPieceToUpdate = repairPieces.get(repairPieces.indexOf(repairPieceToSave));
+
+            int quantityToRemove = repairPieceToSave.getQuantity();
+            piece = pieceService.removesStock(repairPieceToSave.getPiece(), quantityToRemove);
+
+            int totalQuantity = repairPieceToSave.getQuantity() + repairPieceToUpdate.getQuantity();
+
+            repairPieceToSave.setQuantity(totalQuantity);
+            repairPieceToSave.setTotalValue(repairPieceToSave.getPiece().getUnitValue() * totalQuantity);
+            repairPieceToSave.setPiece(piece);
+        } else {
+            piece = pieceService.removesStock(repairPieceToSave.getPiece(), repairPieceToSave.getQuantity());
+
+            repairPieceToSave.setPiece(piece);
+        }
+
+        return repository.save(repairPieceToSave);
     }
 
     public void deleteByRepairAndPiece(Repair repair, Piece piece) {

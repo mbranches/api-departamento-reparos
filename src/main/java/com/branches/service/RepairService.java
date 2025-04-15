@@ -13,11 +13,13 @@ import com.branches.response.RepairEmployeeByRepairResponse;
 import com.branches.response.RepairGetResponse;
 import com.branches.response.RepairPieceByRepairResponse;
 import com.branches.response.RepairPostResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -120,6 +122,58 @@ public class RepairService {
         return mapper.toRepairPostResponse(savedRepair, repairPieces, repairEmployees);
     }
 
+    @Transactional
+    public List<RepairEmployeeByRepairResponse> addEmployee(Long repairId, List<RepairEmployeeByRepairPostRequest> postRequestList) {
+        Repair repair = findByIdOrThrowsNotFoundException(repairId);
+
+        List<RepairEmployee> repairEmployeeToSaveList = repairEmployeeMapper.toRepairEmployeeList(postRequestList);
+
+        List<RepairEmployee> employees = repairEmployeeService.findAllByRepair(repair);
+
+        for (RepairEmployee repairEmployeeToSave : repairEmployeeToSaveList) {
+            repairEmployeeToSave.setRepair(repair);
+            repairEmployeeToSave.setId(
+                    new RepairEmployeeKey(repairId, repairEmployeeToSave.getEmployee().getId())
+            );
+            Category category = repairEmployeeToSave.getEmployee().getCategory();
+
+            if (employees.contains(repairEmployeeToSave)) {
+                RepairEmployee repairEmployeeToUpdate = employees.get(employees.indexOf(repairEmployeeToSave));
+
+                repairEmployeeToUpdate.setHoursWorked(repairEmployeeToUpdate.getHoursWorked() + repairEmployeeToSave.getHoursWorked());
+                repairEmployeeToUpdate.setTotalValue(category.getHourlyPrice() * repairEmployeeToUpdate.getHoursWorked());
+            } else {
+                repairEmployeeToSave.setTotalValue(category.getHourlyPrice() * repairEmployeeToSave.getHoursWorked());
+                employees.add(repairEmployeeToSave);
+            }
+        }
+
+        List<RepairEmployee> repairEmployeesSaved = repairEmployeeService.saveAll(employees);
+
+        updateTotalValue(repair);
+
+        return repairEmployeeMapper.toRepairEmployeeByRepairResponseList(repairEmployeesSaved);
+    }
+
+    @Transactional
+    public List<RepairPieceByRepairResponse> addPiece(Long repairId, @Valid List<RepairPieceByRepairPostRequest> postRequestList) {
+        Repair repair = findByIdOrThrowsNotFoundException(repairId);
+
+        List<RepairPiece> repairPieceToSaveList = repairPieceMapper.toRepairPieceList(postRequestList);
+
+        List<RepairPiece> repairPiecesSaved = new ArrayList<>();
+        for (RepairPiece repairPieceToSave : repairPieceToSaveList) {
+            repairPieceToSave.setRepair(repair);
+            repairPieceToSave.setId(new RepairPieceKey(repairId, repairPieceToSave.getPiece().getId()));
+
+            repairPiecesSaved.add(repairPieceService.save(repairPieceToSave));
+        }
+
+        updateTotalValue(repair);
+
+        return repairPieceMapper.toRepairPieceByRepairResponseList(repairPiecesSaved);
+    }
+
     private double calculatesTotalValue(List<RepairEmployee> employees, List<RepairPiece> pieces) {
         double totalValueEmployees = employees.stream().mapToDouble(RepairEmployee::getTotalValue).sum();
         double totalValuePieces = pieces.stream().mapToDouble(RepairPiece::getTotalValue).sum();
@@ -158,38 +212,5 @@ public class RepairService {
         repair.setTotalValue(calculatesTotalValue(repairEmployees, repairPieces));
 
         repository.save(repair);
-    }
-
-    @Transactional
-    public List<RepairEmployeeByRepairResponse> addEmployee(Long repairId, List<RepairEmployeeByRepairPostRequest> postRequestList) {
-        Repair repair = findByIdOrThrowsNotFoundException(repairId);
-
-        List<RepairEmployee> repairEmployeeToSaveList = repairEmployeeMapper.toRepairEmployeeList(postRequestList);
-
-        List<RepairEmployee> employees = repairEmployeeService.findAllByRepair(repair);
-
-        for (RepairEmployee repairEmployeeToSave : repairEmployeeToSaveList) {
-            repairEmployeeToSave.setRepair(repair);
-            repairEmployeeToSave.setId(
-                    new RepairEmployeeKey(repairId, repairEmployeeToSave.getEmployee().getId())
-            );
-            Category category = repairEmployeeToSave.getEmployee().getCategory();
-
-            if (employees.contains(repairEmployeeToSave)) {
-                RepairEmployee repairEmployeeToUpdate = employees.get(employees.indexOf(repairEmployeeToSave));
-
-                repairEmployeeToUpdate.setHoursWorked(repairEmployeeToUpdate.getHoursWorked() + repairEmployeeToSave.getHoursWorked());
-                repairEmployeeToUpdate.setTotalValue(category.getHourlyPrice() * repairEmployeeToUpdate.getHoursWorked());
-            } else {
-                repairEmployeeToSave.setTotalValue(category.getHourlyPrice() * repairEmployeeToSave.getHoursWorked());
-                employees.add(repairEmployeeToSave);
-            }
-        }
-
-        List<RepairEmployee> repairEmployeesSaved = repairEmployeeService.saveAll(employees);
-
-        updateTotalValue(repair);
-
-        return repairEmployeeMapper.toRepairEmployeeByRepairResponseList(repairEmployeesSaved);
     }
 }

@@ -1,18 +1,17 @@
 package com.branches.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity(name = "reparacao_peca")
 @Data
 @Builder
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class RepairPiece {
     @EmbeddedId
+    @EqualsAndHashCode.Include
     private RepairPieceKey id;
     @ManyToOne
     @MapsId("repairId")
