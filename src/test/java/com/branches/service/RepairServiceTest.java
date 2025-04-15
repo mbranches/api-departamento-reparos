@@ -7,6 +7,7 @@ import com.branches.mapper.RepairMapper;
 import com.branches.mapper.RepairPieceMapper;
 import com.branches.model.*;
 import com.branches.repository.RepairRepository;
+import com.branches.request.RepairEmployeeByRepairPostRequest;
 import com.branches.request.RepairPostRequest;
 import com.branches.response.RepairEmployeeByRepairResponse;
 import com.branches.response.RepairGetResponse;
@@ -23,6 +24,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -412,8 +414,81 @@ class RepairServiceTest {
     }
 
     @Test
-    @DisplayName("deleteById removes repair when successful")
+    @DisplayName("addEmployee returns all saved RepairEmployees when the given employee is not registered")
     @Order(21)
+    void addEmployee_ReturnsAllSavedRepairEmployees_WhenTheGivenEmployeeIsNotRegistered() {
+        Repair repair = RepairUtils.newRepairList().getFirst();
+        Long repairId = repair.getId();
+
+        RepairEmployeeByRepairPostRequest repairEmployeeToSaved = RepairEmployeeUtils.newRepairEmployeePostRequest();
+        List<RepairEmployeeByRepairPostRequest> repairEmployeePostRequestList = List.of(repairEmployeeToSaved);
+        List<RepairEmployee> repairEmployeeToSaveList = List.of(RepairEmployeeUtils.newRepairEmployee());
+
+        List<RepairEmployeeByRepairResponse> expectedResponse = List.of(RepairEmployeeUtils.newRepairEmployeeByRepairPostResponse());
+
+        BDDMockito.when(repository.findById(repairId)).thenReturn(Optional.of(repair));
+        BDDMockito.when(repairEmployeeMapper.toRepairEmployeeList(repairEmployeePostRequestList)).thenReturn(repairEmployeeToSaveList);
+        BDDMockito.when(repairEmployeeService.findAllByRepair(repair)).thenReturn(new ArrayList<>());
+        BDDMockito.when(repairEmployeeService.saveAll(repairEmployeeToSaveList)).thenReturn(repairEmployeeToSaveList);
+        BDDMockito.when(repairEmployeeMapper.toRepairEmployeeByRepairResponseList(repairEmployeeToSaveList)).thenReturn(expectedResponse);
+
+        List<RepairEmployeeByRepairResponse> response = service.addEmployee(repairId, repairEmployeePostRequestList);
+
+        Assertions.assertThat(response)
+                .isNotNull()
+                .isNotEmpty()
+                .containsExactlyElementsOf(expectedResponse);
+    }
+
+    @Test
+    @DisplayName("addEmployee returns all saved RepairEmployees when the given employee is registered")
+    @Order(22)
+    void addEmployee_ReturnsAllSavedRepairEmployees_WhenSuccessful() {
+        Repair repair = RepairUtils.newRepairList().getFirst();
+        Long repairId = repair.getId();
+
+        RepairEmployeeByRepairPostRequest repairEmployeeToSaved = RepairEmployeeUtils.newRepairEmployeePostRequestWithRegisteredEmployee();
+        repairEmployeeToSaved.setHoursWorked(4);
+        List<RepairEmployeeByRepairPostRequest> repairEmployeePostRequestList = List.of(repairEmployeeToSaved);
+        List<RepairEmployee> repairEmployeeToSaveList = List.of(RepairEmployeeUtils.newRepairEmployeeSaved());
+
+        List<RepairEmployeeByRepairResponse> expectedResponse = List.of(RepairEmployeeUtils.newRepairEmployeeByRepairByAddEmployee());
+
+        BDDMockito.when(repository.findById(repairId)).thenReturn(Optional.of(repair));
+        BDDMockito.when(repairEmployeeMapper.toRepairEmployeeList(repairEmployeePostRequestList)).thenReturn(repairEmployeeToSaveList);
+        BDDMockito.when(repairEmployeeService.findAllByRepair(repair)).thenReturn(repairEmployeeToSaveList);
+        BDDMockito.when(repairEmployeeService.saveAll(repairEmployeeToSaveList)).thenReturn(repairEmployeeToSaveList);
+        BDDMockito.when(repairEmployeeMapper.toRepairEmployeeByRepairResponseList(repairEmployeeToSaveList)).thenReturn(expectedResponse);
+
+        List<RepairEmployeeByRepairResponse> response = service.addEmployee(repairId, repairEmployeePostRequestList);
+
+        Assertions.assertThat(response)
+                .isNotNull()
+                .isNotEmpty()
+                .containsExactlyElementsOf(expectedResponse);
+    }
+
+    @Test
+    @DisplayName("addEmployee throws BadRequestException when some given employee is not found")
+    @Order(22)
+    void addEmployee_ThrowsBadRequestException_WhenSomeGivenEmployeeIsNotFound() {
+        Repair repair = RepairUtils.newRepairList().getFirst();
+        Long repairId = repair.getId();
+
+        RepairEmployeeByRepairPostRequest repairEmployeeToSaved = RepairEmployeeUtils.newRepairEmployeePostRequest();
+        List<RepairEmployeeByRepairPostRequest> repairEmployeePostRequestList = List.of(repairEmployeeToSaved);
+
+        BDDMockito.when(repository.findById(repairId)).thenReturn(Optional.of(repair));
+        BDDMockito.when(repairEmployeeMapper.toRepairEmployeeList(repairEmployeePostRequestList)).thenThrow(new BadRequestException("Error saving employees"));
+
+        Assertions.assertThatThrownBy(() -> service.addEmployee(repairId, repairEmployeePostRequestList))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Error saving employees");
+    }
+
+    @Test
+    @DisplayName("deleteById removes repair when successful")
+    @Order(23)
     void deleteById_RemovesRepair_WhenSuccessful() {
         Repair repairToDelete = repairList.getFirst();
         Long idToDelete = repairToDelete.getId();
@@ -427,7 +502,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("deleteById throws NotFoundException when given id is not found")
-    @Order(22)
+    @Order(24)
     void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() {
         Long randomId = 15512366L;
 
@@ -440,7 +515,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("removesRepairEmployeeById removes employee from repair when successful")
-    @Order(23)
+    @Order(25)
     void removesRepairEmployeeById_RemovesEmployeeFromRepair_WhenSuccessful() {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Long repairId = repair.getId();
@@ -458,7 +533,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("removesRepairEmployeeById throws NotFoundException when repair is not found")
-    @Order(24)
+    @Order(26)
     void removesRepairEmployeeById_ThrowsNotFoundException_WhenRepairIsNotFound() {
         Long randomRepairId = 5514121L;
 
@@ -475,7 +550,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("removesRepairEmployeeById throws NotFoundException when employee is not found")
-    @Order(25)
+    @Order(27)
     void removesRepairEmployeeById_ThrowsNotFoundException_WhenEmployeeIsNotFound() {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Long repairId = repair.getId();
@@ -492,7 +567,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("removesRepairEmployeeById throws NotFoundException when employee is not found in the repair")
-    @Order(26)
+    @Order(28)
     void removesRepairEmployeeById_ThrowsNotFoundException_WhenEmployeeIsNotFoundInTheRepair() {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Long repairId = repair.getId();
@@ -511,7 +586,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("removesRepairPieceById removes piece from repair when successful")
-    @Order(27)
+    @Order(29)
     void removesRepairPieceById_RemovesPieceFromRepair_WhenSuccessful() {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Long repairId = repair.getId();
@@ -529,7 +604,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("removesRepairPieceById throws NotFoundException when repair is not found")
-    @Order(28)
+    @Order(30)
     void removesRepairPieceById_ThrowsNotFoundException_WhenRepairIsNotFound() {
         Long randomRepairId = 5514121L;
 
@@ -546,7 +621,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("removesRepairPieceById throws NotFoundException when piece is not found")
-    @Order(29)
+    @Order(31)
     void removesRepairPieceById_ThrowsNotFoundException_WhenPieceIsNotFound() {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Long repairId = repair.getId();
@@ -563,7 +638,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("removesRepairPieceById throws NotFoundException when piece is not found in the repair")
-    @Order(30)
+    @Order(32)
     void removesRepairPieceById_ThrowsNotFoundException_WhenPieceIsNotFoundInTheRepair() {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Long repairId = repair.getId();

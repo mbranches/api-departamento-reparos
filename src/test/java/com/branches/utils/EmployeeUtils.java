@@ -93,6 +93,17 @@ public class EmployeeUtils {
                 .build();
     }
 
+    public static EmployeeByRepairResponse newEmployeeByRepairByAddEmployee() {
+        Category category = CategoryUtils.newCategoryToSave();
+
+        return EmployeeByRepairResponse.builder()
+                .id(4L)
+                .name("Chispirito")
+                .lastName("Costa")
+                .category(category)
+                .build();
+    }
+
     public static EmployeeByRepairResponse newEmployeeByRepairGetEmployees() {
         Category category = CategoryUtils.newCategoryToSave();
 

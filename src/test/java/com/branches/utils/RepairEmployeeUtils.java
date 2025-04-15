@@ -28,6 +28,10 @@ public class RepairEmployeeUtils {
         return RepairEmployeeByRepairPostRequest.builder().employeeId(4L).hoursWorked(5).build();
     }
 
+    public static RepairEmployeeByRepairPostRequest newRepairEmployeePostRequestWithRegisteredEmployee() {
+        return RepairEmployeeByRepairPostRequest.builder().employeeId(1L).hoursWorked(1).build();
+    }
+
     public static RepairEmployee newRepairEmployee() {
         Employee employee = EmployeeUtils.newEmployeeToSave();
         Category employeeCategory = employee.getCategory();
@@ -37,6 +41,13 @@ public class RepairEmployeeUtils {
 
     public static RepairEmployeeByRepairResponse newRepairEmployeeByRepairPostResponse() {
         EmployeeByRepairResponse employee = EmployeeUtils.newEmployeeByRepairPostResponse();
+        Category employeeCategory = employee.getCategory();
+
+        return RepairEmployeeByRepairResponse.builder().employee(employee).hoursWorked(5).totalValue(employeeCategory.getHourlyPrice() * 5).build();
+    }
+
+    public static RepairEmployeeByRepairResponse newRepairEmployeeByRepairByAddEmployee() {
+        EmployeeByRepairResponse employee = EmployeeUtils.newEmployeeByRepairByAddEmployee();
         Category employeeCategory = employee.getCategory();
 
         return RepairEmployeeByRepairResponse.builder().employee(employee).hoursWorked(5).totalValue(employeeCategory.getHourlyPrice() * 5).build();
