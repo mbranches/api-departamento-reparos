@@ -154,13 +154,52 @@ class RepairPieceServiceTest {
         Piece expectedPiece = repairPieceToSave.getPiece();
         expectedPiece.setStock(expectedPiece.getStock() - quantityToRemove);
 
-        RepairPiece expectedRepairPiece = RepairPieceUtils.newRepairPiece();
-        expectedRepairPiece.setPiece(expectedPiece);
+        RepairPiece expectedResponse = RepairPieceUtils.newRepairPiece();
+        expectedResponse.setPiece(expectedPiece);
 
+        BDDMockito.when(repository.findAllByRepair(repairPieceToSave.getRepair())).thenReturn(Collections.emptyList());
         BDDMockito.when(pieceService.removesStock(pieceToRemoveStock, quantityToRemove)).thenReturn(expectedPiece);
-        BDDMockito.when(repository.save(expectedRepairPiece)).thenReturn(expectedRepairPiece);
+        BDDMockito.when(repository.save(expectedResponse)).thenReturn(expectedResponse);
 
-        RepairPiece expectedResponse = expectedRepairPiece;
+        RepairPiece response = service.save(repairPieceToSave);
+
+        Assertions.assertThat(response)
+                .isNotNull()
+                .isEqualTo(expectedResponse);
+    }
+
+    @Test
+    @DisplayName("save only removes the stock additional and persists the total quantity summed when the given RepairPiece is registered")
+    @Order(8)
+    void save_OnlyRemovesTheStockAdditionalAndPersistsTheTotalQuantitySummed_WhenTheGivenRepairPieceIsRegistered() {
+        Repair repair = RepairUtils.newRepairList().getFirst();
+
+        RepairPiece savedRepairPiece = RepairPieceUtils.newRepairPiece();
+        savedRepairPiece.setRepair(repair);
+        savedRepairPiece.setId(new RepairPieceKey(repair.getId(), savedRepairPiece.getPiece().getId()));
+
+        RepairPiece repairPieceToSave = RepairPieceUtils.newRepairPiece();
+        repairPieceToSave.setRepair(repair);
+        repairPieceToSave.setId(new RepairPieceKey(repair.getId(), repairPieceToSave.getPiece().getId()));
+
+        Piece pieceToRemoveStock = repairPieceToSave.getPiece();
+        int quantityToRemove = repairPieceToSave.getQuantity();
+
+        Piece expectedPiece = repairPieceToSave.getPiece();
+        expectedPiece.setStock(expectedPiece.getStock() - quantityToRemove);
+
+        int totalQuantity = savedRepairPiece.getQuantity() + repairPieceToSave.getQuantity();
+        RepairPiece expectedResponse = RepairPiece.builder()
+                .repair(repair)
+                .piece(expectedPiece)
+                .id(new RepairPieceKey(repair.getId(), expectedPiece.getId()))
+                .quantity(totalQuantity)
+                .totalValue(totalQuantity * expectedPiece.getUnitValue())
+                .build();
+
+        BDDMockito.when(repository.findAllByRepair(repairPieceToSave.getRepair())).thenReturn(List.of(savedRepairPiece));
+        BDDMockito.when(pieceService.removesStock(pieceToRemoveStock, quantityToRemove)).thenReturn(expectedPiece);
+        BDDMockito.when(repository.save(expectedResponse)).thenReturn(expectedResponse);
 
         RepairPiece response = service.save(repairPieceToSave);
 
@@ -171,7 +210,7 @@ class RepairPieceServiceTest {
 
     @Test
     @DisplayName("save throws BadRequestException when quantity is greater than piece stock")
-    @Order(8)
+    @Order(9)
     void save_ThrowsBadRequestException_WhenQuantityIsGreaterThanPieceStock() {
         RepairPiece repairPieceToSave = RepairPieceUtils.newRepairPiece();
         repairPieceToSave.setQuantity(212131);
@@ -191,7 +230,7 @@ class RepairPieceServiceTest {
 
     @Test
     @DisplayName("deleteByRepairAndPiece removes repair piece when successful")
-    @Order(9)
+    @Order(10)
     void deleteByRepairAndPiece_RemovesRepairPiece_WhenSuccessful() {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Piece piece = PieceUtils.newPieceList().getFirst();
@@ -207,7 +246,7 @@ class RepairPieceServiceTest {
 
     @Test
     @DisplayName("deleteByRepairAndPiece throws NotFoundException when piece is not found in the repair")
-    @Order(10)
+    @Order(11)
     void deleteByRepairAndPiece_ThrowsNotFoundException_WhenPieceIsNotFoundInTheRepair() {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Piece piece = PieceUtils.newPieceList().getLast();
