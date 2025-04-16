@@ -504,8 +504,74 @@ class RepairServiceTest {
     }
 
     @Test
+    @DisplayName("addPiece returns all saved RepairPieces when successful")
+    @Order(25)
+    void addPiece_ReturnsAllSavedRepairPieces_WhenTheGivenPieceIsNotRegistered() {
+        Repair repair = RepairUtils.newRepairList().getFirst();
+        Long repairId = repair.getId();
+
+        RepairPieceByRepairPostRequest repairPieceToSaved = RepairPieceUtils.newRepairPiecePostRequest();
+
+        RepairPiece repairPieceSaved = RepairPieceUtils.newRepairPiece();
+        repairPieceSaved.setId(new RepairPieceKey(repairId, repairPieceSaved.getPiece().getId()));
+        repairPieceSaved.setRepair(repair);
+
+
+        List<RepairPieceByRepairPostRequest> repairPiecePostRequestList = List.of(repairPieceToSaved);
+        List<RepairPiece> repairPieceToSaveList = List.of(RepairPieceUtils.newRepairPiece());
+
+        List<RepairPieceByRepairResponse> expectedResponse = List.of(RepairPieceUtils.newRepairPieceByRepairPostResponse());
+
+        BDDMockito.when(repository.findById(repairId)).thenReturn(Optional.of(repair));
+        BDDMockito.when(repairPieceMapper.toRepairPieceList(repairPiecePostRequestList)).thenReturn(repairPieceToSaveList);
+        BDDMockito.when(repairPieceService.save(repairPieceSaved)).thenReturn(repairPieceSaved);
+        BDDMockito.when(repairPieceMapper.toRepairPieceByRepairResponseList(repairPieceToSaveList)).thenReturn(expectedResponse);
+
+        List<RepairPieceByRepairResponse> response = service.addPiece(repairId, repairPiecePostRequestList);
+
+        Assertions.assertThat(response)
+                .isNotNull()
+                .isNotEmpty()
+                .containsExactlyElementsOf(expectedResponse);
+    }
+
+    @Test
+    @DisplayName("addPiece throws NotFoundException when repairId is not found")
+    @Order(26)
+    void addPiece_ThrowsNotFoundException_WhenSomeGivenPieceIsNotFound() {
+        Long randomRepairId = 14281267L;
+
+        RepairPieceByRepairPostRequest repairPieceToSaved = RepairPieceUtils.newRepairPiecePostRequest();
+        List<RepairPieceByRepairPostRequest> repairPiecePostRequestList = List.of(repairPieceToSaved);
+
+        BDDMockito.when(repository.findById(randomRepairId)).thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> service.addPiece(randomRepairId, repairPiecePostRequestList))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Repair not Found");
+    }
+
+    @Test
+    @DisplayName("addPiece throws BadRequestException when some given piece is not found")
+    @Order(27)
+    void addPiece_ThrowsBadRequestException_WhenSomeGivenPieceIsNotFound() {
+        Repair repair = RepairUtils.newRepairList().getFirst();
+        Long repairId = repair.getId();
+
+        RepairPieceByRepairPostRequest repairPieceToSaved = RepairPieceUtils.newRepairPiecePostRequest();
+        List<RepairPieceByRepairPostRequest> repairPiecePostRequestList = List.of(repairPieceToSaved);
+
+        BDDMockito.when(repository.findById(repairId)).thenReturn(Optional.of(repair));
+        BDDMockito.when(repairPieceMapper.toRepairPieceList(repairPiecePostRequestList)).thenThrow(new BadRequestException("Error saving pieces"));
+
+        Assertions.assertThatThrownBy(() -> service.addPiece(repairId, repairPiecePostRequestList))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Error saving pieces");
+    }
+
+    @Test
     @DisplayName("deleteById removes repair when successful")
-    @Order(23)
+    @Order(28)
     void deleteById_RemovesRepair_WhenSuccessful() {
         Repair repairToDelete = repairList.getFirst();
         Long idToDelete = repairToDelete.getId();
