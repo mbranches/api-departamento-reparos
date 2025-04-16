@@ -585,7 +585,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("deleteById throws NotFoundException when given id is not found")
-    @Order(24)
+    @Order(29)
     void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() {
         Long randomId = 15512366L;
 
@@ -598,7 +598,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("removesRepairEmployeeById removes employee from repair when successful")
-    @Order(25)
+    @Order(30)
     void removesRepairEmployeeById_RemovesEmployeeFromRepair_WhenSuccessful() {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Long repairId = repair.getId();
@@ -616,7 +616,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("removesRepairEmployeeById throws NotFoundException when repair is not found")
-    @Order(26)
+    @Order(31)
     void removesRepairEmployeeById_ThrowsNotFoundException_WhenRepairIsNotFound() {
         Long randomRepairId = 5514121L;
 
@@ -633,7 +633,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("removesRepairEmployeeById throws NotFoundException when employee is not found")
-    @Order(27)
+    @Order(32)
     void removesRepairEmployeeById_ThrowsNotFoundException_WhenEmployeeIsNotFound() {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Long repairId = repair.getId();
@@ -650,7 +650,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("removesRepairEmployeeById throws NotFoundException when employee is not found in the repair")
-    @Order(28)
+    @Order(33)
     void removesRepairEmployeeById_ThrowsNotFoundException_WhenEmployeeIsNotFoundInTheRepair() {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Long repairId = repair.getId();
@@ -669,7 +669,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("removesRepairPieceById removes piece from repair when successful")
-    @Order(29)
+    @Order(34)
     void removesRepairPieceById_RemovesPieceFromRepair_WhenSuccessful() {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Long repairId = repair.getId();
@@ -687,7 +687,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("removesRepairPieceById throws NotFoundException when repair is not found")
-    @Order(30)
+    @Order(35)
     void removesRepairPieceById_ThrowsNotFoundException_WhenRepairIsNotFound() {
         Long randomRepairId = 5514121L;
 
@@ -704,7 +704,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("removesRepairPieceById throws NotFoundException when piece is not found")
-    @Order(31)
+    @Order(36)
     void removesRepairPieceById_ThrowsNotFoundException_WhenPieceIsNotFound() {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Long repairId = repair.getId();
@@ -721,7 +721,7 @@ class RepairServiceTest {
 
     @Test
     @DisplayName("removesRepairPieceById throws NotFoundException when piece is not found in the repair")
-    @Order(32)
+    @Order(37)
     void removesRepairPieceById_ThrowsNotFoundException_WhenPieceIsNotFoundInTheRepair() {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Long repairId = repair.getId();
