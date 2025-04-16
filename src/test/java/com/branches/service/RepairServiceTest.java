@@ -8,6 +8,7 @@ import com.branches.mapper.RepairPieceMapper;
 import com.branches.model.*;
 import com.branches.repository.RepairRepository;
 import com.branches.request.RepairEmployeeByRepairPostRequest;
+import com.branches.request.RepairPieceByRepairPostRequest;
 import com.branches.request.RepairPostRequest;
 import com.branches.response.RepairEmployeeByRepairResponse;
 import com.branches.response.RepairGetResponse;
@@ -443,7 +444,7 @@ class RepairServiceTest {
     @Test
     @DisplayName("addEmployee returns all saved RepairEmployees when the given employee is registered")
     @Order(22)
-    void addEmployee_ReturnsAllSavedRepairEmployees_WhenSuccessful() {
+    void addEmployee_ReturnsAllSavedRepairEmployees_WhenGivenEmployeeIsRegistereed() {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Long repairId = repair.getId();
 
@@ -469,8 +470,24 @@ class RepairServiceTest {
     }
 
     @Test
+    @DisplayName("addEmployee throws NotFoundException when some repairId is not found")
+    @Order(23)
+    void addEmployee_ThrowsNotFoundException_WhenSomeGivenEmployeeIsNotFound() {
+        Long randomRepairId = 14281267L;
+
+        RepairEmployeeByRepairPostRequest repairEmployeeToSaved = RepairEmployeeUtils.newRepairEmployeePostRequest();
+        List<RepairEmployeeByRepairPostRequest> repairEmployeePostRequestList = List.of(repairEmployeeToSaved);
+
+        BDDMockito.when(repository.findById(randomRepairId)).thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> service.addEmployee(randomRepairId, repairEmployeePostRequestList))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Repair not Found");
+    }
+
+    @Test
     @DisplayName("addEmployee throws BadRequestException when some given employee is not found")
-    @Order(22)
+    @Order(24)
     void addEmployee_ThrowsBadRequestException_WhenSomeGivenEmployeeIsNotFound() {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Long repairId = repair.getId();
