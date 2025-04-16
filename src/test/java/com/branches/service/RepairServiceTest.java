@@ -470,9 +470,9 @@ class RepairServiceTest {
     }
 
     @Test
-    @DisplayName("addEmployee throws NotFoundException when some repairId is not found")
+    @DisplayName("addEmployee throws NotFoundException when repairId is not found")
     @Order(23)
-    void addEmployee_ThrowsNotFoundException_WhenSomeGivenEmployeeIsNotFound() {
+    void addEmployee_ThrowsNotFoundException_WhenRepairIdIsNotFound() {
         Long randomRepairId = 14281267L;
 
         RepairEmployeeByRepairPostRequest repairEmployeeToSaved = RepairEmployeeUtils.newRepairEmployeePostRequest();
