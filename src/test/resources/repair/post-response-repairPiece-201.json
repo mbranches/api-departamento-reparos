@@ -1,0 +1,12 @@
+[
+  {
+    "piece": {
+      "id": 4,
+      "name": "Pastilha de freio",
+      "unitValue": 120.0,
+      "stock": 55
+    },
+    "quantity": 5,
+    "totalValue": 600
+  }
+]

@@ -1,0 +1,4 @@
+{
+  "status": 400,
+  "message": "'Pastilha de freio' has insufficient stock. Available: 55, Requested: 60"
+}
