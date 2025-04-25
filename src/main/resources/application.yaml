@@ -5,8 +5,8 @@ spring:
     name: oficina
   datasource:
     url: jdbc:mysql://localhost:3307/oficina?createDatabaseIfNotExist=true
-    username: ${ENV_ROOT_USER}
-    password: ${ENV_ROOT_PASSWORD}
+    username: ${ENV_ROOT_USER:root}
+    password: ${ENV_ROOT_PASSWORD:123}
 
   sql:
     init:
