@@ -85,7 +85,7 @@ Este repositório contém somente o **Backend** do projeto.
 
 ### O que é o Postman?
 
-O **Postman** é uma ferramenta popular para testar e consumir APIs. Ele permite que você faça requisições HTTP de forma simples e intuitiva, além de visualizar respostas, testar diferentes cenários e automatizar testes de APIs. Usar o Postman é uma forma prática de interagir com a **API do Backend do projeto CarteiraVacinal**, permitindo que você envie dados, faça consultas e visualize as respostas da API sem precisar escrever código.
+O **Postman** é uma ferramenta popular para testar e consumir APIs. Ele permite que você faça requisições HTTP de forma simples e intuitiva, além de visualizar respostas, testar diferentes cenários e automatizar testes de APIs. Usar o Postman é uma forma prática de interagir com a **API Oficina**, permitindo que você envie dados, faça consultas e visualize as respostas da API sem precisar escrever código.
 
 ### Por que Usar o Postman nesta Aplicação?
 
