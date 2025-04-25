@@ -7,6 +7,11 @@ spring:
     url: jdbc:mysql://localhost:3307/oficina?createDatabaseIfNotExist=true
     username: ${ENV_ROOT_USER:root}
     password: ${ENV_ROOT_PASSWORD:1234}
+
+  sql:
+    init:
+      schema-locations: classpath:db/schema.sql
+      mode: always
   jpa:
     show-sql: true
     database: mysql
