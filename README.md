@@ -22,6 +22,10 @@ Este repositório contém somente o **Backend** do projeto.
 
 * ✅ **Manipulação de Funcionários e Peças em Reparos**  
   Permite associar ou desassociar funcionários e peças a reparos específicos.
+  
+* ✅ **Controle do estoque de Peças**  
+  Permite controlar o estoque de peças.
+
 
 * ✅ **Consultas Avançadas**
     - **Filtrar Clientes por Nome**: Permite buscar clientes por nome.
