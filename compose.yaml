@@ -2,8 +2,8 @@ services:
   mysql:
     image: mysql:9.0.1
     environment:
-      MYSQL_ROOT_USER: ${ENV_ROOT_USER:root}
-      MYSQL_ROOT_PASSWORD: ${ENV_ROOT_PASSWORD:123}
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: 123
       MYSQL_USER: ${ENV_MYSQL_USER:mysqluser}
       MYSQL_PASSWORD: ${ENV_MYSQL_PASSWORD:321}
     ports:
