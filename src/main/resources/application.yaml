@@ -4,7 +4,7 @@ spring:
   application:
     name: oficina
   datasource:
-    url: jdbc:mysql://localhost:3307/oficina?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3307/departamento?createDatabaseIfNotExist=true
     username: ${ENV_ROOT_USER:root}
     password: ${ENV_ROOT_PASSWORD:123}
 

@@ -1,4 +1,4 @@
-USE oficina;
+USE departamento;
 
 CREATE TABLE IF NOT EXISTS endereco (
 	idendereco BIGINT PRIMARY KEY AUTO_INCREMENT,

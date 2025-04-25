@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.branches</groupId>
-	<artifactId>api-oficina</artifactId>
+	<artifactId>api-departamento-reparos</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>api-oficina</name>
+	<name>api-departamento-reparos</name>
 	<description>projeto api oficina para praticar meus conhecimentos em spring boot</description>
 
 	<properties>
