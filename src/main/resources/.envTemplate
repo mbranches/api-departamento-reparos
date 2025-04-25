@@ -1,4 +1,4 @@
-# Certique que ENV_ROOT_USER deste .env seja igual ao ENV_ROOT_USER do root do projeto
+# Certique que ENV_ROOT_USER e ENV_ROOT_PASSWORD deste .env seja igual ao ENV_ROOT_USER e ENV_ROOT_PASSWORD do root do projeto
 
 ENV_ROOT_USER=
 ENV_ROOT_PASSWORD=
