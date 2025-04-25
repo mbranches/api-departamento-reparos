@@ -57,6 +57,7 @@ Este repositório contém somente o **Backend** do projeto.
     ```
   
 ### 2. Popule as variáveis de ambiente
+- Obs: Caso queira utilizar as credenciais já predefinidas, **você pode pular essa etapa**.
 
 #### a. **Variáveis Docker**
 - Renomeie o arquivo da raíz do repositório `.envTemplate` para `.env` e preencha as variáveis com os valores apropriados para o seu ambiente de desenvolvimento.
