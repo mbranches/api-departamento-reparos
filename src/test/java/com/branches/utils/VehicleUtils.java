@@ -21,11 +21,11 @@ public class VehicleUtils {
     }
 
     public static List<VehicleGetResponse> newVehicleGetResponseList() {
-        ClientByVehicleGetResponse clientByVehicleGetResponse = ClientUtils.newClientVehicleGetResponse();
+        ClientByVehicleResponse clientByVehicleResponse = ClientUtils.newClientVehicleGetResponse();
 
-        VehicleGetResponse vehicle1 = VehicleGetResponse.builder().vehicleType(VehicleType.carro).brand("Fiat").model("Toro").client(clientByVehicleGetResponse).build();
-        VehicleGetResponse vehicle2 = VehicleGetResponse.builder().vehicleType(VehicleType.moto).brand("Yamaha").model("Mt-07").client(clientByVehicleGetResponse).build();
-        VehicleGetResponse vehicle3 = VehicleGetResponse.builder().vehicleType(VehicleType.moto).brand("Honda").model("Biz").client(clientByVehicleGetResponse).build();
+        VehicleGetResponse vehicle1 = VehicleGetResponse.builder().vehicleType(VehicleType.carro).brand("Fiat").model("Toro").client(clientByVehicleResponse).build();
+        VehicleGetResponse vehicle2 = VehicleGetResponse.builder().vehicleType(VehicleType.moto).brand("Yamaha").model("Mt-07").client(clientByVehicleResponse).build();
+        VehicleGetResponse vehicle3 = VehicleGetResponse.builder().vehicleType(VehicleType.moto).brand("Honda").model("Biz").client(clientByVehicleResponse).build();
 
         return new ArrayList<>(List.of(vehicle1, vehicle2, vehicle3));
     }
@@ -54,7 +54,7 @@ public class VehicleUtils {
                 .vehicleType(VehicleType.caminhao)
                 .brand("Scania")
                 .model("T113")
-                .client(ClientUtils.newClientToSave()).build();
+                .client(ClientUtils.newClientVehicleGetResponse()).build();
     }
 
     public static List<VehicleByClientGetResponse> newVehicleClientGetReponseList() {
