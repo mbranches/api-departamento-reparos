@@ -1,0 +1,546 @@
+{
+	"info": {
+		"_postman_id": "352aefc6-07cc-4059-af3a-055e1c32d082",
+		"name": "Oficina",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "42665892"
+	},
+	"item": [
+		{
+			"name": "Clients",
+			"item": [
+				{
+					"name": "Criar um client",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Junior\",\r\n    \"lastName\": \"Pereira\",\r\n    \"address\": {\r\n        \"street\": \"Maguary\",\r\n        \"district\": \"Paar\",\r\n        \"city\": \"Ananindeua\",\r\n        \"state\": \"Pa\"\r\n    },\r\n    \"phones\": [\r\n        {\r\n            \"number\": \"91982016939\",\r\n            \"phoneType\": \"celular\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/clients"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar todos os clientes",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/clients"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar todos os clientes pelo primeiro nome",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/clients?firstName=Junior",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"clients"
+							],
+							"query": [
+								{
+									"key": "firstName",
+									"value": "Junior"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar um cliente por id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/clients/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar todos os veiculos de um cliente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/v1/clients/1/vehicles"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar reparos de um cliente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/v1/clients/1/repairs"
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar um cliente pelo id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/v1/clients/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vehicles",
+			"item": [
+				{
+					"name": "Criar um novo veículo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"vehicleType\": \"carro\",\r\n    \"brand\": \"Fiat\",\r\n    \"model\": \"Grand Sienna\",\r\n    \"clientId\": 1 \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/vehicles"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar todos os veiculos",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"orçamento 4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/vehicles"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar veiculo por id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/v1/vehicles/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar veiculo por id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/v1/vehicles/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Criar uma categoria",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Mecânico\",\r\n    \"hourlyPrice\": 50.0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/categories"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar todas as categorias",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/v1/categories"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar categoria por id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/v1/categories/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar uma categoria por id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/v1/categories/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employees",
+			"item": [
+				{
+					"name": "Criar um novo funcionario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Lucas\",\r\n    \"lastName\": \"Alonço\",\r\n    \"categoryId\": 1,\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"district\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\"\r\n    },\r\n    \"phones\": [\r\n        {\r\n            \"number\": \"31987654323\",\r\n            \"phoneType\": \"celular\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/employees"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar todos os funcionarios",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"orçamento 4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/employees"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar funcionarios pelo primeiro nome",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/employees?firstName=Lucas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"employees"
+							],
+							"query": [
+								{
+									"key": "firstName",
+									"value": "Lucas"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar um funcionario por id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/v1/employees/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar um funcionario pelo id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/v1/employees/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pieces",
+			"item": [
+				{
+					"name": "Criar uma peça",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Óleo de motor\",\r\n    \"unitValue\": 50.0,\r\n    \"stock\": 20\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/pieces"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar todas as peças",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/v1/pieces"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar todas as peças pelo nome",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/pieces?name=Óleo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"pieces"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Óleo"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lista peça por id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/v1/pieces/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Repairs",
+			"item": [
+				{
+					"name": "Criar um reparo",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "/*\r\nO cliente com id 1 deve está criado\r\nO veiculo com id 1 deve está criado\r\nA peça com id 1 deve está criada\r\nO funcionário com 1 deve está criado\r\n*/\r\n\r\n{\r\n    \"clientId\": 1,\r\n    \"vehicleId\": 1,\r\n    \"pieces\": [\r\n        {\r\n            \"pieceId\":1,\r\n            \"quantity\":8\r\n        }\r\n    ],\r\n    \"employees\": [\r\n        {\r\n            \"employeeId\": 1,\r\n            \"hoursWorked\": 35\r\n        }\r\n    ],\r\n    \"endDate\": \"02/01/2025\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/repairs"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar todos os reparos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/v1/repairs"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar reparo por id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/v1/repairs/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Filtrar reparos por data",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/repairs?dateRepair=2025-01-02",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"repairs"
+							],
+							"query": [
+								{
+									"key": "dateRepair",
+									"value": "2025-01-02"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar todos os funcionarios de um reparo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/v1/repairs/35/employees"
+					},
+					"response": []
+				},
+				{
+					"name": "Adicionar novo funcionario a reparo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "/* Um segundo funcionário deve está criado */\r\n[\r\n    {\r\n        \"employeeId\": 2,\r\n        \"hoursWorked\": 10\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/repairs/1/employees"
+					},
+					"response": []
+				},
+				{
+					"name": "Remover funcionario de um reparo",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/v1/repairs/1/employees/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar todas as peças de um reparo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/v1/repairs/1/pieces"
+					},
+					"response": []
+				},
+				{
+					"name": "Adicionar peça a reparo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "/* Uma peça com id 2 deve está criada*/\r\n\r\n[\r\n    {\r\n        \"pieceId\": 2,\r\n        \"quantity\": 2\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/repairs/1/pieces"
+					},
+					"response": []
+				},
+				{
+					"name": "Remover peça de reparo",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/v1/repairs/1/pieces/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar reparo por id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/v1/repairs/1"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
