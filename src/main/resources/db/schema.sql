@@ -1,7 +1,6 @@
-CREATE DATABASE oficina;
 USE oficina;
 
-CREATE TABLE endereco (
+CREATE TABLE IF NOT EXISTS endereco (
 	idendereco BIGINT PRIMARY KEY AUTO_INCREMENT,
     rua VARCHAR(30),
     bairro VARCHAR(30), 
@@ -9,120 +8,83 @@ CREATE TABLE endereco (
     uf CHAR(2)
 );
 
-CREATE TABLE cliente (
+CREATE TABLE IF NOT EXISTS cliente (
 	idcliente BIGINT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(30),
     sobrenome VARCHAR(30),
-    fk_endereco_cliente BIGINT
+    fk_endereco_cliente BIGINT,
+    FOREIGN KEY(fk_endereco_cliente) REFERENCES endereco(idendereco)
 );
 
-ALTER TABLE cliente 
-ADD CONSTRAINT fk_endereco_cliente 
-FOREIGN KEY(fk_endereco_cliente) REFERENCES endereco(idendereco);
-
-CREATE TABLE categoria (
+CREATE TABLE IF NOT EXISTS categoria (
 	idcategoria BIGINT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(30),
     preco_hora DECIMAL(10, 2)
 );
 
-CREATE TABLE funcionario (
+CREATE TABLE IF NOT EXISTS funcionario (
 	idfuncionario BIGINT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(30),
     sobrenome VARCHAR(30),
     fk_categoria_funcionario BIGINT,
-    fk_endereco_funcionario BIGINT
+    fk_endereco_funcionario BIGINT,
+    FOREIGN KEY(fk_categoria_funcionario) REFERENCES categoria(idcategoria) ON DELETE SET NULL,
+    FOREIGN KEY(fk_endereco_funcionario) REFERENCES endereco(idendereco)
 );
 
-ALTER TABLE funcionario ADD CONSTRAINT fk_categoria_funcionario
-FOREIGN KEY (fk_categoria_funcionario)
-REFERENCES categoria(idcategoria)
-ON DELETE SET NULL;
-
-ALTER TABLE funcionario 
-ADD CONSTRAINT fk_endereco_funcionario
-FOREIGN KEY(fk_endereco_funcionario) REFERENCES endereco(idendereco);
-
-CREATE TABLE telefone (
+CREATE TABLE IF NOT EXISTS telefone (
 	idtelefone BIGINT PRIMARY KEY AUTO_INCREMENT,
     numero VARCHAR(14),
     tipo_telefone ENUM('residencial', 'celular'),
     fk_cliente_telefone BIGINT,
-	fk_funcionario_telefone BIGINT
+	fk_funcionario_telefone BIGINT,
+    FOREIGN KEY(fk_cliente_telefone) REFERENCES cliente(idcliente),
+    FOREIGN KEY(fk_funcionario_telefone) REFERENCES funcionario(idfuncionario)
 );
 
-ALTER TABLE telefone
-ADD CONSTRAINT fk_cliente_telefone 
-FOREIGN KEY(fk_cliente_telefone) REFERENCES cliente(idcliente),
-ADD CONSTRAINT fk_funcionario_telefone 
-FOREIGN KEY(fk_funcionario_telefone) REFERENCES funcionario(idfuncionario);
-
-CREATE TABLE veiculo (
+CREATE TABLE IF NOT EXISTS veiculo (
 	idveiculo BIGINT PRIMARY KEY AUTO_INCREMENT,
     tipo_veiculo ENUM('carro', 'moto', 'caminhao'),
     marca VARCHAR(30),
     modelo VARCHAR(30),
-    fk_cliente_veiculo BIGINT
+    fk_cliente_veiculo BIGINT,
+    FOREIGN KEY(fk_cliente_veiculo) REFERENCES cliente(idcliente)
 );
 
-ALTER TABLE veiculo 
-ADD CONSTRAINT fk_cliente_veiculo
-FOREIGN KEY(fk_cliente_veiculo) REFERENCES cliente(idcliente);
-
-CREATE TABLE peca (
+CREATE TABLE IF NOT EXISTS peca (
 	idpeca BIGINT PRIMARY KEY AUTO_INCREMENT,
 	nome VARCHAR(30),
 	preco_unitario DECIMAL(10, 2),
     estoque INT
 );
 
-CREATE TABLE reparacao (
+CREATE TABLE IF NOT EXISTS reparacao (
 	idreparacao BIGINT PRIMARY KEY AUTO_INCREMENT,
 	fk_cliente_reparacao BIGINT,
     fk_veiculo_reparacao BIGINT,
     valor_total DECIMAL(10, 2),
-    data_finalizacao DATE
+    data_finalizacao DATE,
+    FOREIGN KEY(fk_cliente_reparacao) REFERENCES cliente(idcliente) ON DELETE SET NULL,
+    FOREIGN KEY(fk_veiculo_reparacao) REFERENCES veiculo(idveiculo)
 );
 
-ALTER TABLE reparacao 
-ADD CONSTRAINT fk_cliente_reparacao
-FOREIGN KEY(fk_cliente_reparacao) REFERENCES cliente(idcliente)
-ON DELETE SET NULL;
-
-
-ALTER TABLE reparacao 
-ADD CONSTRAINT fk_veiculo_reparacao
-FOREIGN KEY(fk_veiculo_reparacao) REFERENCES veiculo(idveiculo);
-
-CREATE TABLE reparacao_funcionario (
+CREATE TABLE IF NOT EXISTS reparacao_funcionario (
 	reparacaoid BIGINT,
     funcionarioid BIGINT,
     horas_trabalhadas INT,
     valor_total DECIMAL(10, 2),
-    PRIMARY KEY(reparacaoid, funcionarioid)
+    PRIMARY KEY(reparacaoid, funcionarioid),
+    FOREIGN KEY(reparacaoid) REFERENCES reparacao(idreparacao),
+    FOREIGN KEY(funcionarioid) REFERENCES funcionario(idfuncionario)
 );
 
-ALTER TABLE reparacao_funcionario
-ADD CONSTRAINT fk_reparacao_reparacao_funcionario
-FOREIGN KEY(reparacaoid) REFERENCES reparacao(idreparacao);
-
-ALTER TABLE reparacao_funcionario
-ADD CONSTRAINT fk_funcionario_reparacao_funcionario
-FOREIGN KEY(funcionarioid) REFERENCES funcionario(idfuncionario);
-
-CREATE TABLE reparacao_peca (
+CREATE TABLE IF NOT EXISTS reparacao_peca (
 	reparacaoid BIGINT,
     pecaid BIGINT,
     quantidade INT,
     valor_total DECIMAL(10, 2),
-    PRIMARY KEY(reparacaoid, pecaid)
+    PRIMARY KEY(reparacaoid, pecaid),
+    FOREIGN KEY(reparacaoid) REFERENCES reparacao(idreparacao),
+    FOREIGN KEY(pecaid) REFERENCES peca(idpeca)
 );
-
-ALTER TABLE reparacao_peca
-ADD CONSTRAINT fk_reparacao_reparacao_peca
-FOREIGN KEY(reparacaoid) REFERENCES reparacao(idreparacao);
-
-ALTER TABLE reparacao_peca
-ADD CONSTRAINT fk_peca_reparacao_peca
-FOREIGN KEY(pecaid) REFERENCES peca(idpeca);
 
