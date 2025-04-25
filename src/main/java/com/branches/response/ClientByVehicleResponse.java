@@ -5,7 +5,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ClientByVehicleGetResponse {
+public class ClientByVehicleResponse {
+    private Long id;
     private String name;
     private String lastName;
 }
