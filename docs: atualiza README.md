@@ -93,7 +93,7 @@ O **Postman** é uma ferramenta popular para testar e consumir APIs. Ele permite
 Usar o **Postman** para consumir a API facilita o processo de desenvolvimento e testes. Com ele, você pode:
 
 - Testar as rotas da API de forma rápida e fácil.
-- Interagir tanto com a versão local quanto com a versão em produção da API.
+- Interagir com a API.
 - Explorar todas as funcionalidades disponíveis (CRUD de Reparos, Clientes, Funcionários etc.).
 - Organizar e salvar requisições para reutilização posterior.
 
