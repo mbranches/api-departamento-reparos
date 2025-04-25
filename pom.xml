@@ -11,7 +11,7 @@
 	<groupId>com.branches</groupId>
 	<artifactId>oficina</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>oficina</name>
+	<name>api-oficina</name>
 	<description>projeto api oficina para praticar meus conhecimentos em spring boot</description>
 	<url/>
 	<licenses>
