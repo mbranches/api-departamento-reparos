@@ -56,13 +56,13 @@ Este repositório contém somente o **Backend** do projeto.
         cd api-oficina
     ```
   
-### 2. Popule as variáveis de ambiente
-- Obs: Caso queira utilizar as credenciais já predefinidas, **você pode pular essa etapa**.
+### 2. Popule as variáveis de ambiente.
 
 #### a. **Variáveis Docker**
 - Renomeie o arquivo da raíz do repositório `.envTemplate` para `.env` e preencha as variáveis com os valores apropriados para o seu ambiente de desenvolvimento.
 
 #### b. **Variáveis Spring Boot (`src/main/resources`)**
+- Obs: Caso queira utilizar as credenciais predefinidas no application, você pode pular essa etapa
 - Navegue até o diretório `src/main/resources`
 - Renomeie o arquivo `.envTemplate` para `.env` e configure as variáveis conforme necessário para o Spring Boot.
 
