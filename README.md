@@ -1,4 +1,4 @@
-## API Oficina
+## API Departamento de Reparos de Veículos
 
 >  Api desenvolvida a fim de pôr em prática meus conhecimentos em Java e Spring Boot
 
@@ -48,7 +48,7 @@ Este repositório contém somente o **Backend** do projeto.
 ## 💾 Estrutura do Banco de Dados
 
 <div style="text-align: center;">
-  <img src="src/main/resources/db/model-oficina.png" width="700"/>
+  <img src="src/main/resources/db/model-banco.png" width="700"/>
 </div>
 
 ## 🚀 Como Rodar a API
@@ -56,8 +56,8 @@ Este repositório contém somente o **Backend** do projeto.
 ### 1. Clone o Repositório
 - Primeiro, clone o repositório:
     ```
-        git clone https://github.com/mbranches/api-oficina.git
-        cd api-oficina
+        git clone https://github.com/mbranches/api-departamento-reparos.git
+        cd api-departamento-reparos
     ```
   
 ### 2. Popule as variáveis de ambiente.
@@ -90,7 +90,7 @@ Este repositório contém somente o **Backend** do projeto.
 
 ### O que é o Postman?
 
-O **Postman** é uma ferramenta popular para testar e consumir APIs. Ele permite que você faça requisições HTTP de forma simples e intuitiva, além de visualizar respostas, testar diferentes cenários e automatizar testes de APIs. Usar o Postman é uma forma prática de interagir com a **API Oficina**, permitindo que você envie dados, faça consultas e visualize as respostas da API sem precisar escrever código.
+O **Postman** é uma ferramenta popular para testar e consumir APIs. Ele permite que você faça requisições HTTP de forma simples e intuitiva, além de visualizar respostas, testar diferentes cenários e automatizar testes de APIs. Usar o Postman é uma forma prática de interagir com a **API Departamento de Reparos de Veículos**, permitindo que você envie dados, faça consultas e visualize as respostas da API sem precisar escrever código.
 
 ### Por que Usar o Postman nesta Aplicação?
 
@@ -104,7 +104,7 @@ Usar o **Postman** para consumir a API facilita o processo de desenvolvimento e 
 ### Como Importar a Collection para o Postman
 
 1. **Baixar o Arquivo da Collection**:  
-   Na pasta `data` do repositório, você encontrará um arquivo chamado `Oficina.postman_collection.json`. Esse arquivo contém todas as rotas da API, prontas para serem usadas no **Postman**.
+   Na pasta `data` do repositório, você encontrará um arquivo chamado `Departamento.postman_collection.json`. Esse arquivo contém todas as rotas da API, prontas para serem usadas no **Postman**.
 
 2. **Abrir o Postman**:  
    Caso não tenha o Postman instalado, você pode baixá-lo gratuitamente no [site oficial](https://www.postman.com/downloads/), caso já tenha o **Postman** mas não sabe usar, clique [aqui](https://www.youtube.com/watch?v=64-O-dDR7ic-) para assistir um tutorial introdutório.
@@ -113,7 +113,7 @@ Usar o **Postman** para consumir a API facilita o processo de desenvolvimento e 
 3. **Importar a Collection**:
   - Abra o **Postman**.
   - Clique em **Import** no canto superior esquerdo da tela.
-  - Selecione o arquivo `Oficina.postman_collection.json` que você baixou da pasta `data`.
+  - Selecione o arquivo `Departamento.postman_collection.json` que você baixou da pasta `data`.
   - Após a importação, todas as rotas estarão disponíveis no **Postman**.
 
 4. **Configuração da URL**:  
