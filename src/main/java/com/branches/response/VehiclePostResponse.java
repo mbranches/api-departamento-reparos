@@ -1,6 +1,5 @@
 package com.branches.response;
 
-import com.branches.model.Client;
 import com.branches.model.VehicleType;
 import lombok.Builder;
 import lombok.Data;
@@ -12,5 +11,5 @@ public class VehiclePostResponse {
     private VehicleType vehicleType;
     private String brand;
     private String model;
-    private Client client;
+    private ClientByVehicleResponse client;
 }
