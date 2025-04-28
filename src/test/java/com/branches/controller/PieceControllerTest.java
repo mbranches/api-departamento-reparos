@@ -162,11 +162,15 @@ public class PieceControllerTest {
     private static Stream<Arguments> postPieceBadRequestSource() {
         String nameRequiredError = "The field name is required";
         String unitValueRequiredError = "The field unitValue is required";
+        String unitValueNegativeError = "'unitValue' must be equal to or greater than 0";
+        String stockNegativeError = "'stock' must be equal to or greater than 0";
 
-        List<String> expectedErrors = List.of(nameRequiredError, unitValueRequiredError);
+        List<String> expectedRequiredErrors = List.of(nameRequiredError, unitValueRequiredError);
+        List<String> expectedNegativeError = List.of(unitValueNegativeError, stockNegativeError);
         return Stream.of(
-                Arguments.of("post-request-piece-empty-fields-400.json", expectedErrors),
-                Arguments.of("post-request-piece-blank-fields-400.json", expectedErrors)
+                Arguments.of("post-request-piece-empty-fields-400.json", expectedRequiredErrors),
+                Arguments.of("post-request-piece-blank-fields-400.json", expectedRequiredErrors),
+                Arguments.of("post-request-piece-negative-fields-400.json", expectedNegativeError)
         );
     }
 }

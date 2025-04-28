@@ -75,8 +75,6 @@ class CategoryControllerTest {
                 .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
     }
 
-
-
     @Test
     @DisplayName("GET /v1/categories?nameNotRegistered returns an empty list when the given argument is not found")
     @Order(3)
@@ -160,8 +158,6 @@ class CategoryControllerTest {
 
         Exception exception = mvcResult.getResolvedException();
 
-        System.out.println(exception.getMessage());
-
         Assertions.assertThat(exception.getMessage())
                 .isNotNull()
                 .contains(expectedErrors);
@@ -170,11 +166,13 @@ class CategoryControllerTest {
     private static Stream<Arguments> postCategoryBadRequestSource() {
         String nameRequiredError = "The field name is required";
         String hourlyPriceRequiredError = "The field hourlyPrice is required";
+        String hourlyPriceNegativeError = "'hourlyPrice' must be equal to or greater than 0";
 
-        List<String> expectedErrors = List.of(nameRequiredError, hourlyPriceRequiredError);
+        List<String> expectedRequiredErrors = List.of(nameRequiredError, hourlyPriceRequiredError);
         return Stream.of(
-                Arguments.of("post-request-category-empty-fields-400.json", expectedErrors),
-                Arguments.of("post-request-category-blank-fields-400.json", expectedErrors)
+                Arguments.of("post-request-category-empty-fields-400.json", expectedRequiredErrors),
+                Arguments.of("post-request-category-blank-fields-400.json", expectedRequiredErrors),
+                Arguments.of("post-request-category-negative-hourlyPrice-400.json", Collections.singletonList(hourlyPriceNegativeError))
         );
     }
 

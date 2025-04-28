@@ -354,9 +354,9 @@ class RepairControllerTest {
     
     @ParameterizedTest
     @MethodSource("postRepairBadRequestSource")
-    @DisplayName("POST /v1/repairs return BadRequest when fields are invalid")
+    @DisplayName("POST /v1/repairs throws BadRequestException when fields are invalid")
     @Order(18)
-    void save_ReturnsBadRequest_WhenFieldAreInvalid(String fileName, List<String> expectedErrors) throws Exception {
+    void save_ThrowsBadRequestException_WhenFieldAreInvalid(String fileName, List<String> expectedErrors) throws Exception {
         String request = fileUtils.readResourceFile("repair/%s".formatted(fileName));
 
         MvcResult mvcResult = mockMvc.perform(
@@ -455,6 +455,40 @@ class RepairControllerTest {
                 .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
     }
 
+    @ParameterizedTest
+    @MethodSource("postRepairEmployeeBadRequestSource")
+    @DisplayName("POST /v1/repairs/1/employees throws BadRequestException when fields are invalid")
+    @Order(22)
+    void addEmployee_ThrowsBadRequestException_WhenFieldAreInvalid(String fileName) throws Exception {
+        String request = fileUtils.readResourceFile("repair/%s".formatted(fileName));
+
+        long id = 1L;
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post(URL + "/" + id + "/employees")
+                                .content(request)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn();
+
+        Exception exception = mvcResult.getResolvedException();
+
+        assert exception != null;
+        Assertions.assertThat(exception.getMessage())
+                .isNotNull()
+                .contains("400");
+    }
+
+    public static Stream<Arguments> postRepairEmployeeBadRequestSource() {
+        return Stream.of(
+                Arguments.of("post-request-repairEmployee-null-employeeId-400.json"),
+                Arguments.of("post-request-repairEmployee-null-hoursWorked-400.json"),
+                Arguments.of("post-request-repairEmployee-negative-hoursWorked-400.json")
+        );
+    }
+
     @Test
     @DisplayName("POST /v1/repairs/1/pieces returns all saved RepairPieces when successful")
     @Order(22)
@@ -547,6 +581,40 @@ class RepairControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
+    @ParameterizedTest
+    @MethodSource("postRepairPieceBadRequestSource")
+    @DisplayName("POST /v1/repairs/1/pieces throws BadRequestException when fields are invalid")
+    @Order(22)
+    void addPiece_ThrowsBadRequestException_WhenFieldAreInvalid(String fileName) throws Exception {
+        String request = fileUtils.readResourceFile("repair/%s".formatted(fileName));
+
+        long id = 1L;
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post(URL + "/" + id + "/pieces")
+                                .content(request)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn();
+
+        Exception exception = mvcResult.getResolvedException();
+
+        assert exception != null;
+        Assertions.assertThat(exception.getMessage())
+                .isNotNull()
+                .contains("400");
+    }
+
+    public static Stream<Arguments> postRepairPieceBadRequestSource() {
+        return Stream.of(
+                Arguments.of("post-request-repairPiece-null-pieceId-400.json"),
+                Arguments.of("post-request-repairPiece-null-quantity-400.json"),
+                Arguments.of("post-request-repairPiece-negative-quantity-400.json")
+        );
     }
 
     @Test
