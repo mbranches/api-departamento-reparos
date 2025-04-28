@@ -1,9 +1,11 @@
 package com.branches.service;
 
+import com.branches.exception.BadRequestException;
 import com.branches.exception.NotFoundException;
 import com.branches.mapper.ClientMapper;
 import com.branches.model.Address;
 import com.branches.model.Client;
+import com.branches.model.Phone;
 import com.branches.repository.ClientRepository;
 import com.branches.request.ClientPostRequest;
 import com.branches.response.ClientGetResponse;
@@ -31,6 +33,8 @@ class ClientServiceTest {
     private ClientRepository repository;
     @Mock
     private AddressService addressService;
+    @Mock
+    private PhoneService phoneService;
     @Mock
     private ClientMapper mapper;
     private List<ClientGetResponse> clientGetResponseList;
@@ -125,6 +129,7 @@ class ClientServiceTest {
                 .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("Client not Found");
     }
+
     @Test
     @DisplayName("save returns saved client when successful")
     @Order(6)
@@ -138,6 +143,7 @@ class ClientServiceTest {
 
         BDDMockito.when(mapper.toClient(clientPostRequest)).thenReturn(clientToSave);
         BDDMockito.when(addressService.findAddress(clientAddress)).thenReturn(Optional.of(clientAddress));
+        BDDMockito.doNothing().when(phoneService).assertPhoneDoesNotExists(ArgumentMatchers.any(Phone.class));
         BDDMockito.when(repository.save(clientToSave)).thenReturn(clientToSave);
         BDDMockito.when(mapper.toClientPostResponse(clientToSave)).thenReturn(expectedResponse);
 
@@ -149,8 +155,26 @@ class ClientServiceTest {
     }
 
     @Test
-    @DisplayName("deleteById removes client when successful")
+    @DisplayName("save throws BadRequestException when the phone already exists")
     @Order(7)
+    void save_ThrowsBadRequestException_WhenThePhoneAlreadyExists() {
+        Client clientToSave = ClientUtils.newClientToSave();
+        ClientPostRequest clientPostRequest = ClientUtils.newClientPostRequest();
+
+        Address clientAddress = clientToSave.getAddress();
+
+        List<Phone> phones = clientToSave.getPhones();
+        BDDMockito.when(mapper.toClient(clientPostRequest)).thenReturn(clientToSave);
+        BDDMockito.when(addressService.findAddress(clientAddress)).thenReturn(Optional.of(clientAddress));
+        BDDMockito.doThrow(BadRequestException.class).when(phoneService).assertPhoneDoesNotExists(ArgumentMatchers.any(Phone.class));
+
+        Assertions.assertThatThrownBy(() -> service.save(clientPostRequest))
+                .isInstanceOf(BadRequestException.class);
+    }
+
+    @Test
+    @DisplayName("deleteById removes client when successful")
+    @Order(8)
     void deleteById_RemovesClient_WhenSuccessful() {
         Client clientToDelete = clientList.getFirst();
         Long idToDelete = clientToDelete.getId();
@@ -164,7 +188,7 @@ class ClientServiceTest {
 
     @Test
     @DisplayName("deleteById throws NotFoundException when given id is not found")
-    @Order(8)
+    @Order(9)
     void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() {
         Long randomId = 15512366L;
 

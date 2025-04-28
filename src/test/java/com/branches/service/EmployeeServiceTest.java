@@ -1,9 +1,11 @@
 package com.branches.service;
 
+import com.branches.exception.BadRequestException;
 import com.branches.exception.NotFoundException;
 import com.branches.mapper.EmployeeMapper;
 import com.branches.model.Address;
 import com.branches.model.Employee;
+import com.branches.model.Phone;
 import com.branches.repository.EmployeeRepository;
 import com.branches.request.EmployeePostRequest;
 import com.branches.response.EmployeeGetResponse;
@@ -32,6 +34,8 @@ class EmployeeServiceTest {
     private EmployeeRepository repository;
     @Mock
     private AddressService addressService;
+    @Mock
+    private PhoneService phoneService;
     @Mock
     private CategoryService categoryService;
     @Mock
@@ -143,6 +147,7 @@ class EmployeeServiceTest {
         BDDMockito.when(categoryService.findByIdOrThrowsNotFoundException(employeePostRequest.getCategoryId())).thenReturn(CategoryUtils.newCategoryToSave());
         BDDMockito.when(mapper.toEmployee(employeePostRequest)).thenReturn(employeeToSave);
         BDDMockito.when(addressService.findAddress(employeeAddress)).thenReturn(Optional.of(employeeAddress));
+        BDDMockito.doNothing().when(phoneService).assertPhoneDoesNotExists(ArgumentMatchers.any(Phone.class));
         BDDMockito.when(repository.save(employeeToSave)).thenReturn(employeeToSave);
         BDDMockito.when(mapper.toEmployeePostResponse(employeeToSave)).thenReturn(expectedResponse);
 
@@ -154,7 +159,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    @DisplayName("save throws not found exception when given category does not exists")
+    @DisplayName("save throws NotFoundException when given category does not exists")
     @Order(7)
     void save_ThrowsNotFoundException_WhenGivenCategoryNotExists() {
         EmployeePostRequest employeePostRequest = EmployeeUtils.newEmployeePostRequest();
@@ -167,8 +172,28 @@ class EmployeeServiceTest {
     }
 
     @Test
-    @DisplayName("deleteById removes employee when successful")
+    @DisplayName("save throws BadRequestException when the phone already exists")
     @Order(8)
+    void save_ThrowsBadRequestException_WhenThePhoneAlreadyExists() {
+        Employee employeeToSave = EmployeeUtils.newEmployeeToSave();
+        EmployeePostRequest employeePostRequest = EmployeeUtils.newEmployeePostRequest();
+
+        Address employeeAddress = employeeToSave.getAddress();
+
+        EmployeePostResponse expectedResponse = EmployeeUtils.newEmployeePostResponse();
+
+        BDDMockito.when(categoryService.findByIdOrThrowsNotFoundException(employeePostRequest.getCategoryId())).thenReturn(CategoryUtils.newCategoryToSave());
+        BDDMockito.when(mapper.toEmployee(employeePostRequest)).thenReturn(employeeToSave);
+        BDDMockito.when(addressService.findAddress(employeeAddress)).thenReturn(Optional.of(employeeAddress));
+        BDDMockito.doThrow(BadRequestException.class).when(phoneService).assertPhoneDoesNotExists(ArgumentMatchers.any(Phone.class));
+
+        Assertions.assertThatThrownBy(() -> service.save(employeePostRequest))
+                .isInstanceOf(BadRequestException.class);
+    }
+
+    @Test
+    @DisplayName("deleteById removes employee when successful")
+    @Order(9)
     void deleteById_RemovesEmployee_WhenSuccessful() {
         Employee employeeToDelete = employeeList.getFirst();
         Long idToDelete = employeeToDelete.getId();
@@ -182,7 +207,7 @@ class EmployeeServiceTest {
 
     @Test
     @DisplayName("deleteById throws NotFoundException when given id is not found")
-    @Order(9)
+    @Order(10)
     void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() {
         Long randomId = 15512366L;
 
