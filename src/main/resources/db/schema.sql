@@ -2,30 +2,30 @@ USE departamento;
 
 CREATE TABLE IF NOT EXISTS endereco (
 	idendereco BIGINT PRIMARY KEY AUTO_INCREMENT,
-    rua VARCHAR(30),
-    bairro VARCHAR(30), 
-    cidade VARCHAR(30),
-    uf CHAR(2)
+    rua VARCHAR(30) NOT NULL,
+    bairro VARCHAR(30) NOT NULL,
+    cidade VARCHAR(30) NOT NULL,
+    uf CHAR(2) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS cliente (
 	idcliente BIGINT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(30),
-    sobrenome VARCHAR(30),
+    nome VARCHAR(30) NOT NULL,
+    sobrenome VARCHAR(30) NOT NULL,
     fk_endereco_cliente BIGINT,
     FOREIGN KEY(fk_endereco_cliente) REFERENCES endereco(idendereco)
 );
 
 CREATE TABLE IF NOT EXISTS categoria (
 	idcategoria BIGINT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(30),
-    preco_hora DECIMAL(10, 2)
+    nome VARCHAR(30) NOT NULL,
+    preco_hora DECIMAL(10, 2) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS funcionario (
 	idfuncionario BIGINT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(30),
-    sobrenome VARCHAR(30),
+    nome VARCHAR(30) NOT NULL,
+    sobrenome VARCHAR(30) NOT NULL,
     fk_categoria_funcionario BIGINT,
     fk_endereco_funcionario BIGINT,
     FOREIGN KEY(fk_categoria_funcionario) REFERENCES categoria(idcategoria) ON DELETE SET NULL,
@@ -34,8 +34,8 @@ CREATE TABLE IF NOT EXISTS funcionario (
 
 CREATE TABLE IF NOT EXISTS telefone (
 	idtelefone BIGINT PRIMARY KEY AUTO_INCREMENT,
-    numero VARCHAR(14),
-    tipo_telefone ENUM('residencial', 'celular'),
+    numero VARCHAR(14) UNIQUE NOT NULL,
+    tipo_telefone ENUM('residencial', 'celular') NOT NULL,
     fk_cliente_telefone BIGINT,
 	fk_funcionario_telefone BIGINT,
     FOREIGN KEY(fk_cliente_telefone) REFERENCES cliente(idcliente),
@@ -44,18 +44,18 @@ CREATE TABLE IF NOT EXISTS telefone (
 
 CREATE TABLE IF NOT EXISTS veiculo (
 	idveiculo BIGINT PRIMARY KEY AUTO_INCREMENT,
-    tipo_veiculo ENUM('carro', 'moto', 'caminhao'),
-    marca VARCHAR(30),
-    modelo VARCHAR(30),
+    tipo_veiculo ENUM('carro', 'moto', 'caminhao') NOT NULL,
+    marca VARCHAR(30) NOT NULL,
+    modelo VARCHAR(30) NOT NULL,
     fk_cliente_veiculo BIGINT,
     FOREIGN KEY(fk_cliente_veiculo) REFERENCES cliente(idcliente)
 );
 
 CREATE TABLE IF NOT EXISTS peca (
 	idpeca BIGINT PRIMARY KEY AUTO_INCREMENT,
-	nome VARCHAR(30),
-	preco_unitario DECIMAL(10, 2),
-    estoque INT
+	nome VARCHAR(30) NOT NULL,
+	preco_unitario DECIMAL(10, 2) NOT NULL,
+    estoque INT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS reparacao (
