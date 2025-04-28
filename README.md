@@ -24,7 +24,7 @@ Este repositório contém somente o **Backend** do projeto.
   Permite associar ou desassociar funcionários e peças a reparos específicos.
   
 * ✅ **Controle do estoque de Peças**  
-  Permite controlar o estoque de peças.
+  Permite controlar o estoque de peças, conforme a mesma é utiliza em reparos.
 
 
 * ✅ **Consultas Avançadas**
