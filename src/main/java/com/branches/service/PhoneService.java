@@ -12,7 +12,7 @@ public class PhoneService {
     private final PhoneRepository repository;
 
     public void assertPhoneDoesNotExists(Phone phone) {
-        repository.findByNumberAndPhoneType(phone.getNumber(), phone.getPhoneType())
+        repository.findByNumber(phone.getNumber())
                 .ifPresent(p -> {
                     throw new BadRequestException("Phone '%s' already exists".formatted(phone.getNumber()));
                 });
