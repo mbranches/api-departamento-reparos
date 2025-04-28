@@ -24,6 +24,7 @@ public class EmployeeService {
     private final EmployeeMapper mapper;
     private final CategoryService categoryService;
     private final AddressService addressService;
+    private final PhoneService phoneService;
 
     public List<EmployeeGetResponse> findAll(String firstName) {
         List<Employee> response = firstName == null ? repository.findAll() : repository.findByNameContaining(firstName);
@@ -47,7 +48,10 @@ public class EmployeeService {
         }
 
         List<Phone> phones = employeeToSave.getPhones();
-        if (phones != null) phones.forEach(phone -> phone.setEmployee(employeeToSave));
+        if (phones != null) phones.forEach(phone -> {
+            phoneService.assertPhoneDoesNotExists(phone);
+            phone.setEmployee(employeeToSave);
+        });
 
         Employee response = repository.save(employeeToSave);
 

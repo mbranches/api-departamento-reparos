@@ -22,6 +22,7 @@ public class ClientService {
     private final ClientRepository repository;
     private final ClientMapper mapper;
     private final AddressService addressService;
+    private final PhoneService phoneService;
 
     public List<ClientGetResponse> findAll(String firstName) {
         List<Client> response = firstName == null ? repository.findAll() : repository.findAllByNameContaining(firstName);
@@ -52,7 +53,10 @@ public class ClientService {
         }
 
         List<Phone> phones = clientToSave.getPhones();
-        if (phones != null) phones.forEach(phone -> phone.setClient(clientToSave));
+        if (phones != null) phones.forEach(phone -> {
+            phoneService.assertPhoneDoesNotExists(phone);
+            phone.setClient(clientToSave);
+        });
 
         Client response = repository.save(clientToSave);
 
