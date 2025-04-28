@@ -464,7 +464,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:8080/v1/repairs/35/employees"
+						"url": "http://localhost:8080/v1/repairs/1/employees"
 					},
 					"response": []
 				},
