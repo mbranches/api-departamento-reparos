@@ -1,19 +1,22 @@
 {
-  "id": 4,
-  "name": "Chispirito",
-  "lastName": "Costa",
-  "address": {
+  "person": {
     "id": 4,
-    "street": "Almirante Barroso",
-    "district": "São Brás",
-    "city": "Belém",
-    "state": "Pa"
+    "name": "Chispirito",
+    "lastName": "Costa",
+    "address": {
+      "id": 4,
+      "street": "Almirante Barroso",
+      "district": "São Brás",
+      "city": "Belém",
+      "state": "Pa"
+    },
+    "phones": [
+      {
+        "id":4,
+        "number": "21121521",
+        "phoneType": "celular"
+      }
+    ]
   },
-  "phones": [
-    {
-      "id":4,
-      "number": "21121521",
-      "phoneType": "celular"
-    }
-  ]
+  "email": "chispirito@gmail.com"
 }

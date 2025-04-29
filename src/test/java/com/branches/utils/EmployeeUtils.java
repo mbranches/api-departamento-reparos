@@ -10,40 +10,34 @@ import java.util.List;
 public class EmployeeUtils {
 
     public static List<Employee> newEmployeeList() {
-        Address address = AddressUtils.newAddressToSave();
+        List<Person> personList = PersonUtils.newPersonList();
+        Person person1 = personList.getFirst();
+        Person person2 = personList.get(1);
+        Person person3 = personList.getLast();
 
-        Category category = CategoryUtils.newCategoryToSave();
+        Category category = CategoryUtils.newCategoryList().getFirst();
 
-        Employee employee1 = Employee.builder().id(1L).name("Marcus").lastName("Branches").category(category).address(address).build();
-        Phone phone1 = Phone.builder().id(1L).employee(employee1).number("5959559").phoneType(PhoneType.celular).build();
-        employee1.setPhones(List.of(phone1));
+        Employee employee1 = Employee.builder().id(1L).person(person1).category(category).build();
 
-        Employee employee2 = Employee.builder().id(2L).name("Vinicius").lastName("Lima").category(category).address(address).build();
-        Phone phone2 = Phone.builder().id(2L).employee(employee2).number("2222222").phoneType(PhoneType.celular).build();
-        employee2.setPhones(List.of(phone2));
+        Employee employee2 = Employee.builder().id(2L).person(person2).category(category).build();
 
-        Employee employee3 = Employee.builder().id(3L).name("Vinicius").lastName("Lima").category(category).address(address).build();
-        Phone phone3 = Phone.builder().id(3L).employee(employee3).number("3333333").phoneType(PhoneType.celular).build();
-        employee3.setPhones(List.of(phone3));
+        Employee employee3 = Employee.builder().id(3L).person(person3).category(category).build();
 
         return new ArrayList<>(List.of(employee1, employee2, employee3));
     }
 
     public static List<EmployeeGetResponse> newEmployeeGetResponseList() {
-        AddressGetResponse addressGetResponse = AddressGetResponse.builder().street("Almirante Barroso").district("São Brás").city("Belém").state("Pa").build();;
+        List<Person> personList = PersonUtils.newPersonList();
+        Person person1 = personList.getFirst();
+        Person person2 = personList.get(1);
+        Person person3 = personList.getLast();
         CategoryGetResponse categoryGetResponse = CategoryUtils.newCategoryGetResponse();
 
-        EmployeeGetResponse employee1 = EmployeeGetResponse.builder().name("Marcus").lastName("Branches").category(categoryGetResponse).address(addressGetResponse).build();
-        PhoneGetResponse phone1 = PhoneGetResponse.builder().number("5959559").phoneType(PhoneType.celular).build();
-        employee1.setPhones(List.of(phone1));
+        EmployeeGetResponse employee1 = EmployeeGetResponse.builder().id(1L).person(person1).category(categoryGetResponse).build();
 
-        EmployeeGetResponse employee2 = EmployeeGetResponse.builder().name("Vinicius").lastName("Lima").category(categoryGetResponse).address(addressGetResponse).build();
-        PhoneGetResponse phone2 = PhoneGetResponse.builder().number("2222222").phoneType(PhoneType.celular).build();
-        employee2.setPhones(List.of(phone2));
+        EmployeeGetResponse employee2 = EmployeeGetResponse.builder().id(2L).person(person2).category(categoryGetResponse).build();
 
-        EmployeeGetResponse employee3 = EmployeeGetResponse.builder().name("Vinicius").lastName("Lima").category(categoryGetResponse).address(addressGetResponse).build();
-        PhoneGetResponse phone3 = PhoneGetResponse.builder().number("3333333").phoneType(PhoneType.celular).build();
-        employee3.setPhones(List.of(phone3));
+        EmployeeGetResponse employee3 = EmployeeGetResponse.builder().id(3L).person(person3).category(categoryGetResponse).build();
 
         return new ArrayList<>(List.of(employee1, employee2, employee3));
     }
@@ -51,7 +45,7 @@ public class EmployeeUtils {
     public static EmployeePostRequest newEmployeePostRequest() {
         Address address = AddressUtils.newAddressToSave();
 
-        EmployeePostRequest employee = EmployeePostRequest.builder().name("Chispirito").lastName("Costa").categoryId(4L).address(address).build();
+        EmployeePostRequest employee = EmployeePostRequest.builder().name("Chispirito").lastName("Costa").categoryId(1L).address(address).build();
         Phone phone = PhoneUtils.newPhone(4L);
         employee.setPhones(List.of(phone));
 
@@ -59,58 +53,48 @@ public class EmployeeUtils {
     }
 
     public static Employee newEmployeeToSave() {
-        Address address = AddressUtils.newAddressToSave();
+        Person person = PersonUtils.newPerson();
+        Category category = CategoryUtils.newCategoryList().getFirst();
 
-        Category category = CategoryUtils.newCategoryToSave();
-
-        Employee employee = Employee.builder().id(4L).name("Chispirito").lastName("Costa").category(category).address(address).build();
-        Phone phone = PhoneUtils.newPhone(4L);
-        employee.setPhones(List.of(phone));
-
-        return employee;
+        return Employee.builder().id(4L).person(person).category(category).build();
     }
 
     public static EmployeePostResponse newEmployeePostResponse() {
-        Address address = AddressUtils.newAddressToSave();
+        Person person = PersonUtils.newPerson();
+        Category category = CategoryUtils.newCategoryList().getFirst();
 
-        Category category = CategoryUtils.newCategoryToSave();
-
-        EmployeePostResponse employee = EmployeePostResponse.builder().id(4L).name("Chispirito").lastName("Costa").category(category).address(address).build();
-        Phone phone = PhoneUtils.newPhone(4L);
-        employee.setPhones(List.of(phone));
-
-        return employee;
+        return EmployeePostResponse.builder().id(4L).person(person).category(category).build();
     }
 
     public static EmployeeByRepairResponse newEmployeeByRepairPostResponse() {
-        Category category = CategoryUtils.newCategoryToSave();
+        PersonDefaultResponse person = PersonUtils.newPersonDefaultResponse();
+        Category category = CategoryUtils.newCategoryList().getFirst();
 
         return EmployeeByRepairResponse.builder()
                 .id(4L)
-                .name("Chispirito")
-                .lastName("Costa")
+                .person(person)
                 .category(category)
                 .build();
     }
 
     public static EmployeeByRepairResponse newEmployeeByRepairByAddEmployee() {
-        Category category = CategoryUtils.newCategoryToSave();
+        Category category = CategoryUtils.newCategoryList().getFirst();
+        PersonDefaultResponse person = PersonUtils.newPersonDefaultResponse();
 
         return EmployeeByRepairResponse.builder()
                 .id(4L)
-                .name("Chispirito")
-                .lastName("Costa")
+                .person(person)
                 .category(category)
                 .build();
     }
 
     public static EmployeeByRepairResponse newEmployeeByRepairGetEmployees() {
-        Category category = CategoryUtils.newCategoryToSave();
+        Category category = CategoryUtils.newCategoryList().getFirst();
+        PersonDefaultResponse person = PersonUtils.newPersonDefaultResponse();
 
         return EmployeeByRepairResponse.builder()
                 .id(1L)
-                .name("Marcus")
-                .lastName("Branches")
+                .person(person)
                 .category(category)
                 .build();
     }

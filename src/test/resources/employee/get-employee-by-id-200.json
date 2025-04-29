@@ -1,20 +1,23 @@
 {
-  "name": "Marcus",
-  "lastName": "Branches",
+  "id": 1,
+  "person": {
+    "name": "Marcus",
+    "lastName": "Branches",
+    "address": {
+      "street": "Almirante Barroso",
+      "district": "São Brás",
+      "city": "Belém",
+      "state": "Pa"
+    },
+    "phones": [
+      {
+        "number": "5959559",
+        "phoneType": "celular"
+      }
+    ]
+  },
   "category": {
     "name": "Vidraceiro",
     "hourlyPrice": 50.0
-  },
-  "address": {
-    "street": "Almirante Barroso",
-    "district": "São Brás",
-    "city": "Belém",
-    "state": "Pa"
-  },
-  "phones": [
-    {
-      "number": "5959559",
-      "phoneType": "celular"
-    }
-  ]
+  }
 }

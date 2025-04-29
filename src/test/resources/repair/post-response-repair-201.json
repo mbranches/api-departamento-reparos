@@ -1,8 +1,13 @@
 {
   "id": 4,
   "client": {
-    "name": "Chispirito",
-    "lastName": "Costa"
+    "id": 4,
+    "person": {
+      "id": 4,
+      "name": "Chispirito",
+      "lastName": "Costa"
+    },
+    "email": "chispirito@gmail.com"
   },
   "vehicle": {
     "vehicleType": "caminhao",
@@ -24,11 +29,15 @@
   "employees": [
     {
       "employee": {
-        "name": "Chispirito",
-        "lastName": "Costa",
-        "category": {
+        "id": 4,
+        "person": {
           "id": 4,
-          "name": "Vidraceiro",
+          "name": "Chispirito",
+          "lastName": "Costa"
+        },
+        "category": {
+          "id": 1,
+          "name": "Mecânico",
           "hourlyPrice": 50.0
         }
       },

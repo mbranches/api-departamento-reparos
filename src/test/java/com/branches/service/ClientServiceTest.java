@@ -3,14 +3,17 @@ package com.branches.service;
 import com.branches.exception.BadRequestException;
 import com.branches.exception.NotFoundException;
 import com.branches.mapper.ClientMapper;
+import com.branches.mapper.PersonMapper;
 import com.branches.model.Address;
 import com.branches.model.Client;
+import com.branches.model.Person;
 import com.branches.model.Phone;
 import com.branches.repository.ClientRepository;
 import com.branches.request.ClientPostRequest;
 import com.branches.response.ClientGetResponse;
 import com.branches.response.ClientPostResponse;
 import com.branches.utils.ClientUtils;
+import com.branches.utils.PersonUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,7 +39,11 @@ class ClientServiceTest {
     @Mock
     private PhoneService phoneService;
     @Mock
+    private PersonService personService;
+    @Mock
     private ClientMapper mapper;
+    @Mock
+    private PersonMapper personMapper;
     private List<ClientGetResponse> clientGetResponseList;
     private List<Client> clientList;
 
@@ -66,12 +73,12 @@ class ClientServiceTest {
     @Order(2)
     void findAll_ReturnsFoundClients_WhenArgumentIsGiven() {
         ClientGetResponse clientToBeFound = clientGetResponseList.getFirst();
-        String nameToSearch = clientToBeFound.getName();
+        String nameToSearch = clientToBeFound.getPerson().getName();
         List<ClientGetResponse> expectedResponse = List.of(clientToBeFound);
 
         List<Client> expectedResponseRepository = List.of(clientList.getFirst());
 
-        BDDMockito.when(repository.findAllByNameContaining(nameToSearch)).thenReturn(expectedResponseRepository);
+        BDDMockito.when(repository.findAllByPerson_NameContaining(nameToSearch)).thenReturn(expectedResponseRepository);
         BDDMockito.when(mapper.toClientGetResponseList(ArgumentMatchers.anyList())).thenReturn(expectedResponse);
 
         List<ClientGetResponse> response = service.findAll(nameToSearch);
@@ -88,7 +95,7 @@ class ClientServiceTest {
     void findAll_ReturnsEmptyList_WhenGivenArgumentIsNotFound() {
         String randomName = "name invalid";
 
-        BDDMockito.when(repository.findAllByNameContaining(randomName)).thenReturn(Collections.emptyList());
+        BDDMockito.when(repository.findAllByPerson_NameContaining(randomName)).thenReturn(Collections.emptyList());
         BDDMockito.when(mapper.toClientGetResponseList(ArgumentMatchers.anyList())).thenReturn(Collections.emptyList());
 
         List<ClientGetResponse> response = service.findAll(randomName);
@@ -134,18 +141,22 @@ class ClientServiceTest {
     @DisplayName("save returns saved client when successful")
     @Order(6)
     void save_ReturnsSavedClient_WhenGivenSuccessful() {
-        Client clientToSave = ClientUtils.newClientToSave();
+        Person personToSave = PersonUtils.newPerson().withId(null);
+        Person personSaved = PersonUtils.newPerson().withId(4L);
+        Client clientToSave = ClientUtils.newClientToSave().withId(null);
+        Client clientSaved = ClientUtils.newClientToSave();
         ClientPostRequest clientPostRequest = ClientUtils.newClientPostRequest();
 
-        Address clientAddress = clientToSave.getAddress();
+        Address clientAddress = personToSave.getAddress();
 
         ClientPostResponse expectedResponse = ClientUtils.newClientPostResponse();
 
-        BDDMockito.when(mapper.toClient(clientPostRequest)).thenReturn(clientToSave);
+        BDDMockito.when(personMapper.toPerson(clientPostRequest)).thenReturn(personToSave);
         BDDMockito.when(addressService.findAddress(clientAddress)).thenReturn(Optional.of(clientAddress));
         BDDMockito.doNothing().when(phoneService).assertPhoneDoesNotExists(ArgumentMatchers.any(Phone.class));
-        BDDMockito.when(repository.save(clientToSave)).thenReturn(clientToSave);
-        BDDMockito.when(mapper.toClientPostResponse(clientToSave)).thenReturn(expectedResponse);
+        BDDMockito.when(personService.save(personToSave)).thenReturn(personSaved);
+        BDDMockito.when(repository.save(clientToSave)).thenReturn(clientSaved);
+        BDDMockito.when(mapper.toClientPostResponse(clientSaved)).thenReturn(expectedResponse);
 
         ClientPostResponse response = service.save(clientPostRequest);
 
@@ -158,13 +169,12 @@ class ClientServiceTest {
     @DisplayName("save throws BadRequestException when the phone already exists")
     @Order(7)
     void save_ThrowsBadRequestException_WhenThePhoneAlreadyExists() {
-        Client clientToSave = ClientUtils.newClientToSave();
+        Person personToSave = PersonUtils.newPerson().withId(null);
         ClientPostRequest clientPostRequest = ClientUtils.newClientPostRequest();
 
-        Address clientAddress = clientToSave.getAddress();
+        Address clientAddress = personToSave.getAddress();
 
-        List<Phone> phones = clientToSave.getPhones();
-        BDDMockito.when(mapper.toClient(clientPostRequest)).thenReturn(clientToSave);
+        BDDMockito.when(personMapper.toPerson(clientPostRequest)).thenReturn(personToSave);
         BDDMockito.when(addressService.findAddress(clientAddress)).thenReturn(Optional.of(clientAddress));
         BDDMockito.doThrow(BadRequestException.class).when(phoneService).assertPhoneDoesNotExists(ArgumentMatchers.any(Phone.class));
 

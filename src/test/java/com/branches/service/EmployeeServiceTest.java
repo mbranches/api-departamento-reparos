@@ -3,15 +3,15 @@ package com.branches.service;
 import com.branches.exception.BadRequestException;
 import com.branches.exception.NotFoundException;
 import com.branches.mapper.EmployeeMapper;
-import com.branches.model.Address;
-import com.branches.model.Employee;
-import com.branches.model.Phone;
+import com.branches.mapper.PersonMapper;
+import com.branches.model.*;
 import com.branches.repository.EmployeeRepository;
 import com.branches.request.EmployeePostRequest;
 import com.branches.response.EmployeeGetResponse;
 import com.branches.response.EmployeePostResponse;
 import com.branches.utils.CategoryUtils;
 import com.branches.utils.EmployeeUtils;
+import com.branches.utils.PersonUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,6 +38,10 @@ class EmployeeServiceTest {
     private PhoneService phoneService;
     @Mock
     private CategoryService categoryService;
+    @Mock
+    private PersonService personService;
+    @Mock
+    private PersonMapper personMapper;
     @Mock
     private EmployeeMapper mapper;
     private List<EmployeeGetResponse> employeeGetResponseList;
@@ -69,12 +73,12 @@ class EmployeeServiceTest {
     @Order(2)
     void findAll_ReturnsFoundEmployees_WhenArgumentIsGiven() {
         EmployeeGetResponse employeeToBeFound = employeeGetResponseList.getFirst();
-        String nameToSearch = employeeToBeFound.getName();
+        String nameToSearch = employeeToBeFound.getPerson().getName();
         List<EmployeeGetResponse> expectedResponse = List.of(employeeToBeFound);
 
         List<Employee> expectedResponseRepository = List.of(employeeList.getFirst());
 
-        BDDMockito.when(repository.findByNameContaining(nameToSearch)).thenReturn(expectedResponseRepository);
+        BDDMockito.when(repository.findAllByPerson_NameContaining(nameToSearch)).thenReturn(expectedResponseRepository);
         BDDMockito.when(mapper.toEmployeeGetResponseList(ArgumentMatchers.anyList())).thenReturn(expectedResponse);
 
         List<EmployeeGetResponse> response = service.findAll(nameToSearch);
@@ -91,7 +95,7 @@ class EmployeeServiceTest {
     void findAll_ReturnsEmptyList_WhenGivenArgumentIsNotFound() {
         String randomName = "name invalid";
 
-        BDDMockito.when(repository.findByNameContaining(randomName)).thenReturn(Collections.emptyList());
+        BDDMockito.when(repository.findAllByPerson_NameContaining(randomName)).thenReturn(Collections.emptyList());
         BDDMockito.when(mapper.toEmployeeGetResponseList(ArgumentMatchers.anyList())).thenReturn(Collections.emptyList());
 
         List<EmployeeGetResponse> response = service.findAll(randomName);
@@ -137,19 +141,23 @@ class EmployeeServiceTest {
     @DisplayName("save returns saved employee when successful")
     @Order(6)
     void save_ReturnsSavedEmployee_WhenSuccessful() {
-        Employee employeeToSave = EmployeeUtils.newEmployeeToSave();
+        Person personToSave = PersonUtils.newPerson().withId(null);
+        Person personSaved = PersonUtils.newPerson();
+        Address employeeAddress = personToSave.getAddress();
+        Employee employeeToSave = EmployeeUtils.newEmployeeToSave().withId(null);
+        Employee employeeSaved = EmployeeUtils.newEmployeeToSave();
+
         EmployeePostRequest employeePostRequest = EmployeeUtils.newEmployeePostRequest();
-
-        Address employeeAddress = employeeToSave.getAddress();
-
         EmployeePostResponse expectedResponse = EmployeeUtils.newEmployeePostResponse();
 
-        BDDMockito.when(categoryService.findByIdOrThrowsNotFoundException(employeePostRequest.getCategoryId())).thenReturn(CategoryUtils.newCategoryToSave());
-        BDDMockito.when(mapper.toEmployee(employeePostRequest)).thenReturn(employeeToSave);
+        Category category = CategoryUtils.newCategoryList().getFirst();
+        BDDMockito.when(categoryService.findByIdOrThrowsNotFoundException(employeePostRequest.getCategoryId())).thenReturn(category);
+        BDDMockito.when(personMapper.toPerson(employeePostRequest)).thenReturn(personToSave);
         BDDMockito.when(addressService.findAddress(employeeAddress)).thenReturn(Optional.of(employeeAddress));
         BDDMockito.doNothing().when(phoneService).assertPhoneDoesNotExists(ArgumentMatchers.any(Phone.class));
-        BDDMockito.when(repository.save(employeeToSave)).thenReturn(employeeToSave);
-        BDDMockito.when(mapper.toEmployeePostResponse(employeeToSave)).thenReturn(expectedResponse);
+        BDDMockito.when(personService.save(personToSave)).thenReturn(personSaved);
+        BDDMockito.when(repository.save(employeeToSave)).thenReturn(employeeSaved);
+        BDDMockito.when(mapper.toEmployeePostResponse(employeeSaved)).thenReturn(expectedResponse);
 
         EmployeePostResponse response = service.save(employeePostRequest);
 
@@ -175,15 +183,14 @@ class EmployeeServiceTest {
     @DisplayName("save throws BadRequestException when the phone already exists")
     @Order(8)
     void save_ThrowsBadRequestException_WhenThePhoneAlreadyExists() {
-        Employee employeeToSave = EmployeeUtils.newEmployeeToSave();
+        Person personToSave = PersonUtils.newPerson().withId(null);
         EmployeePostRequest employeePostRequest = EmployeeUtils.newEmployeePostRequest();
 
-        Address employeeAddress = employeeToSave.getAddress();
+        Address employeeAddress = personToSave.getAddress();
 
-        EmployeePostResponse expectedResponse = EmployeeUtils.newEmployeePostResponse();
-
-        BDDMockito.when(categoryService.findByIdOrThrowsNotFoundException(employeePostRequest.getCategoryId())).thenReturn(CategoryUtils.newCategoryToSave());
-        BDDMockito.when(mapper.toEmployee(employeePostRequest)).thenReturn(employeeToSave);
+        Category category = CategoryUtils.newCategoryList().getFirst();
+        BDDMockito.when(categoryService.findByIdOrThrowsNotFoundException(employeePostRequest.getCategoryId())).thenReturn(category);
+        BDDMockito.when(personMapper.toPerson(employeePostRequest)).thenReturn(personToSave);
         BDDMockito.when(addressService.findAddress(employeeAddress)).thenReturn(Optional.of(employeeAddress));
         BDDMockito.doThrow(BadRequestException.class).when(phoneService).assertPhoneDoesNotExists(ArgumentMatchers.any(Phone.class));
 

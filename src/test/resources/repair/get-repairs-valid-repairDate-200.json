@@ -1,10 +1,16 @@
 [
   {
+    "id": 1,
     "client": {
-      "name": "Chispirito",
-      "lastName": "Costa"
+      "id": 4,
+      "person": {
+        "name": "Chispirito",
+        "lastName": "Costa"
+      },
+      "email": "chispirito@gmail.com"
     },
     "vehicle": {
+      "id": 4,
       "vehicleType": "caminhao",
       "brand": "Scania",
       "model": "T113"
@@ -13,11 +19,17 @@
     "endDate": "2025-02-12"
   },
   {
+    "id": 2,
     "client": {
-      "name": "Chispirito",
-      "lastName": "Costa"
+      "id": 4,
+      "person": {
+        "name": "Chispirito",
+        "lastName": "Costa"
+      },
+      "email": "chispirito@gmail.com"
     },
     "vehicle": {
+      "id": 4,
       "vehicleType": "caminhao",
       "brand": "Scania",
       "model": "T113"
@@ -26,11 +38,17 @@
     "endDate": "2025-02-12"
   },
   {
+    "id": 3,
     "client": {
-      "name": "Chispirito",
-      "lastName": "Costa"
+      "id": 4,
+      "person": {
+        "name": "Chispirito",
+        "lastName": "Costa"
+      },
+      "email": "chispirito@gmail.com"
     },
     "vehicle": {
+      "id": 4,
       "vehicleType": "caminhao",
       "brand": "Scania",
       "model": "T113"

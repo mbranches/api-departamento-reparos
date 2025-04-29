@@ -31,9 +31,9 @@ public class RepairUtils {
         VehicleByRepairGetResponse vehicle = VehicleUtils.newVehicleByRepairGetResponse();
         LocalDate date = LocalDate.of(2025, 2, 12);
 
-        RepairGetResponse repair1 = RepairGetResponse.builder().client(client).vehicle(vehicle).totalValue(1000).endDate(date).build();
-        RepairGetResponse repair2 = RepairGetResponse.builder().client(client).vehicle(vehicle).totalValue(1000).endDate(date).build();
-        RepairGetResponse repair3 = RepairGetResponse.builder().client(client).vehicle(vehicle).totalValue(1000).endDate(date).build();
+        RepairGetResponse repair1 = RepairGetResponse.builder().id(1L).client(client).vehicle(vehicle).totalValue(1000).endDate(date).build();
+        RepairGetResponse repair2 = RepairGetResponse.builder().id(2L).client(client).vehicle(vehicle).totalValue(1000).endDate(date).build();
+        RepairGetResponse repair3 = RepairGetResponse.builder().id(3L).client(client).vehicle(vehicle).totalValue(1000).endDate(date).build();
 
         return new ArrayList<>(List.of(repair1, repair2, repair3));
     }

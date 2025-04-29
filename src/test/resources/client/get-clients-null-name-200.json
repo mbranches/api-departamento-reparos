@@ -1,50 +1,63 @@
 [
   {
-    "name":"Marcus",
-    "lastName":"Branches",
-    "address":{
-      "street":"Almirante Barroso",
-      "district":"São Brás",
-      "city":"Belém",
-      "state":"Pa"
+    "person": {
+      "name":"Marcus",
+      "lastName":"Branches",
+      "address":{
+        "street":"Almirante Barroso",
+        "district":"São Brás",
+        "city":"Belém",
+        "state":"Pa"
+      },
+      "phones":[
+        {
+          "number":"5959559",
+          "phoneType":"celular"
+        }
+      ]
     },
-    "phones":[
-      {
-        "number":"5959559",
-        "phoneType":"celular"
-      }
-    ]
+    "email": "marcus@gmail.com"
   },
   {
-    "name":"Vinicius",
-    "lastName":"Lima",
-    "address":{
-      "street":"Almirante Barroso",
-      "district":"São Brás",
-      "city":"Belém",
-      "state":"Pa"
+    "id":2,
+    "person": {
+      "id":2,
+      "name":"Vinicius",
+      "lastName":"Lima",
+      "address": {
+        "id":4,
+        "street":"Almirante Barroso",
+        "district":"São Brás",
+        "city":"Belém",
+        "state":"Pa"
+      },
+      "phones":[
+        {
+          "id":2,
+          "number":"2222222",
+          "phoneType":"celular"
+        }
+      ]
     },
-    "phones":[
-      {
-        "number":"2222222",
-        "phoneType":"celular"
-      }
-    ]
+    "email":"vinicus@gmail.com"
   },
   {
-    "name":"Vinicius",
-    "lastName":"Lima",
-    "address":{
-      "street":"Almirante Barroso",
-      "district":"São Brás",
-      "city":"Belém",
-      "state":"Pa"
+    "person": {
+      "name":"Mario",
+      "lastName":"Andrade",
+      "address":{
+        "street":"Almirante Barroso",
+        "district":"São Brás",
+        "city":"Belém",
+        "state":"Pa"
+      },
+      "phones":[
+        {
+          "number":"3333333",
+          "phoneType":"celular"
+        }
+      ]
     },
-    "phones":[
-      {
-        "number":"3333333",
-        "phoneType":"celular"
-      }
-    ]
+    "email": "mario@gmail.com"
   }
 ]

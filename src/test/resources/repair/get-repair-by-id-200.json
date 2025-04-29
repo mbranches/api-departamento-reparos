@@ -1,7 +1,13 @@
 {
+  "id": 1,
   "client": {
-    "name": "Chispirito",
-    "lastName": "Costa"
+    "id": 4,
+    "person": {
+      "id": 4,
+      "name": "Chispirito",
+      "lastName": "Costa"
+    },
+    "email": "chispirito@gmail.com"
   },
   "vehicle": {
     "vehicleType": "caminhao",

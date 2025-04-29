@@ -5,7 +5,11 @@
   "model": "T113",
   "client": {
     "id": 4,
-    "name": "Chispirito",
-    "lastName": "Costa"
+    "person": {
+      "id": 4,
+      "name": "Chispirito",
+      "lastName": "Costa"
+    },
+    "email": "chispirito@gmail.com"
   }
 }

@@ -1,61 +1,73 @@
 [
   {
-    "name":"Marcus",
-    "lastName":"Branches",
-    "category":{
+    "id": 1,
+    "person": {
+      "id": 1,
+      "name":"Marcus",
+      "lastName":"Branches",
+      "address": {
+        "street":"Almirante Barroso",
+        "district":"São Brás",
+        "city":"Belém",
+        "state":"Pa"
+      },"phones": [
+        {
+          "number":"5959559",
+          "phoneType":"celular"
+        }
+      ]
+    },
+    "category": {
       "name":"Vidraceiro",
       "hourlyPrice":50.0
-    },
-    "address":{
-      "street":"Almirante Barroso",
-      "district":"São Brás",
-      "city":"Belém",
-      "state":"Pa"
-    },"phones":[
-      {
-        "number":"5959559",
-        "phoneType":"celular"
-      }
-    ]
+    }
   },
   {
-    "name":"Vinicius",
-    "lastName":"Lima",
-    "category":{
+    "id": 2,
+    "person": {
+      "id": 2,
+      "name":"Vinicius",
+      "lastName":"Lima",
+      "address": {
+        "street":"Almirante Barroso",
+        "district":"São Brás",
+        "city":"Belém",
+        "state":"Pa"
+      },
+      "phones": [
+        {
+          "number":"2222222",
+          "phoneType":"celular"
+        }
+      ]
+    },
+    "category": {
       "name":"Vidraceiro",
       "hourlyPrice":50.0
-    },
-    "address":{
-      "street":"Almirante Barroso",
-      "district":"São Brás",
-      "city":"Belém",
-      "state":"Pa"
-    },
-    "phones":[
-      {
-        "number":"2222222",
-        "phoneType":"celular"
-      }
-    ]
+    }
   },
   {
-    "name":"Vinicius",
-    "lastName":"Lima",
+    "id": 3,
+    "person": {
+      "id": 3,
+      "name":"Mario",
+      "lastName":"Andrade",
+      "address":{
+        "street":"Almirante Barroso",
+        "district":"São Brás",
+        "city":"Belém",
+        "state":"Pa"
+      },
+      "phones":[
+        {
+          "number":"3333333",
+          "phoneType":"celular"
+        }
+      ]
+    },
     "category":{
       "name":"Vidraceiro",
       "hourlyPrice":50.0
-    },
-    "address":{
-      "street":"Almirante Barroso",
-      "district":"São Brás",
-      "city":"Belém",
-      "state":"Pa"
-    },
-    "phones":[
-      {
-        "number":"3333333",
-        "phoneType":"celular"
-      }
-    ]
+    }
   }
 ]

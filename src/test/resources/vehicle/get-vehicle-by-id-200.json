@@ -1,9 +1,15 @@
 {
+  "id": 1,
   "vehicleType": "carro",
   "brand": "Fiat",
   "model": "Toro",
   "client": {
-    "name": "Chispirito",
-    "lastName": "Costa"
+    "id": 4,
+    "person":{
+      "id": 4,
+      "name": "Chispirito",
+      "lastName": "Costa"
+    },
+    "email": "chispirito@gmail.com"
   }
 }

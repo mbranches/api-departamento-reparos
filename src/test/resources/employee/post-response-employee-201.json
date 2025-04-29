@@ -1,24 +1,27 @@
 {
   "id": 4,
-  "name": "Chispirito",
-  "lastName": "Costa",
+  "person": {
+    "id": 4,
+    "name": "Chispirito",
+    "lastName": "Costa",
+    "address": {
+      "id": 4,
+      "street": "Almirante Barroso",
+      "district": "São Brás",
+      "city": "Belém",
+      "state": "Pa"
+    },
+    "phones": [
+      {
+        "id":4,
+        "number": "21121521",
+        "phoneType": "celular"
+      }
+    ]
+  },
   "category": {
-    "id": 4,
-    "name": "Vidraceiro",
+    "id": 1,
+    "name": "Mecânico",
     "hourlyPrice": 50.0
-  },
-  "address": {
-    "id": 4,
-    "street": "Almirante Barroso",
-    "district": "São Brás",
-    "city": "Belém",
-    "state": "Pa"
-  },
-  "phones": [
-    {
-      "id":4,
-      "number": "21121521",
-      "phoneType": "celular"
-    }
-  ]
+  }
 }

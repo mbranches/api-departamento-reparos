@@ -2,11 +2,14 @@
   {
     "employee": {
       "id": 1,
-      "name": "Marcus",
-      "lastName": "Branches",
-      "category": {
+      "person": {
         "id": 4,
-        "name": "Vidraceiro",
+        "name": "Chispirito",
+        "lastName": "Costa"
+      },
+      "category": {
+        "id": 1,
+        "name": "Mecânico",
         "hourlyPrice": 50.0
       }
     },
