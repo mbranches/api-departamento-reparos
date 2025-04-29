@@ -1,3 +1,5 @@
+CREATE DATABASE IF NOT EXISTS departamento;
+
 USE departamento;
 
 CREATE TABLE IF NOT EXISTS endereco (
@@ -8,12 +10,27 @@ CREATE TABLE IF NOT EXISTS endereco (
     uf CHAR(2) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS cliente (
-	idcliente BIGINT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS pessoa (
+	idpessoa BIGINT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(30) NOT NULL,
     sobrenome VARCHAR(30) NOT NULL,
-    fk_endereco_cliente BIGINT,
-    FOREIGN KEY(fk_endereco_cliente) REFERENCES endereco(idendereco)
+    fk_endereco_pessoa BIGINT,
+    FOREIGN KEY(fk_endereco_pessoa) REFERENCES endereco(idendereco)
+);
+
+CREATE TABLE IF NOT EXISTS telefone (
+    idtelefone BIGINT PRIMARY KEY AUTO_INCREMENT,
+    numero VARCHAR(14) UNIQUE NOT NULL,
+    tipo_telefone ENUM('residencial', 'celular') NOT NULL,
+    fk_pessoa_telefone BIGINT,
+    FOREIGN KEY(fk_pessoa_telefone) REFERENCES pessoa(idpessoa)
+);
+
+CREATE TABLE IF NOT EXISTS cliente (
+    idcliente BIGINT PRIMARY KEY AUTO_INCREMENT,
+    fk_pessoa_cliente BIGINT,
+    email VARCHAR(45),
+    FOREIGN KEY(fk_pessoa_cliente) REFERENCES pessoa(idpessoa) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS categoria (
@@ -23,23 +40,11 @@ CREATE TABLE IF NOT EXISTS categoria (
 );
 
 CREATE TABLE IF NOT EXISTS funcionario (
-	idfuncionario BIGINT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(30) NOT NULL,
-    sobrenome VARCHAR(30) NOT NULL,
+    idfuncionario BIGINT PRIMARY KEY AUTO_INCREMENT,
+    fk_pessoa_funcionario BIGINT,
     fk_categoria_funcionario BIGINT,
-    fk_endereco_funcionario BIGINT,
     FOREIGN KEY(fk_categoria_funcionario) REFERENCES categoria(idcategoria) ON DELETE SET NULL,
-    FOREIGN KEY(fk_endereco_funcionario) REFERENCES endereco(idendereco)
-);
-
-CREATE TABLE IF NOT EXISTS telefone (
-	idtelefone BIGINT PRIMARY KEY AUTO_INCREMENT,
-    numero VARCHAR(14) UNIQUE NOT NULL,
-    tipo_telefone ENUM('residencial', 'celular') NOT NULL,
-    fk_cliente_telefone BIGINT,
-	fk_funcionario_telefone BIGINT,
-    FOREIGN KEY(fk_cliente_telefone) REFERENCES cliente(idcliente),
-    FOREIGN KEY(fk_funcionario_telefone) REFERENCES funcionario(idfuncionario)
+    FOREIGN KEY(fk_pessoa_funcionario) REFERENCES pessoa(idpessoa) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS veiculo (
