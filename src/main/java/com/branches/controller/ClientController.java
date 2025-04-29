@@ -4,7 +4,7 @@ import com.branches.request.ClientPostRequest;
 import com.branches.response.ClientGetResponse;
 import com.branches.response.ClientPostResponse;
 import com.branches.response.RepairGetResponse;
-import com.branches.response.VehicleByClientGetResponse;
+import com.branches.response.VehicleDefaultResponse;
 import com.branches.service.ClientService;
 import com.branches.service.RepairService;
 import com.branches.service.VehicleService;
@@ -39,8 +39,8 @@ public class ClientController {
     }
 
     @GetMapping("/{clientId}/vehicles")
-    public ResponseEntity<List<VehicleByClientGetResponse>> findVehiclesByClientId(@PathVariable Long clientId) {
-        List<VehicleByClientGetResponse> response = vehicleService.findByClientId(clientId);
+    public ResponseEntity<List<VehicleDefaultResponse>> findVehiclesByClientId(@PathVariable Long clientId) {
+        List<VehicleDefaultResponse> response = vehicleService.findByClientId(clientId);
 
         return ResponseEntity.ok(response);
     }

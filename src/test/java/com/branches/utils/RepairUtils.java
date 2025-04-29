@@ -28,7 +28,7 @@ public class RepairUtils {
 
     public static List<RepairGetResponse> newRepairGetResponseList() {
         ClientDefaultResponse client = ClientUtils.newClientDefaultResponse();
-        VehicleByRepairGetResponse vehicle = VehicleUtils.newVehicleByRepairGetResponse();
+        VehicleDefaultResponse vehicle = VehicleUtils.newVehicleDefaultResponse();
         LocalDate date = LocalDate.of(2025, 2, 12);
 
         RepairGetResponse repair1 = RepairGetResponse.builder().id(1L).client(client).vehicle(vehicle).totalValue(1000).endDate(date).build();
@@ -73,7 +73,7 @@ public class RepairUtils {
         RepairPostResponse response = RepairPostResponse.builder()
                 .id(4L)
                 .client(ClientUtils.newClientByRepairPostResponse())
-                .vehicle(VehicleUtils.newVehicleByRepairPostResponse())
+                .vehicle(VehicleUtils.newVehicleDefaultResponse())
                 .pieces(List.of(repairPieceByRepairPostResponse))
                 .employees(List.of(RepairEmployeeUtils.newRepairEmployeeByRepairPostResponse()))
                 .endDate(date)

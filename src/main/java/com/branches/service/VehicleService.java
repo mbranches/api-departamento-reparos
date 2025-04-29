@@ -6,7 +6,7 @@ import com.branches.model.Client;
 import com.branches.model.Vehicle;
 import com.branches.repository.VehicleRepository;
 import com.branches.request.VehiclePostRequest;
-import com.branches.response.VehicleByClientGetResponse;
+import com.branches.response.VehicleDefaultResponse;
 import com.branches.response.VehicleGetResponse;
 import com.branches.response.VehiclePostResponse;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +43,7 @@ public class VehicleService {
         return mapper.toVehiclePostResponse(response);
     }
 
-    public List<VehicleByClientGetResponse> findByClientId(Long clientId) {
+    public List<VehicleDefaultResponse> findByClientId(Long clientId) {
         List<Vehicle> foundVehicles = repository.findAllByClient(clientService.findByIdOrThrowsNotFoundException(clientId));
 
         return mapper.toVehicleClientGetResponseList(foundVehicles);

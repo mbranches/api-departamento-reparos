@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class RepairGetResponse {
     private Long id;
     private ClientDefaultResponse client;
-    private VehicleByRepairGetResponse vehicle;
+    private VehicleDefaultResponse vehicle;
     private double totalValue;
     private LocalDate endDate;
 }

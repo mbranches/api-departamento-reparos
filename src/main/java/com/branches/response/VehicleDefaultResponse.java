@@ -2,11 +2,11 @@ package com.branches.response;
 
 import com.branches.model.VehicleType;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 @Builder
-public class VehicleByClientGetResponse {
+public class VehicleDefaultResponse {
     private Long id;
     private VehicleType vehicleType;
     private String brand;

@@ -58,24 +58,16 @@ public class VehicleUtils {
                 .client(client).build();
     }
 
-    public static List<VehicleByClientGetResponse> newVehicleClientGetReponseList() {
-        VehicleByClientGetResponse vehicle1 = VehicleByClientGetResponse.builder().vehicleType(VehicleType.carro).brand("Fiat").model("Toro").build();
-        VehicleByClientGetResponse vehicle2 = VehicleByClientGetResponse.builder().vehicleType(VehicleType.moto).brand("Yamaha").model("Mt-07").build();
-        VehicleByClientGetResponse vehicle3 = VehicleByClientGetResponse.builder().vehicleType(VehicleType.moto).brand("Honda").model("Biz").build();
+    public static List<VehicleDefaultResponse> newVehicleClientGetReponseList() {
+        VehicleDefaultResponse vehicle1 = VehicleDefaultResponse.builder().vehicleType(VehicleType.carro).brand("Fiat").model("Toro").build();
+        VehicleDefaultResponse vehicle2 = VehicleDefaultResponse.builder().vehicleType(VehicleType.moto).brand("Yamaha").model("Mt-07").build();
+        VehicleDefaultResponse vehicle3 = VehicleDefaultResponse.builder().vehicleType(VehicleType.moto).brand("Honda").model("Biz").build();
 
         return List.of(vehicle1, vehicle2, vehicle3);
     }
 
-    public static VehicleByRepairPostResponse newVehicleByRepairPostResponse() {
-        return VehicleByRepairPostResponse.builder()
-                .vehicleType(VehicleType.caminhao)
-                .brand("Scania")
-                .model("T113")
-                .build();
-    }
-
-    public static VehicleByRepairGetResponse newVehicleByRepairGetResponse() {
-        return VehicleByRepairGetResponse.builder()
+    public static VehicleDefaultResponse newVehicleDefaultResponse() {
+        return VehicleDefaultResponse.builder()
                 .id(4L)
                 .vehicleType(VehicleType.caminhao)
                 .brand("Scania")

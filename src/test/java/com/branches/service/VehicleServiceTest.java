@@ -4,13 +4,11 @@ import com.branches.exception.NotFoundException;
 import com.branches.mapper.VehicleMapper;
 import com.branches.model.Client;
 import com.branches.model.Vehicle;
-import com.branches.model.Vehicle;
 import com.branches.repository.VehicleRepository;
 import com.branches.request.VehiclePostRequest;
 import com.branches.response.VehicleGetResponse;
-import com.branches.response.VehicleByClientGetResponse;
+import com.branches.response.VehicleDefaultResponse;
 import com.branches.response.VehiclePostResponse;
-import com.branches.response.VehicleGetResponse;
 import com.branches.utils.ClientUtils;
 import com.branches.utils.VehicleUtils;
 import org.assertj.core.api.Assertions;
@@ -101,13 +99,13 @@ class VehicleServiceTest {
         long clientId = client.getId();
 
         List<Vehicle> vehicles = VehicleUtils.newVehicleList();
-        List<VehicleByClientGetResponse> expectedResponse = VehicleUtils.newVehicleClientGetReponseList();
+        List<VehicleDefaultResponse> expectedResponse = VehicleUtils.newVehicleClientGetReponseList();
 
         BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(clientId)).thenReturn(client);
         BDDMockito.when(repository.findAllByClient(client)).thenReturn(vehicles);
         BDDMockito.when(mapper.toVehicleClientGetResponseList(vehicles)).thenReturn(expectedResponse);
 
-        List<VehicleByClientGetResponse> response = service.findByClientId(clientId);
+        List<VehicleDefaultResponse> response = service.findByClientId(clientId);
 
         Assertions.assertThat(response)
                 .isNotNull()
@@ -125,7 +123,7 @@ class VehicleServiceTest {
         BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(clientId)).thenReturn(client);
         BDDMockito.when(repository.findAllByClient(client)).thenReturn(Collections.emptyList());
 
-        List<VehicleByClientGetResponse> response = service.findByClientId(clientId);
+        List<VehicleDefaultResponse> response = service.findByClientId(clientId);
 
         Assertions.assertThat(response)
                 .isNotNull()

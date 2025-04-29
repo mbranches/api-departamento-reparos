@@ -11,7 +11,7 @@ import java.util.List;
 public class RepairPostResponse {
     private Long id;
     private ClientDefaultResponse client;
-    private VehicleByRepairPostResponse vehicle;
+    private VehicleDefaultResponse vehicle;
     private List<RepairPieceByRepairResponse> pieces;
     private List<RepairEmployeeByRepairResponse> employees;
     private double totalValue;
