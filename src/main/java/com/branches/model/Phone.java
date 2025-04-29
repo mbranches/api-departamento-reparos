@@ -23,13 +23,9 @@ public class Phone {
     @Column(name = "tipo_telefone")
     private PhoneType phoneType;
     @ManyToOne
-    @JoinColumn(name = "fk_cliente_telefone", referencedColumnName = "idcliente")
+    @JoinColumn(name = "fk_pessoa_telefone", referencedColumnName = "idpessoa")
     @JsonIgnore
-    private Client client;
-    @JoinColumn(name = "fk_funcionario_telefone", referencedColumnName = "idfuncionario")
-    @ManyToOne
-    @JsonIgnore
-    private Employee employee;
+    private Person person;
 
     @Override
     public String toString() {

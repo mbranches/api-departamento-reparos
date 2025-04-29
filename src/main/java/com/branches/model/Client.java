@@ -1,32 +1,27 @@
 package com.branches.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-@Entity(name = "cliente")
+@With
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity(name = "cliente")
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idcliente")
+    @EqualsAndHashCode.Include
     private Long id;
-    @Column(name = "nome")
-    private String name;
-    @Column(name = "sobrenome")
-    private String lastName;
-    @OneToOne
-    @JoinColumn(name = "fk_endereco_cliente", referencedColumnName = "idendereco")
-    private Address address;
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-    private List<Phone> phones;
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "fk_pessoa_cliente", referencedColumnName = "idpessoa")
+    private Person person;
+    private String email;
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Vehicle> vehicles;
 }
