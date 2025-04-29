@@ -17,10 +17,6 @@ import java.util.List;
 public interface EmployeeMapper {
     List<EmployeeGetResponse> toEmployeeGetResponseList(List<Employee> employeeList);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "category", ignore = true)
-    Employee toEmployee(EmployeePostRequest postRequest);
-
     EmployeePostResponse toEmployeePostResponse(Employee employee);
 
     EmployeeGetResponse toEmployeeGetResponse(Employee employee);
