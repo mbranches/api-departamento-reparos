@@ -15,6 +15,7 @@ public class ClientPostRequest {
     private String name;
     @NotBlank(message = "The field lastName is required")
     private String lastName;
+    private String email;
     private Address address;
     private List<Phone> phones;
 }

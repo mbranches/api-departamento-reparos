@@ -8,7 +8,6 @@ import lombok.Data;
 @Builder
 public class EmployeeByRepairResponse {
     private Long id;
-    private String name;
-    private String lastName;
+    private PersonDefaultResponse person;
     private Category category;
 }

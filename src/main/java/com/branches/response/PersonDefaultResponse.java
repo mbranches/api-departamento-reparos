@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ClientByVehicleResponse {
+public class PersonDefaultResponse {
     private Long id;
-    private PersonDefaultResponse person;
-    private String email;
+    private String name;
+    private String lastName;
 }

@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class ClientByRepairGetResponse {
-    private String name;
-    private String lastName;
+    private Long id;
+    private PersonDefaultResponse person;
+    private String email;
 }

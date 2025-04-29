@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 public class VehicleByRepairPostResponse {
+    private Long id;
     private VehicleType vehicleType;
     private String brand;
     private String model;

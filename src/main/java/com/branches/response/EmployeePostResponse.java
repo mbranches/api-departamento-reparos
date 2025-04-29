@@ -1,20 +1,14 @@
 package com.branches.response;
 
-import com.branches.model.Address;
 import com.branches.model.Category;
-import com.branches.model.Phone;
+import com.branches.model.Person;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 @Builder
 public class EmployeePostResponse {
     private Long id;
-    private String name;
-    private String lastName;
+    private Person person;
     private Category category;
-    private Address address;
-    private List<Phone> phones;
 }

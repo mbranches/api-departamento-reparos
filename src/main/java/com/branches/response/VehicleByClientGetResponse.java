@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class VehicleByClientGetResponse {
+    private Long id;
     private VehicleType vehicleType;
     private String brand;
     private String model;

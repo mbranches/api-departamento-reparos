@@ -1,16 +1,13 @@
 package com.branches.response;
 
+import com.branches.model.Person;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 @Builder
 public class EmployeeGetResponse {
-    private String name;
-    private String lastName;
+    private Long id;
+    private Person person;
     private CategoryGetResponse category;
-    private AddressGetResponse address;
-    private List<PhoneGetResponse> phones;
 }
