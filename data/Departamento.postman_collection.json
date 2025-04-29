@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Junior\",\r\n    \"lastName\": \"Pereira\",\r\n    \"address\": {\r\n        \"street\": \"Maguary\",\r\n        \"district\": \"Paar\",\r\n        \"city\": \"Ananindeua\",\r\n        \"state\": \"Pa\"\r\n    },\r\n    \"phones\": [\r\n        {\r\n            \"number\": \"91982016939\",\r\n            \"phoneType\": \"celular\"\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"name\": \"Junior\",\r\n    \"lastName\": \"Pereira\",\r\n    \"email\": \"marcus@gmail.com\",\r\n    \"address\": {\r\n        \"street\": \"Maguary\",\r\n        \"district\": \"Paar\",\r\n        \"city\": \"Ananindeua\",\r\n        \"state\": \"Pa\"\r\n    },\r\n    \"phones\": [\r\n        {\r\n            \"number\": \"91982016939\",\r\n            \"phoneType\": \"celular\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -49,7 +49,7 @@
 					"response": []
 				},
 				{
-					"name": "Listar todos os clientes pelo primeiro nome",
+					"name": "Filtrar clientes pelo primeiro nome",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -75,7 +75,7 @@
 					"response": []
 				},
 				{
-					"name": "Listar um cliente por id",
+					"name": "Filtrar um cliente por id",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -114,7 +114,7 @@
 					"response": []
 				},
 				{
-					"name": "Deletar um cliente pelo id",
+					"name": "Deletar um cliente por id",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -167,7 +167,7 @@
 					"response": []
 				},
 				{
-					"name": "Listar veiculo por id",
+					"name": "Filtrar um veiculo por id",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -217,7 +217,7 @@
 					"response": []
 				},
 				{
-					"name": "Listar categoria por id",
+					"name": "Filtrar uma categoria por id",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -246,7 +246,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Lucas\",\r\n    \"lastName\": \"Alonço\",\r\n    \"categoryId\": 1,\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"district\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\"\r\n    },\r\n    \"phones\": [\r\n        {\r\n            \"number\": \"31987654323\",\r\n            \"phoneType\": \"celular\"\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"name\": \"Lucas\",\r\n    \"lastName\": \"Alonço\",\r\n    \"categoryId\": 1,\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"district\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\"\r\n    },\r\n    \"phones\": [\r\n        {\r\n            \"number\": \"91981845636\",\r\n            \"phoneType\": \"celular\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -279,7 +279,7 @@
 					"response": []
 				},
 				{
-					"name": "Listar funcionarios pelo primeiro nome",
+					"name": "Filtrar funcionarios pelo primeiro nome",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -305,7 +305,7 @@
 					"response": []
 				},
 				{
-					"name": "Listar um funcionario por id",
+					"name": "Filtrar um funcionario por id",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -314,7 +314,7 @@
 					"response": []
 				},
 				{
-					"name": "Deletar um funcionario pelo id",
+					"name": "Deletar um funcionario por id",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -355,7 +355,7 @@
 					"response": []
 				},
 				{
-					"name": "Listar todas as peças pelo nome",
+					"name": "Filtrar peças pelo nome",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -425,7 +425,7 @@
 					"response": []
 				},
 				{
-					"name": "Listar reparo por id",
+					"name": "Filtrar um reparo por id",
 					"request": {
 						"method": "GET",
 						"header": [],
