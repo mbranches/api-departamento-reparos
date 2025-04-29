@@ -26,12 +26,11 @@ Este repositório contém somente o **Backend** do projeto.
 * ✅ **Controle do estoque de Peças**  
   Permite controlar o estoque de peças, conforme a mesma é utiliza em reparos.
 
-
 * ✅ **Consultas Avançadas**
     - **Filtrar Clientes por Nome**: Permite buscar clientes por nome.
     - **Filtrar Reparos por Data**: Possibilita filtrar os reparos realizados por data.
     - **Visualizar Funcionários e Peças Associados a um Reparo**: Para cada reparo, é possível consultar os funcionários e as peças que foram utilizados.
-    - **Visualizar Veículos de um Cliente**: Permite listar os veículos registrados para um cliente específico.
+    - **Visualizar Veículos e Reparos de um Cliente**: Permite listar os veículos e os reparos registrados para um cliente específico.
 
 ## 🛠️ Tecnologias Utilizadas
 
