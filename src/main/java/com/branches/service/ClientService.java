@@ -2,8 +2,10 @@ package com.branches.service;
 
 import com.branches.exception.NotFoundException;
 import com.branches.mapper.ClientMapper;
+import com.branches.mapper.PersonMapper;
 import com.branches.model.Address;
 import com.branches.model.Client;
+import com.branches.model.Person;
 import com.branches.model.Phone;
 import com.branches.repository.ClientRepository;
 import com.branches.request.ClientPostRequest;
@@ -20,12 +22,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ClientService {
     private final ClientRepository repository;
+    private final PersonMapper personMapper;
     private final ClientMapper mapper;
     private final AddressService addressService;
     private final PhoneService phoneService;
+    private final PersonService personService;
 
     public List<ClientGetResponse> findAll(String firstName) {
-        List<Client> response = firstName == null ? repository.findAll() : repository.findAllByNameContaining(firstName);
+        List<Client> response = firstName == null ? repository.findAll() : repository.findAllByPerson_NameContaining(firstName);
+
         return mapper.toClientGetResponseList(response);
     }
 
@@ -42,25 +47,29 @@ public class ClientService {
 
     @Transactional
     public ClientPostResponse save(ClientPostRequest postRequest) {
-        Client clientToSave = mapper.toClient(postRequest);
+        Person personToSave = personMapper.toPerson(postRequest);
 
-        Address address = clientToSave.getAddress();
+        Address address = personToSave.getAddress();
         if (address != null) {
             Optional<Address> addressSearched = addressService.findAddress(address);
 
             Address addressSaved = addressSearched.orElseGet(() -> addressService.save(address));
-            clientToSave.setAddress(addressSaved);
+            personToSave.setAddress(addressSaved);
         }
 
-        List<Phone> phones = clientToSave.getPhones();
+        List<Phone> phones = personToSave.getPhones();
         if (phones != null) phones.forEach(phone -> {
             phoneService.assertPhoneDoesNotExists(phone);
-            phone.setClient(clientToSave);
+            phone.setPerson(personToSave);
         });
 
-        Client response = repository.save(clientToSave);
+        Person person = personService.save(personToSave);
 
-        return mapper.toClientPostResponse(response);
+        Client clientToSave = Client.builder().email(postRequest.getEmail()).person(person).build();
+
+        Client client = repository.save(clientToSave);
+
+        return mapper.toClientPostResponse(client);
     }
 
     public void deleteById(Long id) {
