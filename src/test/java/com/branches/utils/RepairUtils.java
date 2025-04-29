@@ -27,7 +27,7 @@ public class RepairUtils {
     }
 
     public static List<RepairGetResponse> newRepairGetResponseList() {
-        ClientByRepairGetResponse client = ClientUtils.newClientByRepairGetResponse();
+        ClientDefaultResponse client = ClientUtils.newClientDefaultResponse();
         VehicleByRepairGetResponse vehicle = VehicleUtils.newVehicleByRepairGetResponse();
         LocalDate date = LocalDate.of(2025, 2, 12);
 

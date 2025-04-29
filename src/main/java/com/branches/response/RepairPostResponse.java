@@ -10,7 +10,7 @@ import java.util.List;
 @Builder
 public class RepairPostResponse {
     private Long id;
-    private ClientByRepairPostResponse client;
+    private ClientDefaultResponse client;
     private VehicleByRepairPostResponse vehicle;
     private List<RepairPieceByRepairResponse> pieces;
     private List<RepairEmployeeByRepairResponse> employees;

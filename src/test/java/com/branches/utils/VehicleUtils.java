@@ -21,11 +21,11 @@ public class VehicleUtils {
     }
 
     public static List<VehicleGetResponse> newVehicleGetResponseList() {
-        ClientByVehicleResponse clientByVehicleResponse = ClientUtils.newClientVehicleGetResponse();
+        ClientDefaultResponse client = ClientUtils.newClientDefaultResponse();
 
-        VehicleGetResponse vehicle1 = VehicleGetResponse.builder().id(1L).vehicleType(VehicleType.carro).brand("Fiat").model("Toro").client(clientByVehicleResponse).build();
-        VehicleGetResponse vehicle2 = VehicleGetResponse.builder().id(2L).vehicleType(VehicleType.moto).brand("Yamaha").model("Mt-07").client(clientByVehicleResponse).build();
-        VehicleGetResponse vehicle3 = VehicleGetResponse.builder().id(3L).vehicleType(VehicleType.moto).brand("Honda").model("Biz").client(clientByVehicleResponse).build();
+        VehicleGetResponse vehicle1 = VehicleGetResponse.builder().id(1L).vehicleType(VehicleType.carro).brand("Fiat").model("Toro").client(client).build();
+        VehicleGetResponse vehicle2 = VehicleGetResponse.builder().id(2L).vehicleType(VehicleType.moto).brand("Yamaha").model("Mt-07").client(client).build();
+        VehicleGetResponse vehicle3 = VehicleGetResponse.builder().id(3L).vehicleType(VehicleType.moto).brand("Honda").model("Biz").client(client).build();
 
         return new ArrayList<>(List.of(vehicle1, vehicle2, vehicle3));
     }
@@ -49,12 +49,13 @@ public class VehicleUtils {
     }
 
     public static VehiclePostResponse newVehiclePostResponse() {
+        ClientDefaultResponse client = ClientUtils.newClientDefaultResponse();
         return VehiclePostResponse.builder()
                 .id(4L)
                 .vehicleType(VehicleType.caminhao)
                 .brand("Scania")
                 .model("T113")
-                .client(ClientUtils.newClientVehicleGetResponse()).build();
+                .client(client).build();
     }
 
     public static List<VehicleByClientGetResponse> newVehicleClientGetReponseList() {

@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ClientByVehicleResponse {
+public class ClientDefaultResponse {
     private Long id;
     private PersonDefaultResponse person;
     private String email;

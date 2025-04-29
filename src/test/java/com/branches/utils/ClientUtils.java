@@ -51,20 +51,10 @@ public class ClientUtils {
         return Client.builder().id(4L).person(person).email("ch").build();
     }
 
-    public static ClientByVehicleResponse newClientVehicleGetResponse() {
+    public static ClientDefaultResponse newClientDefaultResponse() {
         PersonDefaultResponse person = PersonUtils.newPersonDefaultResponse();
 
-        return ClientByVehicleResponse.builder()
-                .id(4L)
-                .person(person)
-                .email("chispirito@gmail.com")
-                .build();
-    }
-
-    public static ClientByRepairGetResponse newClientByRepairGetResponse() {
-        PersonDefaultResponse person = PersonUtils.newPersonDefaultResponse();
-
-        return ClientByRepairGetResponse.builder()
+        return ClientDefaultResponse.builder()
                 .id(4L)
                 .person(person)
                 .email("chispirito@gmail.com")
@@ -77,10 +67,10 @@ public class ClientUtils {
         return ClientPostResponse.builder().id(4L).person(person).email("chispirito@gmail.com").build();
     }
 
-    public static ClientByRepairPostResponse newClientByRepairPostResponse() {
+    public static ClientDefaultResponse newClientByRepairPostResponse() {
         PersonDefaultResponse person = PersonUtils.newPersonDefaultResponse();
 
-        return ClientByRepairPostResponse.builder()
+        return ClientDefaultResponse.builder()
                 .id(4L)
                 .person(person)
                 .email("chispirito@gmail.com")

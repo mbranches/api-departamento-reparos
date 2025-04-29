@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Builder
 public class RepairGetResponse {
     private Long id;
-    private ClientByRepairGetResponse client;
+    private ClientDefaultResponse client;
     private VehicleByRepairGetResponse vehicle;
     private double totalValue;
     private LocalDate endDate;
