@@ -39,7 +39,7 @@ Este repositório contém somente o **Backend** do projeto.
 - ![JPA](https://img.shields.io/badge/JPA-blue?logo=eclipselink) - Framework para mapeamento objeto-relacional.
 - ![Hibernate](https://img.shields.io/badge/Hibernate-blue?logo=hibernate) - Framework ORM para persistência de dados.
 - ![Docker](https://img.shields.io/badge/Docker-blue?logo=docker) - Conteinerização do Banco de dados.
-- ![MySQL](https://img.shields.io/badge/MySQL-black?logo=mysql) - Banco de dados utilizado para persistência de Dados.
+- ![MySQL](https://img.shields.io/badge/MySQL-black?logo=mysql) - Banco de dados utilizado.
 - ![Maven](https://img.shields.io/badge/Maven-Build-blue?logo=apachemaven) - Gerencia dependências e automação de builds para projetos Java.
 
 ---
