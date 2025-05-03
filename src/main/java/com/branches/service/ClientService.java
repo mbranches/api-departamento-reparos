@@ -1,5 +1,6 @@
 package com.branches.service;
 
+import com.branches.exception.BadRequestException;
 import com.branches.exception.NotFoundException;
 import com.branches.mapper.ClientMapper;
 import com.branches.mapper.PersonMapper;
@@ -49,6 +50,8 @@ public class ClientService {
     public ClientPostResponse save(ClientPostRequest postRequest) {
         Person personToSave = personMapper.toPerson(postRequest);
 
+        assertEmailDoesNotExists(postRequest.getEmail());
+
         Address address = personToSave.getAddress();
         if (address != null) {
             Optional<Address> addressSearched = addressService.findAddress(address);
@@ -76,5 +79,12 @@ public class ClientService {
         Client clientToDelete = findByIdOrThrowsNotFoundException(id);
 
         repository.delete(clientToDelete);
+    }
+
+    public void assertEmailDoesNotExists(String email) {
+        repository.findByEmail(email)
+                .ifPresent(client -> {
+                    throw new BadRequestException("Email '%s' already exists".formatted(client.getEmail()));
+                });
     }
 }
