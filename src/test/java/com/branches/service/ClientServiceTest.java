@@ -208,4 +208,29 @@ class ClientServiceTest {
                 .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("Client not Found");
     }
+
+    @Test
+    @DisplayName("assertEmailDoesNotExists does nothing when email does not exists")
+    @Order(10)
+    void assertEmailDoesNotExists_DoesNothing_WhenTheEmailDoesNotExists() {
+        ClientPostRequest clientPostRequest = ClientUtils.newClientPostRequest();
+        String email = clientPostRequest.getEmail();
+
+        BDDMockito.when(repository.findByEmail(email)).thenReturn(Optional.empty());
+
+        Assertions.assertThatNoException().isThrownBy(() -> service.assertEmailDoesNotExists(email));
+    }
+
+    @Test
+    @DisplayName("assertEmailDoesNotExists throws BadRequestException when the email already exists")
+    @Order(11)
+    void assertEmailDoesNotExists_DoesNothing_WhenTheEmailAlreadyExists() {
+        Client client = ClientUtils.newClientList().getFirst();
+        String savedEmail = client.getEmail();
+
+        BDDMockito.when(repository.findByEmail(savedEmail)).thenReturn(Optional.of(client));
+
+        Assertions.assertThatThrownBy(() -> service.assertEmailDoesNotExists(savedEmail))
+                .isInstanceOf(BadRequestException.class);
+    }
 }

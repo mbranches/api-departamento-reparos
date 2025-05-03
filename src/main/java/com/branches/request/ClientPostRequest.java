@@ -6,11 +6,13 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
+import lombok.With;
 
 import java.util.List;
 
 @Data
 @Builder
+@With
 public class ClientPostRequest {
     @NotBlank(message = "The field 'name' is required")
     private String name;
