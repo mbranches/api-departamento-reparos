@@ -258,13 +258,17 @@ class ClientControllerTest {
     }
 
     private static Stream<Arguments> postClientBadRequestSource() {
-        String nameRequiredError = "The field name is required";
-        String lastNameRequiredError = "The field lastName is required";
+        String nameRequiredError = "The field 'name' is required";
+        String lastNameRequiredError = "The field 'lastName' is required";
+        String emailRequiredError = "The field 'email' is required";
 
-        List<String> expectedErrors = List.of(nameRequiredError, lastNameRequiredError);
+        String emailNotValidError = "Email is not valid";
+
+        List<String> expectedRequiredErrors = List.of(nameRequiredError, lastNameRequiredError, emailRequiredError);
         return Stream.of(
-                Arguments.of("post-request-client-empty-fields-400.json", expectedErrors),
-                Arguments.of("post-request-client-blank-fields-400.json", expectedErrors)
+                Arguments.of("post-request-client-empty-fields-400.json", expectedRequiredErrors),
+                Arguments.of("post-request-client-blank-fields-400.json", expectedRequiredErrors),
+                Arguments.of("post-request-client-invalid-email-400.json", List.of(emailNotValidError))
         );
     }
 
