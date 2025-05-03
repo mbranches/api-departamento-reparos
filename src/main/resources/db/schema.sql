@@ -28,8 +28,8 @@ CREATE TABLE IF NOT EXISTS telefone (
 
 CREATE TABLE IF NOT EXISTS cliente (
     idcliente BIGINT PRIMARY KEY AUTO_INCREMENT,
-    fk_pessoa_cliente BIGINT,
-    email VARCHAR(45),
+    fk_pessoa_cliente BIGINT NOT NULL,
+    email VARCHAR(45) UNIQUE NOT NULL,
     FOREIGN KEY(fk_pessoa_cliente) REFERENCES pessoa(idpessoa) ON DELETE CASCADE
 );
 
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS categoria (
 
 CREATE TABLE IF NOT EXISTS funcionario (
     idfuncionario BIGINT PRIMARY KEY AUTO_INCREMENT,
-    fk_pessoa_funcionario BIGINT,
+    fk_pessoa_funcionario BIGINT NOT NULL,
     fk_categoria_funcionario BIGINT,
     FOREIGN KEY(fk_categoria_funcionario) REFERENCES categoria(idcategoria) ON DELETE SET NULL,
     FOREIGN KEY(fk_pessoa_funcionario) REFERENCES pessoa(idpessoa) ON DELETE CASCADE
