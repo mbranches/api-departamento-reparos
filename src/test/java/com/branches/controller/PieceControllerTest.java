@@ -1,6 +1,7 @@
 package com.branches.controller;
 
 import com.branches.exception.NotFoundException;
+import com.branches.model.Piece;
 import com.branches.request.PiecePostRequest;
 import com.branches.response.PieceGetResponse;
 import com.branches.service.PieceService;
@@ -172,5 +173,35 @@ public class PieceControllerTest {
                 Arguments.of("post-request-piece-blank-fields-400.json", expectedRequiredErrors),
                 Arguments.of("post-request-piece-negative-fields-400.json", expectedNegativeError)
         );
+    }
+
+    @Test
+    @DisplayName("DELETE /v1/pieces/1 removes piece when successful")
+    @Order(8)
+    void deleteById_RemovesPiece_WhenSuccessful() throws Exception {
+        Piece pieceToDelete = PieceUtils.newPieceList().getFirst();
+        Long idToDelete = pieceToDelete.getId();
+
+        BDDMockito.doNothing().when(service).deleteById(idToDelete);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{id}", idToDelete))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("DELETE /v1/pieces/25256595 throws NotFoundException when given id is not found")
+    @Order(9)
+    void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() throws Exception {
+        Long randomId = 25256595L;
+
+        BDDMockito.doThrow(new NotFoundException("Piece not Found")).when(service).deleteById(randomId);
+
+        String expectedResponse = fileUtils.readResourceFile("piece/delete-piece-by-id-404.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{id}", randomId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
     }
 }

@@ -4,6 +4,7 @@ import com.branches.exception.BadRequestException;
 import com.branches.exception.NotFoundException;
 import com.branches.mapper.PieceMapper;
 import com.branches.model.Piece;
+import com.branches.model.Piece;
 import com.branches.repository.PieceRepository;
 import com.branches.request.PiecePostRequest;
 import com.branches.response.PieceGetResponse;
@@ -175,5 +176,32 @@ class PieceServiceTest {
 
         Assertions.assertThatThrownBy(() -> service.removesStock(pieceToRemoveStock, quantityToRemove))
                 .isInstanceOf(BadRequestException.class);
+    }
+
+    @Test
+    @DisplayName("deleteById removes piece when successful")
+    @Order(8)
+    void deleteById_RemovesPiece_WhenSuccessful() {
+        Piece pieceToDelete = pieceList.getFirst();
+        Long idToDelete = pieceToDelete.getId();
+
+        BDDMockito.when(repository.findById(idToDelete)).thenReturn(Optional.of(pieceToDelete));
+        BDDMockito.doNothing().when(repository).delete(ArgumentMatchers.any(Piece.class));
+
+        Assertions.assertThatCode(() -> service.deleteById(idToDelete))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("deleteById throws NotFoundException when given id is not found")
+    @Order(9)
+    void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() {
+        Long randomId = 15512366L;
+
+        BDDMockito.when(repository.findById(randomId)).thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> service.deleteById(randomId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Piece not Found");
     }
 }
