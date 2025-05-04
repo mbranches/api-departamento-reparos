@@ -70,26 +70,26 @@ CREATE TABLE IF NOT EXISTS reparacao (
     valor_total DECIMAL(10, 2),
     data_finalizacao DATE,
     FOREIGN KEY(fk_cliente_reparacao) REFERENCES cliente(idcliente) ON DELETE SET NULL,
-    FOREIGN KEY(fk_veiculo_reparacao) REFERENCES veiculo(idveiculo)
+    FOREIGN KEY(fk_veiculo_reparacao) REFERENCES veiculo(idveiculo) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS reparacao_funcionario (
+    idreparacao_funcionario BIGINT PRIMARY KEY AUTO_INCREMENT,
 	reparacaoid BIGINT,
     funcionarioid BIGINT,
     horas_trabalhadas INT,
     valor_total DECIMAL(10, 2),
-    PRIMARY KEY(reparacaoid, funcionarioid),
-    FOREIGN KEY(reparacaoid) REFERENCES reparacao(idreparacao),
-    FOREIGN KEY(funcionarioid) REFERENCES funcionario(idfuncionario)
+    FOREIGN KEY(reparacaoid) REFERENCES reparacao(idreparacao) ON DELETE CASCADE,
+    FOREIGN KEY(funcionarioid) REFERENCES funcionario(idfuncionario) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS reparacao_peca (
+    idreparacao_peca BIGINT PRIMARY KEY AUTO_INCREMENT,
 	reparacaoid BIGINT,
     pecaid BIGINT,
     quantidade INT,
     valor_total DECIMAL(10, 2),
-    PRIMARY KEY(reparacaoid, pecaid),
-    FOREIGN KEY(reparacaoid) REFERENCES reparacao(idreparacao),
-    FOREIGN KEY(pecaid) REFERENCES peca(idpeca)
+    FOREIGN KEY(reparacaoid) REFERENCES reparacao(idreparacao) ON DELETE CASCADE,
+    FOREIGN KEY(pecaid) REFERENCES peca(idpeca) ON DELETE SET NULL
 );
 
