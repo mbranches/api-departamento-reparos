@@ -9,7 +9,7 @@ import java.util.List;
 
 public class PersonUtils {
     public static List<Person> newPersonList() {
-        Address address = AddressUtils.newAddressToSave();
+        Address address = AddressUtils.newAddressSaved();
 
         Person person1 = Person.builder().id(1L).name("Marcus").lastName("Branches").address(address).build();
         Phone phone1 = Phone.builder().id(1L).person(person1).number("5959559").phoneType(PhoneType.celular).build();
@@ -37,7 +37,7 @@ public class PersonUtils {
     }
 
     public static Person newPersonSaved() {
-        Address address = AddressUtils.newAddressToSave();
+        Address address = AddressUtils.newAddressSaved();
 
         Person person = Person.builder().id(4L).name("Chispirito").lastName("Costa").address(address).build();
         Phone phone = Phone.builder().id(4L).person(person).number("21121521").phoneType(PhoneType.celular).build();

@@ -16,11 +16,14 @@ public class AddressUtils {
 
     public static Address newAddressToSave() {
         return Address.builder()
-                .id(4L)
                 .street("Almirante Barroso")
                 .district("São Brás")
                 .city("Belém")
                 .state("Pa")
                 .build();
+    }
+
+    public static Address newAddressSaved() {
+        return newAddressToSave().withId(4L);
     }
 }

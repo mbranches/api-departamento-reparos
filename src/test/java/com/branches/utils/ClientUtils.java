@@ -66,7 +66,7 @@ public class ClientUtils {
     }
 
     public static ClientPostResponse newClientPostResponse() {
-        Person person = PersonUtils.newPersonToSave();
+        Person person = PersonUtils.newPersonSaved();
 
         return ClientPostResponse.builder().id(4L).person(person).email("chispirito@gmail.com").build();
     }
