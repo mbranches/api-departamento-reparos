@@ -20,14 +20,18 @@ public class PhoneService {
     public void assertPhoneDoesNotExists(Phone phone) {
         repository.findByNumber(phone.getNumber())
                 .ifPresent(p -> {
-                    throw new BadRequestException("Phone '%s' already exists for another person".formatted(phone.getNumber()));
+                    throwsPhoneAlreadyExists(phone);
                 });
     }
 
     public void assertPhoneDoesNotExists(Phone phone, Long id) {
         repository.findByNumberAndPerson_IdNot(phone.getNumber(), id)
                 .ifPresent(p -> {
-                    throw new BadRequestException("Phone '%s' already exists for another person".formatted(phone.getNumber()));
+                    throwsPhoneAlreadyExists(phone);
                 });
+    }
+
+    private void throwsPhoneAlreadyExists(Phone phone) {
+        throw new BadRequestException("Phone '%s' already exists for another person".formatted(phone.getNumber()));
     }
 }
