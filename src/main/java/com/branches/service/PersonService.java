@@ -62,9 +62,4 @@ public class PersonService {
     public Optional<Person> findById(Long id) {
         return repository.findById(id);
     }
-
-    public Person findByIdOrThrowsNotFoundException(Long id) {
-        return findById(id)
-                .orElseThrow(() -> new NotFoundException("Person not Found"));
-    }
 }
