@@ -10,15 +10,15 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class RepairEmployee {
-    @EmbeddedId
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idreparacao_funcionario")
     @EqualsAndHashCode.Include
-    private RepairEmployeeKey id;
+    private Long id;
     @ManyToOne
-    @MapsId("repairId")
     @JoinColumn(name = "reparacaoid")
     private Repair repair;
     @ManyToOne
-    @MapsId("repairId")
     @JoinColumn(name = "funcionarioid")
     private Employee employee;
     @Column(name = "horas_trabalhadas")

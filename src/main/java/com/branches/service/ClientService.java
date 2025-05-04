@@ -70,29 +70,12 @@ public class ClientService {
         if (!id.equals(putRequest.getId())) throw new BadRequestException("The ID in the request body (" + putRequest.getId() + ") does not match the ID in the URL (" + id + ").");
 
         Client clientNotUpdated = findByIdOrThrowsNotFoundException(id);
-        Long personId = clientNotUpdated.getPerson().getId();
-
-        Person personToUpdate = personMapper.toPerson(putRequest);
-        personToUpdate.setId(personId);
 
         assertEmailDoesNotExists(putRequest.getEmail(), id);
 
-        List<Phone> phones = personToUpdate.getPhones();
-        phones.forEach(phone -> {
-            phoneService.assertPhoneDoesNotExists(phone, id);
-
-            phone.setPerson(personToUpdate);
-
-            phoneService.findPhoneByPerson(phone, id).ifPresent(foundPhone -> {
-                phone.setId(foundPhone.getId());
-            });
-        });
-
-        Address address = putRequest.getAddress();
-        Optional<Address> addressSearched = addressService.findAddress(address);
-
-        Address addressSaved = addressSearched.orElseGet(() -> addressService.save(address));
-        personToUpdate.setAddress(addressSaved);
+        Long personId = clientNotUpdated.getPerson().getId();
+        Person personToUpdate = personMapper.toPerson(putRequest);
+        personToUpdate.setId(personId);
 
         Person personUpdated = personService.update(personToUpdate);
 

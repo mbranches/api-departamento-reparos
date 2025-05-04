@@ -10,15 +10,15 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RepairPiece {
-    @EmbeddedId
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idreparacao_peca")
     @EqualsAndHashCode.Include
-    private RepairPieceKey id;
+    private Long id;
     @ManyToOne
-    @MapsId("repairId")
     @JoinColumn(name = "reparacaoid")
     private Repair repair;
     @ManyToOne
-    @MapsId("pieceId")
     @JoinColumn(name = "pecaid")
     private Piece piece;
     @Column(name = "quantidade")

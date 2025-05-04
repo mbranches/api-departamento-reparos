@@ -109,11 +109,9 @@ public class RepairService {
 
         for (RepairPiece repairPiece : repairPiecesToSave) {
             repairPiece.setRepair(savedRepair);
-            repairPiece.setId(new RepairPieceKey(savedRepair.getId(), repairPiece.getPiece().getId()));
         }
         for (RepairEmployee repairEmployee : repairEmployeesToSave) {
             repairEmployee.setRepair(savedRepair);
-            repairEmployee.setId(new RepairEmployeeKey(savedRepair.getId(), repairEmployee.getEmployee().getId()));
         }
 
         List<RepairPiece> repairPieces = repairPieceService.saveAll(repairPiecesToSave);
@@ -132,9 +130,6 @@ public class RepairService {
 
         for (RepairEmployee repairEmployeeToSave : repairEmployeeToSaveList) {
             repairEmployeeToSave.setRepair(repair);
-            repairEmployeeToSave.setId(
-                    new RepairEmployeeKey(repairId, repairEmployeeToSave.getEmployee().getId())
-            );
             Category category = repairEmployeeToSave.getEmployee().getCategory();
 
             if (employees.contains(repairEmployeeToSave)) {
@@ -164,7 +159,6 @@ public class RepairService {
         List<RepairPiece> repairPiecesSaved = new ArrayList<>();
         for (RepairPiece repairPieceToSave : repairPieceToSaveList) {
             repairPieceToSave.setRepair(repair);
-            repairPieceToSave.setId(new RepairPieceKey(repairId, repairPieceToSave.getPiece().getId()));
 
             repairPiecesSaved.add(repairPieceService.save(repairPieceToSave));
         }

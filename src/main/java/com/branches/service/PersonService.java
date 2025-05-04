@@ -37,6 +37,25 @@ public class PersonService {
     }
 
     public Person update(Person personToUpdate) {
+        Long id = personToUpdate.getId();
+
+        List<Phone> phones = personToUpdate.getPhones();
+        phones.forEach(phone -> {
+            phoneService.assertPhoneDoesNotExists(phone, id);
+
+            phone.setPerson(personToUpdate);
+
+            phoneService.findPhoneByPerson(phone, id).ifPresent(foundPhone -> {
+                phone.setId(foundPhone.getId());
+            });
+        });
+
+        Address address = personToUpdate.getAddress();
+        Optional<Address> addressSearched = addressService.findAddress(address);
+
+        Address addressSaved = addressSearched.orElseGet(() -> addressService.save(address));
+        personToUpdate.setAddress(addressSaved);
+
         return repository.save(personToUpdate);
     }
 
