@@ -53,23 +53,12 @@ public class ClientService {
 
         assertEmailDoesNotExists(postRequest.getEmail());
 
-        Address address = personToSave.getAddress();
-        if (address != null) {
-            Optional<Address> addressSearched = addressService.findAddress(address);
-
-            Address addressSaved = addressSearched.orElseGet(() -> addressService.save(address));
-            personToSave.setAddress(addressSaved);
-        }
-
-        List<Phone> phones = personToSave.getPhones();
-        if (phones != null) phones.forEach(phone -> {
-            phoneService.assertPhoneDoesNotExists(phone);
-            phone.setPerson(personToSave);
-        });
-
         Person person = personService.save(personToSave);
 
-        Client clientToSave = Client.builder().email(postRequest.getEmail()).person(person).build();
+        Client clientToSave = Client.builder()
+                .email(postRequest.getEmail())
+                .person(person)
+                .build();
 
         Client client = repository.save(clientToSave);
 

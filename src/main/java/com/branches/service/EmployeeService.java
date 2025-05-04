@@ -38,23 +38,12 @@ public class EmployeeService {
 
         Person personToSave = personMapper.toPerson(postRequest);
 
-        Address address = personToSave.getAddress();
-        if (postRequest.getAddress() != null) {
-            Optional<Address> addressSearched = addressService.findAddress(address);
-
-            Address addressSaved = addressSearched.orElseGet(() -> addressService.save(address));
-            personToSave.setAddress(addressSaved);
-        }
-
-        List<Phone> phones = personToSave.getPhones();
-        if (phones != null) phones.forEach(phone -> {
-            phoneService.assertPhoneDoesNotExists(phone);
-            phone.setPerson(personToSave);
-        });
-
         Person person = personService.save(personToSave);
 
-        Employee employeeToSave = Employee.builder().person(person).category(category).build();
+        Employee employeeToSave = Employee.builder()
+                .person(person)
+                .category(category)
+                .build();
 
         Employee employee = repository.save(employeeToSave);
 
