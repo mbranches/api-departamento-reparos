@@ -176,11 +176,9 @@ class RepairPieceServiceTest {
 
         RepairPiece savedRepairPiece = RepairPieceUtils.newRepairPiece();
         savedRepairPiece.setRepair(repair);
-        savedRepairPiece.setId(new RepairPieceKey(repair.getId(), savedRepairPiece.getPiece().getId()));
 
         RepairPiece repairPieceToSave = RepairPieceUtils.newRepairPiece();
         repairPieceToSave.setRepair(repair);
-        repairPieceToSave.setId(new RepairPieceKey(repair.getId(), repairPieceToSave.getPiece().getId()));
 
         Piece pieceToRemoveStock = repairPieceToSave.getPiece();
         int quantityToRemove = repairPieceToSave.getQuantity();
@@ -192,7 +190,6 @@ class RepairPieceServiceTest {
         RepairPiece expectedResponse = RepairPiece.builder()
                 .repair(repair)
                 .piece(expectedPiece)
-                .id(new RepairPieceKey(repair.getId(), expectedPiece.getId()))
                 .quantity(totalQuantity)
                 .totalValue(totalQuantity * expectedPiece.getUnitValue())
                 .build();

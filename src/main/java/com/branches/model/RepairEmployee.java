@@ -6,6 +6,7 @@ import lombok.*;
 @Entity(name = "reparacao_funcionario")
 @Data
 @Builder
+@With
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

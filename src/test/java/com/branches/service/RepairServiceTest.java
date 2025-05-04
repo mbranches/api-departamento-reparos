@@ -513,7 +513,6 @@ class RepairServiceTest {
         RepairPieceByRepairPostRequest repairPieceToSaved = RepairPieceUtils.newRepairPiecePostRequest();
 
         RepairPiece repairPieceSaved = RepairPieceUtils.newRepairPiece();
-        repairPieceSaved.setId(new RepairPieceKey(repairId, repairPieceSaved.getPiece().getId()));
         repairPieceSaved.setRepair(repair);
 
 

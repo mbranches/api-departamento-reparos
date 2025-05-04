@@ -3,7 +3,6 @@ package com.branches.utils;
 import com.branches.model.Piece;
 import com.branches.model.Repair;
 import com.branches.model.RepairPiece;
-import com.branches.model.RepairPieceKey;
 import com.branches.request.RepairPieceByRepairPostRequest;
 import com.branches.response.RepairPieceByRepairResponse;
 
@@ -28,11 +27,10 @@ public class RepairPieceUtils {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Piece piece = PieceUtils.newPieceList().getFirst();
 
-        RepairPieceKey key = new RepairPieceKey(repair.getId(), piece.getId());
         int quantity = 5;
 
         return RepairPiece.builder()
-                .id(key)
+                .id(1L)
                 .repair(repair)
                 .piece(piece)
                 .quantity(quantity)

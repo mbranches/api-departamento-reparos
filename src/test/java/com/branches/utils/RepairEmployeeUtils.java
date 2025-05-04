@@ -3,20 +3,17 @@ package com.branches.utils;
 import com.branches.model.Category;
 import com.branches.model.Employee;
 import com.branches.model.RepairEmployee;
-import com.branches.model.RepairEmployeeKey;
 import com.branches.request.RepairEmployeeByRepairPostRequest;
 import com.branches.response.EmployeeByRepairResponse;
 import com.branches.response.RepairEmployeeByRepairResponse;
 
 public class RepairEmployeeUtils {
     public static RepairEmployee newRepairEmployeeSaved() {
-        RepairEmployeeKey key = new RepairEmployeeKey(1L, 1L);
-
         Employee employee = EmployeeUtils.newEmployeeList().getFirst();
         int hoursWorked = 1;
 
         return RepairEmployee.builder()
-                .id(key)
+                .id(1L)
                 .repair(RepairUtils.newRepairList().getFirst())
                 .employee(employee)
                 .hoursWorked(hoursWorked)
@@ -36,7 +33,7 @@ public class RepairEmployeeUtils {
         Employee employee = EmployeeUtils.newEmployeeSaved();
         Category employeeCategory = employee.getCategory();
 
-        return RepairEmployee.builder().employee(employee).hoursWorked(5).totalValue(employeeCategory.getHourlyPrice() * 5).build();
+        return RepairEmployee.builder().id(2L).employee(employee).hoursWorked(5).totalValue(employeeCategory.getHourlyPrice() * 5).build();
     }
 
     public static RepairEmployeeByRepairResponse newRepairEmployeeByRepairPostResponse() {

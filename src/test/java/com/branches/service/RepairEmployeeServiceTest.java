@@ -32,18 +32,20 @@ class RepairEmployeeServiceTest {
     @DisplayName("saveAll returns saved RepairEmployees when successful")
     @Order(1)
     void saveAll_ReturnsSavedRepairEmployees_WhenSuccessful() {
-        RepairEmployee repairEmployeeToSave = RepairEmployeeUtils.newRepairEmployee();
+        RepairEmployee repairEmployeeToSave = RepairEmployeeUtils.newRepairEmployee().withId(null);
+        RepairEmployee repairEmployeeSaved = RepairEmployeeUtils.newRepairEmployee();
 
-        List<RepairEmployee> repairEmployeesToSave = List.of(repairEmployeeToSave);
+        List<RepairEmployee> repairEmployeeToSaveList = List.of(repairEmployeeToSave);
+        List<RepairEmployee> repairEmployeeSavedList = List.of(repairEmployeeSaved);
 
-        BDDMockito.when(repository.saveAll(repairEmployeesToSave)).thenReturn(repairEmployeesToSave);
+        BDDMockito.when(repository.saveAll(repairEmployeeToSaveList)).thenReturn(repairEmployeeSavedList);
 
-        List<RepairEmployee> response = service.saveAll(repairEmployeesToSave);
+        List<RepairEmployee> response = service.saveAll(repairEmployeeToSaveList);
 
         Assertions.assertThat(response)
                 .isNotNull()
                 .isNotEmpty()
-                .containsExactlyElementsOf(repairEmployeesToSave);
+                .containsExactlyElementsOf(repairEmployeeSavedList);
     }
 
     @Test
