@@ -2,6 +2,7 @@ package com.branches.utils;
 
 import com.branches.model.*;
 import com.branches.request.ClientPostRequest;
+import com.branches.request.ClientPutRequest;
 import com.branches.response.*;
 
 import java.util.ArrayList;
@@ -78,6 +79,19 @@ public class ClientUtils {
                 .id(4L)
                 .person(person)
                 .email("chispirito@gmail.com")
+                .build();
+    }
+
+    public static ClientPutRequest newClientPutRequest() {
+        Person person = PersonUtils.newPersonList().getFirst();
+
+        return ClientPutRequest.builder()
+                .id(1L)
+                .name("Novo Nome")
+                .lastName("Novo Sobrenome")
+                .address(person.getAddress())
+                .phones(person.getPhones())
+                .email("marcus@gmail.com")
                 .build();
     }
 }

@@ -4,12 +4,11 @@ import com.branches.exception.BadRequestException;
 import com.branches.exception.NotFoundException;
 import com.branches.mapper.ClientMapper;
 import com.branches.mapper.PersonMapper;
-import com.branches.model.Address;
 import com.branches.model.Client;
 import com.branches.model.Person;
-import com.branches.model.Phone;
 import com.branches.repository.ClientRepository;
 import com.branches.request.ClientPostRequest;
+import com.branches.request.ClientPutRequest;
 import com.branches.response.ClientGetResponse;
 import com.branches.response.ClientPostResponse;
 import com.branches.utils.ClientUtils;
@@ -177,8 +176,66 @@ class ClientServiceTest {
     }
 
     @Test
-    @DisplayName("deleteById removes client when successful")
+    @DisplayName("update updates client when successful")
     @Order(8)
+    void update_UpdatesClient_WhenSuccessful() {
+        Client clientToUpdate = clientList.getFirst();
+        Long idToUpdate = clientToUpdate.getId();
+
+        ClientPutRequest clientPutRequest = ClientUtils.newClientPutRequest();
+
+        Person expectedPerson = Person.builder()
+                .name(clientPutRequest.getName())
+                .lastName(clientPutRequest.getLastName())
+                .address(clientPutRequest.getAddress())
+                .phones(clientPutRequest.getPhones())
+                .build();
+
+        BDDMockito.when(repository.findById(idToUpdate)).thenReturn(Optional.of(clientToUpdate));
+        BDDMockito.when(repository.findByEmailAndIdNot(clientPutRequest.getEmail(), idToUpdate)).thenReturn(Optional.empty());
+        BDDMockito.when(personMapper.toPerson(clientPutRequest)).thenReturn(expectedPerson);
+        BDDMockito.when(personService.update(expectedPerson)).thenReturn(expectedPerson.withId(clientToUpdate.getPerson().getId()));
+        BDDMockito.when(repository.save(clientToUpdate)).thenReturn(clientToUpdate);
+
+        Assertions.assertThatNoException()
+                .isThrownBy(() -> service.update(idToUpdate, clientPutRequest));
+    }
+
+    @Test
+    @DisplayName("update throws BadRequestException when the url id does not match the request body id")
+    @Order(9)
+    void update_ThrowsBadRequestException_WhenTheUrlIdDoesNotMatchTheRequestBodyId() {
+        long randomId = 213123L;
+
+        ClientPutRequest putRequest = ClientUtils.newClientPutRequest();
+
+        Assertions.assertThatThrownBy(() -> service.update(randomId, putRequest))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("The ID in the request body (%s) does not match the ID in the URL (%s)".formatted(putRequest.getId(), randomId));
+    }
+
+    @Test
+    @DisplayName("update throws BadRequestException when the email to update does not belong to client")
+    @Order(10)
+    void update_ThrowsBadRequestException_WhenTheEmailToUpdateDoesNotBelongToClient() {
+        Client clientEmailOwner = clientList.get(1);
+
+        Client clientToUpdate = clientList.getFirst();
+        Long idToUpdate = clientToUpdate.getId();
+
+        ClientPutRequest clientPutRequest = ClientUtils.newClientPutRequest().withEmail(clientEmailOwner.getEmail());
+
+        BDDMockito.when(repository.findById(idToUpdate)).thenReturn(Optional.of(clientToUpdate));
+        BDDMockito.when(repository.findByEmailAndIdNot(clientPutRequest.getEmail(), idToUpdate)).thenReturn(Optional.of(clientEmailOwner));
+
+        Assertions.assertThatThrownBy(() -> service.update(idToUpdate, clientPutRequest))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Email '%s' already exists".formatted(clientPutRequest.getEmail()));
+    }
+
+    @Test
+    @DisplayName("deleteById removes client when successful")
+    @Order(11)
     void deleteById_RemovesClient_WhenSuccessful() {
         Client clientToDelete = clientList.getFirst();
         Long idToDelete = clientToDelete.getId();
@@ -192,7 +249,7 @@ class ClientServiceTest {
 
     @Test
     @DisplayName("deleteById throws NotFoundException when given id is not found")
-    @Order(9)
+    @Order(12)
     void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() {
         Long randomId = 15512366L;
 
@@ -205,7 +262,7 @@ class ClientServiceTest {
 
     @Test
     @DisplayName("assertEmailDoesNotExists does nothing when email does not exists")
-    @Order(10)
+    @Order(13)
     void assertEmailDoesNotExists_DoesNothing_WhenTheEmailDoesNotExists() {
         ClientPostRequest clientPostRequest = ClientUtils.newClientPostRequest();
         String email = clientPostRequest.getEmail();
@@ -217,7 +274,7 @@ class ClientServiceTest {
 
     @Test
     @DisplayName("assertEmailDoesNotExists throws BadRequestException when the email already exists")
-    @Order(11)
+    @Order(14)
     void assertEmailDoesNotExists_DoesNothing_WhenTheEmailAlreadyExists() {
         Client client = ClientUtils.newClientList().getFirst();
         String savedEmail = client.getEmail();
