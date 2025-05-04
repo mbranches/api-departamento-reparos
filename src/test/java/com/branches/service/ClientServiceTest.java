@@ -141,8 +141,8 @@ class ClientServiceTest {
     @DisplayName("save returns saved client when successful")
     @Order(6)
     void save_ReturnsSavedClient_WhenGivenSuccessful() {
-        Person personToSave = PersonUtils.newPerson().withId(null);
-        Person personSaved = PersonUtils.newPerson().withId(4L);
+        Person personToSave = PersonUtils.newPersonToSave();
+        Person personSaved = PersonUtils.newPersonSaved();
         Client clientToSave = ClientUtils.newClientToSave().withId(null);
         Client clientSaved = ClientUtils.newClientToSave();
         ClientPostRequest clientPostRequest = ClientUtils.newClientPostRequest();
@@ -169,7 +169,7 @@ class ClientServiceTest {
     @DisplayName("save throws BadRequestException when the phone already exists")
     @Order(7)
     void save_ThrowsBadRequestException_WhenThePhoneAlreadyExists() {
-        Person personToSave = PersonUtils.newPerson().withId(null);
+        Person personToSave = PersonUtils.newPersonToSave().withId(null);
         ClientPostRequest clientPostRequest = ClientUtils.newClientPostRequest();
 
         Address clientAddress = personToSave.getAddress();

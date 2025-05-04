@@ -46,7 +46,7 @@ public class ClientUtils {
     }
 
     public static Client newClientToSave() {
-        Person person = PersonUtils.newPerson();
+        Person person = PersonUtils.newPersonToSave();
 
         return Client.builder().id(4L).person(person).email("ch").build();
     }
@@ -62,7 +62,7 @@ public class ClientUtils {
     }
 
     public static ClientPostResponse newClientPostResponse() {
-        Person person = PersonUtils.newPerson();
+        Person person = PersonUtils.newPersonToSave();
 
         return ClientPostResponse.builder().id(4L).person(person).email("chispirito@gmail.com").build();
     }

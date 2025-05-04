@@ -26,10 +26,20 @@ public class PersonUtils {
         return new ArrayList<>(List.of(person1, person2, person3));
     }
 
-    public static Person newPerson() {
+    public static Person newPersonToSave() {
         Address address = AddressUtils.newAddressToSave();
 
         Person person = Person.builder().id(4L).name("Chispirito").lastName("Costa").address(address).build();
+        Phone phone = Phone.builder().id(4L).person(person).number("21121521").phoneType(PhoneType.celular).build();
+        person.setPhones(Collections.singletonList(phone));
+
+        return person;
+    }
+
+    public static Person newPersonSaved() {
+        Address address = AddressUtils.newAddressToSave();
+
+        Person person = Person.builder().name("Chispirito").lastName("Costa").address(address).build();
         Phone phone = Phone.builder().id(4L).person(person).number("21121521").phoneType(PhoneType.celular).build();
         person.setPhones(Collections.singletonList(phone));
 

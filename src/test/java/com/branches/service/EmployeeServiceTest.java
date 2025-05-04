@@ -141,8 +141,8 @@ class EmployeeServiceTest {
     @DisplayName("save returns saved employee when successful")
     @Order(6)
     void save_ReturnsSavedEmployee_WhenSuccessful() {
-        Person personToSave = PersonUtils.newPerson().withId(null);
-        Person personSaved = PersonUtils.newPerson();
+        Person personToSave = PersonUtils.newPersonToSave();
+        Person personSaved = PersonUtils.newPersonSaved();
         Address employeeAddress = personToSave.getAddress();
         Employee employeeToSave = EmployeeUtils.newEmployeeToSave().withId(null);
         Employee employeeSaved = EmployeeUtils.newEmployeeToSave();
@@ -183,7 +183,7 @@ class EmployeeServiceTest {
     @DisplayName("save throws BadRequestException when the phone already exists")
     @Order(8)
     void save_ThrowsBadRequestException_WhenThePhoneAlreadyExists() {
-        Person personToSave = PersonUtils.newPerson().withId(null);
+        Person personToSave = PersonUtils.newPersonToSave().withId(null);
         EmployeePostRequest employeePostRequest = EmployeeUtils.newEmployeePostRequest();
 
         Address employeeAddress = personToSave.getAddress();

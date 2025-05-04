@@ -53,14 +53,14 @@ public class EmployeeUtils {
     }
 
     public static Employee newEmployeeToSave() {
-        Person person = PersonUtils.newPerson();
+        Person person = PersonUtils.newPersonToSave();
         Category category = CategoryUtils.newCategoryList().getFirst();
 
         return Employee.builder().id(4L).person(person).category(category).build();
     }
 
     public static EmployeePostResponse newEmployeePostResponse() {
-        Person person = PersonUtils.newPerson();
+        Person person = PersonUtils.newPersonToSave();
         Category category = CategoryUtils.newCategoryList().getFirst();
 
         return EmployeePostResponse.builder().id(4L).person(person).category(category).build();
