@@ -1,0 +1,18 @@
+{
+  "id": 1,
+  "name": "Novo Nome",
+  "lastName": "Novo Sobrenome",
+  "email": "marcus@gmail.com",
+  "address": {
+    "street": "Almirante Barroso",
+    "district": "São Brás",
+    "city": "Belém",
+    "state": "Pa"
+  },
+  "phones": [
+    {
+      "number": "5959559",
+      "phoneType": "celular"
+    }
+  ]
+}

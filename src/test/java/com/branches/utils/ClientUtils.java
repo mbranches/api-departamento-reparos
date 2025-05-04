@@ -17,7 +17,7 @@ public class ClientUtils {
         Person person3 = personList.getLast();
 
         Client client1 = Client.builder().id(1L).person(person1).email("marcus@gmail.com").build();
-        Client client2 = Client.builder().id(2L).person(person2).email("vinicus@gmail.com").build();
+        Client client2 = Client.builder().id(2L).person(person2).email("vinicius@gmail.com").build();
         Client client3 = Client.builder().id(3L).person(person3).email("mario@gmail.com").build();
 
         return new ArrayList<>(List.of(client1, client2, client3));
