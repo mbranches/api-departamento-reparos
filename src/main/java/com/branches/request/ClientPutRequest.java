@@ -24,6 +24,8 @@ public class ClientPutRequest {
     @NotBlank(message = "The field 'email' is required")
     @Email(regexp = "^(?!.*\\.\\.)([a-zA-Z0-9._%+-]+)@([a-zA-Z0-9.-]+)\\.([a-zA-Z]{2,})$", message = "Email is not valid")
     private String email;
+    @NotNull(message = "The field 'address' is required")
     private Address address;
+    @NotNull(message = "The field 'phones' is required")
     private List<Phone> phones;
 }
