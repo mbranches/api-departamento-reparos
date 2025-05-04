@@ -143,7 +143,7 @@ class EmployeeServiceTest {
     void save_ReturnsSavedEmployee_WhenSuccessful() {
         Person personToSave = PersonUtils.newPersonToSave();
         Person personSaved = PersonUtils.newPersonSaved();
-        Address employeeAddress = personToSave.getAddress();
+
         Employee employeeToSave = EmployeeUtils.newEmployeeToSave().withId(null);
         Employee employeeSaved = EmployeeUtils.newEmployeeToSave();
 
@@ -153,8 +153,6 @@ class EmployeeServiceTest {
         Category category = CategoryUtils.newCategoryList().getFirst();
         BDDMockito.when(categoryService.findByIdOrThrowsNotFoundException(employeePostRequest.getCategoryId())).thenReturn(category);
         BDDMockito.when(personMapper.toPerson(employeePostRequest)).thenReturn(personToSave);
-        BDDMockito.when(addressService.findAddress(employeeAddress)).thenReturn(Optional.of(employeeAddress));
-        BDDMockito.doNothing().when(phoneService).assertPhoneDoesNotExists(ArgumentMatchers.any(Phone.class));
         BDDMockito.when(personService.save(personToSave)).thenReturn(personSaved);
         BDDMockito.when(repository.save(employeeToSave)).thenReturn(employeeSaved);
         BDDMockito.when(mapper.toEmployeePostResponse(employeeSaved)).thenReturn(expectedResponse);
@@ -191,8 +189,7 @@ class EmployeeServiceTest {
         Category category = CategoryUtils.newCategoryList().getFirst();
         BDDMockito.when(categoryService.findByIdOrThrowsNotFoundException(employeePostRequest.getCategoryId())).thenReturn(category);
         BDDMockito.when(personMapper.toPerson(employeePostRequest)).thenReturn(personToSave);
-        BDDMockito.when(addressService.findAddress(employeeAddress)).thenReturn(Optional.of(employeeAddress));
-        BDDMockito.doThrow(BadRequestException.class).when(phoneService).assertPhoneDoesNotExists(ArgumentMatchers.any(Phone.class));
+        BDDMockito.doThrow(BadRequestException.class).when(personService).save(personToSave);
 
         Assertions.assertThatThrownBy(() -> service.save(employeePostRequest))
                 .isInstanceOf(BadRequestException.class);

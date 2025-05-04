@@ -39,7 +39,7 @@ public class PersonUtils {
     public static Person newPersonSaved() {
         Address address = AddressUtils.newAddressToSave();
 
-        Person person = Person.builder().name("Chispirito").lastName("Costa").address(address).build();
+        Person person = Person.builder().id(4L).name("Chispirito").lastName("Costa").address(address).build();
         Phone phone = Phone.builder().id(4L).person(person).number("21121521").phoneType(PhoneType.celular).build();
         person.setPhones(Collections.singletonList(phone));
 

@@ -143,17 +143,14 @@ class ClientServiceTest {
     void save_ReturnsSavedClient_WhenGivenSuccessful() {
         Person personToSave = PersonUtils.newPersonToSave();
         Person personSaved = PersonUtils.newPersonSaved();
+
         Client clientToSave = ClientUtils.newClientToSave().withId(null);
         Client clientSaved = ClientUtils.newClientToSave();
         ClientPostRequest clientPostRequest = ClientUtils.newClientPostRequest();
 
-        Address clientAddress = personToSave.getAddress();
-
         ClientPostResponse expectedResponse = ClientUtils.newClientPostResponse();
 
         BDDMockito.when(personMapper.toPerson(clientPostRequest)).thenReturn(personToSave);
-        BDDMockito.when(addressService.findAddress(clientAddress)).thenReturn(Optional.of(clientAddress));
-        BDDMockito.doNothing().when(phoneService).assertPhoneDoesNotExists(ArgumentMatchers.any(Phone.class));
         BDDMockito.when(personService.save(personToSave)).thenReturn(personSaved);
         BDDMockito.when(repository.save(clientToSave)).thenReturn(clientSaved);
         BDDMockito.when(mapper.toClientPostResponse(clientSaved)).thenReturn(expectedResponse);
@@ -172,11 +169,8 @@ class ClientServiceTest {
         Person personToSave = PersonUtils.newPersonToSave().withId(null);
         ClientPostRequest clientPostRequest = ClientUtils.newClientPostRequest();
 
-        Address clientAddress = personToSave.getAddress();
-
         BDDMockito.when(personMapper.toPerson(clientPostRequest)).thenReturn(personToSave);
-        BDDMockito.when(addressService.findAddress(clientAddress)).thenReturn(Optional.of(clientAddress));
-        BDDMockito.doThrow(BadRequestException.class).when(phoneService).assertPhoneDoesNotExists(ArgumentMatchers.any(Phone.class));
+        BDDMockito.doThrow(BadRequestException.class).when(personService).save(personToSave);
 
         Assertions.assertThatThrownBy(() -> service.save(clientPostRequest))
                 .isInstanceOf(BadRequestException.class);
