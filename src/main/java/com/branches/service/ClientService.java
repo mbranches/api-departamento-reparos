@@ -67,7 +67,7 @@ public class ClientService {
 
     @Transactional
     public void update(Long id, ClientPutRequest putRequest) {
-        if (!id.equals(putRequest.getId())) throw new BadRequestException("The ID in the request body (" + putRequest.getId() + ") does not match the ID in the URL (" + id + ").");
+        if (!id.equals(putRequest.getId())) throw new BadRequestException("The ID in the request body (%s) does not match the ID in the URL (%s)".formatted(putRequest.getId(), id));
 
         Client clientNotUpdated = findByIdOrThrowsNotFoundException(id);
 
