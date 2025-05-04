@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Junior\",\r\n    \"lastName\": \"Pereira\",\r\n    \"email\": \"marcus@gmail.com\",\r\n    \"address\": {\r\n        \"street\": \"Maguary\",\r\n        \"district\": \"Paar\",\r\n        \"city\": \"Ananindeua\",\r\n        \"state\": \"Pa\"\r\n    },\r\n    \"phones\": [\r\n        {\r\n            \"number\": \"91982016939\",\r\n            \"phoneType\": \"celular\"\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"name\": \"Junior\",\r\n    \"lastName\": \"Pereira\",\r\n    \"email\": \"junior.pereira@gmail.com\",\r\n    \"address\": {\r\n        \"street\": \"Maguary\",\r\n        \"district\": \"Centro\",\r\n        \"city\": \"Ananindeua\",\r\n        \"state\": \"Pa\"\r\n    },\r\n    \"phones\": [\r\n        {\r\n            \"number\": \"91982016939\",\r\n            \"phoneType\": \"celular\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -24,6 +24,24 @@
 							}
 						},
 						"url": "http://localhost:8080/v1/clients"
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar cliente",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Junior\",\r\n    \"lastName\": \"de Alencar\",\r\n    \"email\": \"alencar@gmail.com\",\r\n    \"address\": {\r\n        \"street\": \"Maguary\", \r\n        \"district\": \"Centro\",\r\n        \"city\": \"Ananindeua\",\r\n        \"state\": \"Pa\"\r\n    },\r\n    \"phones\": [\r\n        {\r\n            \"number\": \"91982016939\", \r\n            \"phoneType\": \"celular\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/clients/1"
 					},
 					"response": []
 				},
@@ -388,6 +406,15 @@
 						"url": "http://localhost:8080/v1/pieces/1"
 					},
 					"response": []
+				},
+				{
+					"name": "Deletar uma peça por id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/v1/pieces/1"
+					},
+					"response": []
 				}
 			]
 		},
@@ -404,7 +431,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "/*\r\nO cliente com id 1 deve está criado\r\nO veiculo com id 1 deve está criado\r\nA peça com id 1 deve está criada\r\nO funcionário com 1 deve está criado\r\n*/\r\n\r\n{\r\n    \"clientId\": 1,\r\n    \"vehicleId\": 1,\r\n    \"pieces\": [\r\n        {\r\n            \"pieceId\":1,\r\n            \"quantity\":8\r\n        }\r\n    ],\r\n    \"employees\": [\r\n        {\r\n            \"employeeId\": 1,\r\n            \"hoursWorked\": 35\r\n        }\r\n    ],\r\n    \"endDate\": \"02/01/2025\"\r\n}",
+							"raw": "/*\r\nO cliente com id 1 deve está criado\r\nO veiculo com id 1 deve está criado\r\nA peça com id 1 deve está criada\r\nO funcionário com 1 deve está criado\r\n*/\r\n\r\n{\r\n    \"clientId\": 1,\r\n    \"vehicleId\": 1,\r\n    \"pieces\": [\r\n        {\r\n            \"pieceId\": 1,\r\n            \"quantity\": 8\r\n        }\r\n    ],\r\n    \"employees\": [\r\n        {\r\n            \"employeeId\": 1,\r\n            \"hoursWorked\": 35\r\n        }\r\n    ],\r\n    \"endDate\": \"02/01/2025\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
