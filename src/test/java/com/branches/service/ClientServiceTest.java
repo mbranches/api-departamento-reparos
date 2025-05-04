@@ -215,9 +215,9 @@ class ClientServiceTest {
     }
 
     @Test
-    @DisplayName("update throws BadRequestException when the client is not found")
+    @DisplayName("update throws NotFoundException when the client is not found")
     @Order(10)
-    void update_ThrowsBadRequestException_WhenTheClientIsNotFound() {
+    void update_ThrowsNotFoundException_WhenTheClientIsNotFound() {
         long randomId = 213123L;
 
         ClientPutRequest putRequest = ClientUtils.newClientPutRequest().withId(randomId);
