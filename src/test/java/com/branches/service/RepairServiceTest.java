@@ -314,7 +314,7 @@ class RepairServiceTest {
         RepairEmployee newRepairEmployee = RepairEmployeeUtils.newRepairEmployee();
         Repair newRepair = RepairUtils.newRepair();
 
-        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId())).thenReturn(ClientUtils.newClientToSave());
+        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId())).thenReturn(ClientUtils.newClientSaved());
         BDDMockito.when(vehicleService.findByIdOrThrowsNotFoundException(postRequest.getVehicleId())).thenReturn(VehicleUtils.newVehicleToSave());
         BDDMockito.when(repairPieceMapper.toRepairPieceList(postRequest.getPieces())).thenReturn(List.of(newRepairPiece));
         BDDMockito.when(repairEmployeeMapper.toRepairEmployeeList(postRequest.getEmployees())).thenReturn(List.of(newRepairEmployee));
@@ -351,7 +351,7 @@ class RepairServiceTest {
     void save_ThrowsNotFoundException_WhenVehicleIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
-        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId())).thenReturn(ClientUtils.newClientToSave());
+        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId())).thenReturn(ClientUtils.newClientSaved());
         BDDMockito.when(vehicleService.findByIdOrThrowsNotFoundException(postRequest.getVehicleId())).thenThrow(new NotFoundException("Vehicle not Found"));
 
         Assertions.assertThatThrownBy(() -> service.save(postRequest))
@@ -365,7 +365,7 @@ class RepairServiceTest {
     void save_ThrowsBadRequestException_WhenSomePieceIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
-        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId())).thenReturn(ClientUtils.newClientToSave());
+        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId())).thenReturn(ClientUtils.newClientSaved());
         BDDMockito.when(vehicleService.findByIdOrThrowsNotFoundException(postRequest.getVehicleId())).thenReturn(VehicleUtils.newVehicleToSave());
         BDDMockito.when(repairPieceMapper.toRepairPieceList(postRequest.getPieces())).thenThrow(new BadRequestException("Error saving pieces"));
 
@@ -381,7 +381,7 @@ class RepairServiceTest {
     void save_ThrowsBadRequestException_WhenSomeEmployeeIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
-        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId())).thenReturn(ClientUtils.newClientToSave());
+        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId())).thenReturn(ClientUtils.newClientSaved());
         BDDMockito.when(repairPieceMapper.toRepairPieceList(postRequest.getPieces())).thenReturn(List.of(RepairPieceUtils.newRepairPiece()));
         BDDMockito.when(repairEmployeeMapper.toRepairEmployeeList(postRequest.getEmployees())).thenThrow(new BadRequestException("Error saving employees"));
 
@@ -402,7 +402,7 @@ class RepairServiceTest {
         RepairEmployee newRepairEmployee = RepairEmployeeUtils.newRepairEmployee();
         Repair newRepair = RepairUtils.newRepair();
 
-        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId())).thenReturn(ClientUtils.newClientToSave());
+        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId())).thenReturn(ClientUtils.newClientSaved());
         BDDMockito.when(vehicleService.findByIdOrThrowsNotFoundException(postRequest.getVehicleId())).thenReturn(VehicleUtils.newVehicleToSave());
         BDDMockito.when(repairPieceMapper.toRepairPieceList(postRequest.getPieces())).thenReturn(List.of(newRepairPiece));
         BDDMockito.when(repairEmployeeMapper.toRepairEmployeeList(postRequest.getEmployees())).thenReturn(List.of(newRepairEmployee));

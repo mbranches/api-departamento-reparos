@@ -56,7 +56,11 @@ public class EmployeeUtils {
         Person person = PersonUtils.newPersonToSave();
         Category category = CategoryUtils.newCategoryList().getFirst();
 
-        return Employee.builder().id(4L).person(person).category(category).build();
+        return Employee.builder().person(person).category(category).build();
+    }
+
+    public static Employee newEmployeeSaved() {
+        return newEmployeeToSave().withId(4L);
     }
 
     public static EmployeePostResponse newEmployeePostResponse() {

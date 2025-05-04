@@ -144,8 +144,8 @@ class ClientServiceTest {
         Person personToSave = PersonUtils.newPersonToSave();
         Person personSaved = PersonUtils.newPersonSaved();
 
-        Client clientToSave = ClientUtils.newClientToSave().withId(null);
-        Client clientSaved = ClientUtils.newClientToSave();
+        Client clientToSave = ClientUtils.newClientToSave();
+        Client clientSaved = ClientUtils.newClientSaved();
         ClientPostRequest clientPostRequest = ClientUtils.newClientPostRequest();
 
         ClientPostResponse expectedResponse = ClientUtils.newClientPostResponse();

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class VehicleUtils {
     public static List<Vehicle> newVehicleList() {
-        Client client = ClientUtils.newClientToSave();
+        Client client = ClientUtils.newClientSaved();
 
         Vehicle vehicle1 = Vehicle.builder().id(1L).vehicleType(VehicleType.carro).brand("Fiat").model("Toro").client(client).build();
         Vehicle vehicle2 = Vehicle.builder().id(2L).vehicleType(VehicleType.moto).brand("Yamaha").model("Mt-07").client(client).build();
@@ -36,7 +36,7 @@ public class VehicleUtils {
                 .vehicleType(VehicleType.caminhao)
                 .brand("Scania")
                 .model("T113")
-                .client(ClientUtils.newClientToSave()).build();
+                .client(ClientUtils.newClientSaved()).build();
     }
 
     public static VehiclePostRequest newVehiclePostRequest() {
@@ -44,7 +44,7 @@ public class VehicleUtils {
                 .vehicleType(VehicleType.caminhao)
                 .brand("Scania")
                 .model("T113")
-                .clientId(ClientUtils.newClientToSave().getId())
+                .clientId(ClientUtils.newClientSaved().getId())
                 .build();
     }
 

@@ -144,8 +144,8 @@ class EmployeeServiceTest {
         Person personToSave = PersonUtils.newPersonToSave();
         Person personSaved = PersonUtils.newPersonSaved();
 
-        Employee employeeToSave = EmployeeUtils.newEmployeeToSave().withId(null);
-        Employee employeeSaved = EmployeeUtils.newEmployeeToSave();
+        Employee employeeToSave = EmployeeUtils.newEmployeeToSave();
+        Employee employeeSaved = EmployeeUtils.newEmployeeSaved();
 
         EmployeePostRequest employeePostRequest = EmployeeUtils.newEmployeePostRequest();
         EmployeePostResponse expectedResponse = EmployeeUtils.newEmployeePostResponse();

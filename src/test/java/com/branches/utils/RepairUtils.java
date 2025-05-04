@@ -15,7 +15,7 @@ import java.util.List;
 
 public class RepairUtils {
     public static List<Repair> newRepairList() {
-        Client client = ClientUtils.newClientToSave();
+        Client client = ClientUtils.newClientSaved();
         Vehicle vehicle = VehicleUtils.newVehicleToSave();
         LocalDate date = LocalDate.of(2025, 2, 12);
 
@@ -57,7 +57,7 @@ public class RepairUtils {
 
         return Repair.builder()
                 .id(4L)
-                .client(ClientUtils.newClientToSave())
+                .client(ClientUtils.newClientSaved())
                 .vehicle(VehicleUtils.newVehicleToSave())
                 .endDate(date)
                 .build();

@@ -33,7 +33,7 @@ public class RepairEmployeeUtils {
     }
 
     public static RepairEmployee newRepairEmployee() {
-        Employee employee = EmployeeUtils.newEmployeeToSave();
+        Employee employee = EmployeeUtils.newEmployeeSaved();
         Category employeeCategory = employee.getCategory();
 
         return RepairEmployee.builder().employee(employee).hoursWorked(5).totalValue(employeeCategory.getHourlyPrice() * 5).build();

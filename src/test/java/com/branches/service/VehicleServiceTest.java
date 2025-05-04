@@ -95,7 +95,7 @@ class VehicleServiceTest {
     @DisplayName("findVehiclesByClientId Returns all client vehicles when successful")
     @Order(4)
     void findVehiclesByClientId_ReturnsAllClientVehicles_WhenSuccessful() {
-        Client client = ClientUtils.newClientToSave();
+        Client client = ClientUtils.newClientSaved();
         long clientId = client.getId();
 
         List<Vehicle> vehicles = VehicleUtils.newVehicleList();
@@ -117,7 +117,7 @@ class VehicleServiceTest {
     @DisplayName("findVehiclesByClientId returns an empty list when client doesn't have vehicles")
     @Order(5)
     void findVehiclesByClientId_ReturnsEmptyList_WhenClientDoesNotHaveVehicles() {
-        Client client = ClientUtils.newClientToSave();
+        Client client = ClientUtils.newClientSaved();
         long clientId = client.getId();
 
         BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(clientId)).thenReturn(client);
@@ -152,7 +152,7 @@ class VehicleServiceTest {
 
         VehiclePostResponse expectedResponse = VehicleUtils.newVehiclePostResponse();
 
-        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(vehiclePostRequest.getClientId())).thenReturn(ClientUtils.newClientToSave());
+        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(vehiclePostRequest.getClientId())).thenReturn(ClientUtils.newClientSaved());
         BDDMockito.when(mapper.toVehicle(vehiclePostRequest)).thenReturn(vehicleToSave);
         BDDMockito.when(repository.save(vehicleToSave)).thenReturn(vehicleToSave);
         BDDMockito.when(mapper.toVehiclePostResponse(vehicleToSave)).thenReturn(expectedResponse);

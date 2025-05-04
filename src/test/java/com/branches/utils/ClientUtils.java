@@ -48,7 +48,11 @@ public class ClientUtils {
     public static Client newClientToSave() {
         Person person = PersonUtils.newPersonToSave();
 
-        return Client.builder().id(4L).person(person).email("ch").build();
+        return Client.builder().person(person).email("chispirito@gmail.com").build();
+    }
+
+    public static Client newClientSaved() {
+        return newClientToSave().withId(4L);
     }
 
     public static ClientDefaultResponse newClientDefaultResponse() {
