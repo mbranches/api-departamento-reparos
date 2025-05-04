@@ -25,6 +25,6 @@ public class Person {
     @ManyToOne
     @JoinColumn(name = "fk_endereco_pessoa", referencedColumnName = "idendereco")
     private Address address;
-    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Phone> phones;
 }

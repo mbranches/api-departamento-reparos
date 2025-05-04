@@ -10,6 +10,7 @@ import com.branches.model.Person;
 import com.branches.model.Phone;
 import com.branches.repository.ClientRepository;
 import com.branches.request.ClientPostRequest;
+import com.branches.request.ClientPutRequest;
 import com.branches.response.ClientGetResponse;
 import com.branches.response.ClientPostResponse;
 import lombok.RequiredArgsConstructor;
@@ -75,6 +76,46 @@ public class ClientService {
         return mapper.toClientPostResponse(client);
     }
 
+    @Transactional
+    public void update(Long id, ClientPutRequest putRequest) {
+        if (!id.equals(putRequest.getId())) throw new BadRequestException("The ID in the request body (" + putRequest.getId() + ") does not match the ID in the URL (" + id + ").");
+
+        Client clientNotUpdated = findByIdOrThrowsNotFoundException(id);
+        Long personId = clientNotUpdated.getPerson().getId();
+
+        Person personToUpdate = personMapper.toPerson(putRequest);
+        personToUpdate.setId(personId);
+
+        assertEmailDoesNotExists(putRequest.getEmail(), id);
+
+        List<Phone> phones = personToUpdate.getPhones();
+        phones.forEach(phone -> {
+            phoneService.assertPhoneDoesNotExists(phone, id);
+
+            phone.setPerson(personToUpdate);
+
+            phoneService.findPhoneByPerson(phone, id).ifPresent(foundPhone -> {
+                phone.setId(foundPhone.getId());
+            });
+        });
+
+        Address address = putRequest.getAddress();
+        Optional<Address> addressSearched = addressService.findAddress(address);
+
+        Address addressSaved = addressSearched.orElseGet(() -> addressService.save(address));
+        personToUpdate.setAddress(addressSaved);
+
+        Person personUpdated = personService.update(personToUpdate);
+
+        Client clientToUpdate = Client.builder()
+                .id(putRequest.getId())
+                .person(personUpdated)
+                .email(putRequest.getEmail())
+                .build();
+
+        repository.save(clientToUpdate);
+    }
+
     public void deleteById(Long id) {
         Client clientToDelete = findByIdOrThrowsNotFoundException(id);
 
@@ -83,6 +124,13 @@ public class ClientService {
 
     public void assertEmailDoesNotExists(String email) {
         repository.findByEmail(email)
+                .ifPresent(client -> {
+                    throw new BadRequestException("Email '%s' already exists".formatted(client.getEmail()));
+                });
+    }
+
+    public void assertEmailDoesNotExists(String email, Long id) {
+        repository.findByEmailAndIdNot(email, id)
                 .ifPresent(client -> {
                     throw new BadRequestException("Email '%s' already exists".formatted(client.getEmail()));
                 });

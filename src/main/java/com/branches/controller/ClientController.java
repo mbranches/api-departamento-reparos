@@ -1,10 +1,8 @@
 package com.branches.controller;
 
 import com.branches.request.ClientPostRequest;
-import com.branches.response.ClientGetResponse;
-import com.branches.response.ClientPostResponse;
-import com.branches.response.RepairGetResponse;
-import com.branches.response.VehicleDefaultResponse;
+import com.branches.request.ClientPutRequest;
+import com.branches.response.*;
 import com.branches.service.ClientService;
 import com.branches.service.RepairService;
 import com.branches.service.VehicleService;
@@ -57,6 +55,13 @@ public class ClientController {
         ClientPostResponse response = service.save(postRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody ClientPutRequest putRequest) {
+        service.update(id, putRequest);
+
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
