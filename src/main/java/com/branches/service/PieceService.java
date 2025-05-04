@@ -54,4 +54,8 @@ public class PieceService {
 
         return repository.save(piece);
     }
+
+    public void deleteById(Long id) {
+        repository.delete(findByIdOrThrowsNotFoundException(id));
+    }
 }
