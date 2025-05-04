@@ -215,8 +215,23 @@ class ClientServiceTest {
     }
 
     @Test
-    @DisplayName("update throws BadRequestException when the email to update does not belong to client")
+    @DisplayName("update throws BadRequestException when the client is not found")
     @Order(10)
+    void update_ThrowsBadRequestException_WhenTheClientIsNotFound() {
+        long randomId = 213123L;
+
+        ClientPutRequest putRequest = ClientUtils.newClientPutRequest().withId(randomId);
+
+        BDDMockito.when(repository.findById(randomId)).thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> service.update(randomId, putRequest))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Client not Found");
+    }
+
+    @Test
+    @DisplayName("update throws BadRequestException when the email to update does not belong to client")
+    @Order(11)
     void update_ThrowsBadRequestException_WhenTheEmailToUpdateDoesNotBelongToClient() {
         Client clientEmailOwner = clientList.get(1);
 
@@ -235,7 +250,7 @@ class ClientServiceTest {
 
     @Test
     @DisplayName("deleteById removes client when successful")
-    @Order(11)
+    @Order(12)
     void deleteById_RemovesClient_WhenSuccessful() {
         Client clientToDelete = clientList.getFirst();
         Long idToDelete = clientToDelete.getId();
@@ -249,7 +264,7 @@ class ClientServiceTest {
 
     @Test
     @DisplayName("deleteById throws NotFoundException when given id is not found")
-    @Order(12)
+    @Order(13)
     void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() {
         Long randomId = 15512366L;
 
@@ -262,7 +277,7 @@ class ClientServiceTest {
 
     @Test
     @DisplayName("assertEmailDoesNotExists does nothing when email does not exists")
-    @Order(13)
+    @Order(14)
     void assertEmailDoesNotExists_DoesNothing_WhenTheEmailDoesNotExists() {
         ClientPostRequest clientPostRequest = ClientUtils.newClientPostRequest();
         String email = clientPostRequest.getEmail();
@@ -274,7 +289,7 @@ class ClientServiceTest {
 
     @Test
     @DisplayName("assertEmailDoesNotExists throws BadRequestException when the email already exists")
-    @Order(14)
+    @Order(15)
     void assertEmailDoesNotExists_DoesNothing_WhenTheEmailAlreadyExists() {
         Client client = ClientUtils.newClientList().getFirst();
         String savedEmail = client.getEmail();
