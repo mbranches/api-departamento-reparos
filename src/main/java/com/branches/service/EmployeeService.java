@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +31,17 @@ public class EmployeeService {
         return mapper.toEmployeeGetResponseList(response);
     }
 
+    public EmployeeGetResponse findById(Long id) {
+        Employee foundEmployee = findByIdOrThrowsNotFoundException(id);
+
+        return mapper.toEmployeeGetResponse(foundEmployee);
+    }
+
+    public Employee findByIdOrThrowsNotFoundException(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Employee not Found"));
+    }
+
     @Transactional
     public EmployeePostResponse save(EmployeePostRequest postRequest) {
         Category category = categoryService.findByIdOrThrowsNotFoundException(postRequest.getCategoryId());
@@ -48,17 +58,6 @@ public class EmployeeService {
         Employee employee = repository.save(employeeToSave);
 
         return mapper.toEmployeePostResponse(employee);
-    }
-
-    public EmployeeGetResponse findById(Long id) {
-        Employee foundEmployee = findByIdOrThrowsNotFoundException(id);
-
-        return mapper.toEmployeeGetResponse(foundEmployee);
-    }
-
-    public Employee findByIdOrThrowsNotFoundException(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Employee not Found"));
     }
 
     public void deleteById(Long id) {
