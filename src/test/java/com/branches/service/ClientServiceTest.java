@@ -179,22 +179,19 @@ class ClientServiceTest {
     @DisplayName("update updates client when successful")
     @Order(8)
     void update_UpdatesClient_WhenSuccessful() {
-        Client clientToUpdate = clientList.getFirst();
-        Long idToUpdate = clientToUpdate.getId();
+        Client clientNotUpdated = clientList.getFirst();
+
+        Client clientToUpdate = ClientUtils.newClientToUpdate();
 
         ClientPutRequest clientPutRequest = ClientUtils.newClientPutRequest();
+        Long idToUpdate = clientPutRequest.getId();
 
-        Person expectedPerson = Person.builder()
-                .name(clientPutRequest.getName())
-                .lastName(clientPutRequest.getLastName())
-                .address(clientPutRequest.getAddress())
-                .phones(clientPutRequest.getPhones())
-                .build();
+        Person personToUpdate = PersonUtils.newPersonToUpdate();
 
-        BDDMockito.when(repository.findById(idToUpdate)).thenReturn(Optional.of(clientToUpdate));
+        BDDMockito.when(repository.findById(idToUpdate)).thenReturn(Optional.of(clientNotUpdated));
         BDDMockito.when(repository.findByEmailAndIdNot(clientPutRequest.getEmail(), idToUpdate)).thenReturn(Optional.empty());
-        BDDMockito.when(personMapper.toPerson(clientPutRequest)).thenReturn(expectedPerson);
-        BDDMockito.when(personService.update(expectedPerson)).thenReturn(expectedPerson.withId(clientToUpdate.getPerson().getId()));
+        BDDMockito.when(personMapper.toPerson(clientPutRequest)).thenReturn(personToUpdate);
+        BDDMockito.when(personService.update(personToUpdate)).thenReturn(personToUpdate);
         BDDMockito.when(repository.save(clientToUpdate)).thenReturn(clientToUpdate);
 
         Assertions.assertThatNoException()
@@ -235,12 +232,12 @@ class ClientServiceTest {
     void update_ThrowsBadRequestException_WhenTheEmailToUpdateDoesNotBelongToClient() {
         Client clientEmailOwner = clientList.get(1);
 
-        Client clientToUpdate = clientList.getFirst();
-        Long idToUpdate = clientToUpdate.getId();
+        Client clientNotUpdated = clientList.getFirst();
+        Long idToUpdate = clientNotUpdated.getId();
 
         ClientPutRequest clientPutRequest = ClientUtils.newClientPutRequest().withEmail(clientEmailOwner.getEmail());
 
-        BDDMockito.when(repository.findById(idToUpdate)).thenReturn(Optional.of(clientToUpdate));
+        BDDMockito.when(repository.findById(idToUpdate)).thenReturn(Optional.of(clientNotUpdated));
         BDDMockito.when(repository.findByEmailAndIdNot(clientPutRequest.getEmail(), idToUpdate)).thenReturn(Optional.of(clientEmailOwner));
 
         Assertions.assertThatThrownBy(() -> service.update(idToUpdate, clientPutRequest))

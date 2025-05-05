@@ -94,4 +94,10 @@ public class ClientUtils {
                 .email("marcus@gmail.com")
                 .build();
     }
+
+    public static Client newClientToUpdate() {
+        Person personToUpdate = PersonUtils.newPersonToUpdate();
+
+        return newClientList().getFirst().withPerson(personToUpdate);
+    }
 }

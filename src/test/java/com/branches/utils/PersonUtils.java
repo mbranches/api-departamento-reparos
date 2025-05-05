@@ -53,4 +53,8 @@ public class PersonUtils {
                 .lastName("Costa")
                 .build();
     }
+
+    public static Person newPersonToUpdate() {
+        return newPersonList().getFirst().withName("Novo Nome").withLastName("Novo Sobrenome");
+    }
 }
