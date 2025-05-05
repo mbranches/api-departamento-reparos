@@ -1,4 +1,3 @@
 # ENV_ROOT_PASSWORD deve ser igual a definida no .env da raiz do projeto
 
-ENV_ROOT_USER=
 ENV_ROOT_PASSWORD=

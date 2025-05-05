@@ -5,8 +5,8 @@ spring:
     name: oficina
   datasource:
     url: jdbc:mysql://localhost:3307/departamento?createDatabaseIfNotExist=true
-    username: ${ENV_ROOT_USER:root}
-    password: ${ENV_ROOT_PASSWORD:123} # Essa senha deve ser igual a variavel de ambiente ENV_ROOT_PASSWORD do docker-compose
+    username: root
+    password: ${ENV_ROOT_PASSWORD} # Essa senha deve ser igual a variavel de ambiente ENV_ROOT_PASSWORD do docker-compose
 
   sql:
     init:
