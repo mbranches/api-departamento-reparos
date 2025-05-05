@@ -1,11 +1,13 @@
 package com.branches.service;
 
+import com.branches.exception.BadRequestException;
 import com.branches.exception.NotFoundException;
 import com.branches.mapper.EmployeeMapper;
 import com.branches.mapper.PersonMapper;
 import com.branches.model.*;
 import com.branches.repository.EmployeeRepository;
 import com.branches.request.EmployeePostRequest;
+import com.branches.request.EmployeePutRequest;
 import com.branches.response.EmployeeGetResponse;
 import com.branches.response.EmployeePostResponse;
 import lombok.RequiredArgsConstructor;
@@ -58,6 +60,29 @@ public class EmployeeService {
         Employee employee = repository.save(employeeToSave);
 
         return mapper.toEmployeePostResponse(employee);
+    }
+
+    @Transactional
+    public void update(Long id, EmployeePutRequest putRequest) {
+        if (!id.equals(putRequest.getId())) throw new BadRequestException("The ID in the request body (%s) does not match the ID in the URL (%s)".formatted(putRequest.getId(), id));
+
+        Employee employeeNotUpdated = findByIdOrThrowsNotFoundException(id);
+
+        Category category = categoryService.findByIdOrThrowsNotFoundException(putRequest.getCategoryId());
+
+        Person personNotUpdated = employeeNotUpdated.getPerson();
+        Person personToUpdate = personMapper.toPerson(putRequest);
+        personToUpdate.setId(personNotUpdated.getId());
+
+        Person personUpdated = personService.update(personToUpdate);
+
+        Employee employeeToUpdate = Employee.builder()
+                .id(putRequest.getId())
+                .person(personUpdated)
+                .category(category)
+                .build();
+
+        repository.save(employeeToUpdate);
     }
 
     public void deleteById(Long id) {

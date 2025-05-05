@@ -1,6 +1,7 @@
 package com.branches.controller;
 
 import com.branches.request.EmployeePostRequest;
+import com.branches.request.EmployeePutRequest;
 import com.branches.response.EmployeeGetResponse;
 import com.branches.response.EmployeePostResponse;
 import com.branches.service.EmployeeService;
@@ -37,6 +38,13 @@ public class EmployeeController {
         EmployeePostResponse response = service.save(postRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody @Valid EmployeePutRequest putRequest) {
+        service.update(id, putRequest);
+
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")

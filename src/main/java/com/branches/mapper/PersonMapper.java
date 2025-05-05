@@ -4,6 +4,7 @@ import com.branches.model.Person;
 import com.branches.request.ClientPostRequest;
 import com.branches.request.ClientPutRequest;
 import com.branches.request.EmployeePostRequest;
+import com.branches.request.EmployeePutRequest;
 import jakarta.validation.Valid;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -19,4 +20,7 @@ public interface PersonMapper {
 
     @Mapping(target = "id", ignore = true)
     Person toPerson(ClientPutRequest putRequest);
+
+    @Mapping(target = "id", ignore = true)
+    Person toPerson(EmployeePutRequest putRequest);
 }
