@@ -264,7 +264,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Lucas\",\r\n    \"lastName\": \"Alonço\",\r\n    \"categoryId\": 1,\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"district\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\"\r\n    },\r\n    \"phones\": [\r\n        {\r\n            \"number\": \"91981845636\",\r\n            \"phoneType\": \"celular\"\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"name\": \"Lucas\",\r\n    \"lastName\": \"Alonço\",\r\n    \"categoryId\": 1,\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"district\": \"Centro\",\r\n        \"city\": \"São Paulo\",\r\n        \"state\": \"SP\"\r\n    },\r\n    \"phones\": [\r\n        {\r\n            \"number\": \"9198565759\",\r\n            \"phoneType\": \"celular\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -272,6 +272,24 @@
 							}
 						},
 						"url": "http://localhost:8080/v1/employees"
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar funcionario",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Lucas\",\r\n    \"lastName\": \"Silva\",\r\n    \"categoryId\": 1,\r\n    \"address\": {\r\n        \"street\": \"Br-316\", \r\n        \"district\": \"Centro\",\r\n        \"city\": \"Ananindeua\",\r\n        \"state\": \"Pa\"\r\n    },\r\n    \"phones\": [\r\n        {\r\n            \"number\": \"9398565759\", \r\n            \"phoneType\": \"celular\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/employees/1"
 					},
 					"response": []
 				},
