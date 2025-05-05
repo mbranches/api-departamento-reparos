@@ -1,2 +1,2 @@
-ENV_ROOT_USER=
+# A senha definida aqui deverá ser utilizada no application.yaml (localizado em src/main/resources)
 ENV_ROOT_PASSWORD=
