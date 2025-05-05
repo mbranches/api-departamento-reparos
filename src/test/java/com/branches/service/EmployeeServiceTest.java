@@ -7,11 +7,13 @@ import com.branches.mapper.PersonMapper;
 import com.branches.model.*;
 import com.branches.repository.EmployeeRepository;
 import com.branches.request.EmployeePostRequest;
+import com.branches.request.EmployeePutRequest;
 import com.branches.response.EmployeeGetResponse;
 import com.branches.response.EmployeePostResponse;
 import com.branches.utils.CategoryUtils;
 import com.branches.utils.EmployeeUtils;
 import com.branches.utils.PersonUtils;
+import jakarta.validation.constraints.NotNull;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -184,8 +186,6 @@ class EmployeeServiceTest {
         Person personToSave = PersonUtils.newPersonToSave().withId(null);
         EmployeePostRequest employeePostRequest = EmployeeUtils.newEmployeePostRequest();
 
-        Address employeeAddress = personToSave.getAddress();
-
         Category category = CategoryUtils.newCategoryList().getFirst();
         BDDMockito.when(categoryService.findByIdOrThrowsNotFoundException(employeePostRequest.getCategoryId())).thenReturn(category);
         BDDMockito.when(personMapper.toPerson(employeePostRequest)).thenReturn(personToSave);
@@ -196,8 +196,71 @@ class EmployeeServiceTest {
     }
 
     @Test
-    @DisplayName("deleteById removes employee when successful")
+    @DisplayName("update updates employee when successful")
     @Order(9)
+    void update_UpdatesEmployee_WhenSuccessful() {
+        Employee employeeNotUpdated = employeeList.getFirst();
+
+        Employee employeeToUpdate = EmployeeUtils.newEmployeeToUpdate();
+        EmployeePutRequest putRequest = EmployeeUtils.newEmployeePutRequest();
+
+        Person personToUpdate = PersonUtils.newPersonToUpdate();
+
+        Category categoryToBeFound = CategoryUtils.newCategoryList().get(1);
+
+        BDDMockito.when(repository.findById(putRequest.getId())).thenReturn(Optional.of(employeeNotUpdated));
+        BDDMockito.when(categoryService.findByIdOrThrowsNotFoundException(putRequest.getCategoryId())).thenReturn(categoryToBeFound);
+        BDDMockito.when(personMapper.toPerson(putRequest)).thenReturn(personToUpdate.withId(null));
+        BDDMockito.when(personService.update(personToUpdate)).thenReturn(personToUpdate);
+        BDDMockito.when(repository.save(employeeToUpdate)).thenReturn(employeeToUpdate);
+
+        Assertions.assertThatNoException().isThrownBy(() -> service.update(putRequest.getId(), putRequest));
+    }
+
+    @Test
+    @DisplayName("update throws BadRequestException when the url id does not match the request body id")
+    @Order(10)
+    void update_ThrowsBadRequestException_WhenTheUrlIdDoesNotMatchTheRequestBodyId () {
+        EmployeePutRequest putRequest = EmployeeUtils.newEmployeePutRequest();
+        Long randomId = 999L;
+
+        Assertions.assertThatThrownBy(() -> service.update(randomId, putRequest))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("The ID in the request body (%s) does not match the ID in the URL (%s)".formatted(putRequest.getId(), randomId));
+    }
+
+    @Test
+    @DisplayName("update throws NotFoundException when employee is not found")
+    @Order(11)
+    void update_ThrowsNotFoundException_WhenEmployeeIsNotFound() {
+        EmployeePutRequest putRequest = EmployeeUtils.newEmployeePutRequest();
+
+        BDDMockito.when(repository.findById(putRequest.getId())).thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> service.update(putRequest.getId(), putRequest))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Employee not Found");
+
+    }
+
+    @Test
+    @DisplayName("update throws NotFoundException when the category is not found")
+    @Order(12)
+    void update_ThrowsNotFoundException_WhenTheCategoryIsNotFound() {
+        Employee employeeNotUpdated = employeeList.getFirst();
+        Long randomCategoryId = 999L;
+        EmployeePutRequest putRequest = EmployeeUtils.newEmployeePutRequest().withCategoryId(randomCategoryId);
+
+        BDDMockito.when(repository.findById(putRequest.getId())).thenReturn(Optional.of(employeeNotUpdated));
+        BDDMockito.doThrow(NotFoundException.class).when(categoryService).findByIdOrThrowsNotFoundException(putRequest.getCategoryId());
+
+        Assertions.assertThatThrownBy(() -> service.update(putRequest.getId(), putRequest))
+                .isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("deleteById removes employee when successful")
+    @Order(13)
     void deleteById_RemovesEmployee_WhenSuccessful() {
         Employee employeeToDelete = employeeList.getFirst();
         Long idToDelete = employeeToDelete.getId();
@@ -211,7 +274,7 @@ class EmployeeServiceTest {
 
     @Test
     @DisplayName("deleteById throws NotFoundException when given id is not found")
-    @Order(10)
+    @Order(14)
     void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() {
         Long randomId = 15512366L;
 

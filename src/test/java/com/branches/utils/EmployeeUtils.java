@@ -2,6 +2,7 @@ package com.branches.utils;
 
 import com.branches.model.*;
 import com.branches.request.EmployeePostRequest;
+import com.branches.request.EmployeePutRequest;
 import com.branches.response.*;
 
 import java.util.ArrayList;
@@ -101,5 +102,26 @@ public class EmployeeUtils {
                 .person(person)
                 .category(category)
                 .build();
+    }
+
+    public static EmployeePutRequest newEmployeePutRequest() {
+        Person personToUpdate = PersonUtils.newPersonList().getFirst();
+        Category category = CategoryUtils.newCategoryList().get(1);
+
+        return EmployeePutRequest.builder()
+                .id(1L)
+                .name("Novo Nome")
+                .lastName("Novo Sobrenome")
+                .categoryId(category.getId())
+                .phones(personToUpdate.getPhones())
+                .address(personToUpdate.getAddress())
+                .build();
+    }
+
+    public static Employee newEmployeeToUpdate() {
+        Person personToUpdate = PersonUtils.newPersonToUpdate();
+        Category categoryToUpdate = CategoryUtils.newCategoryList().get(1);
+
+        return newEmployeeList().getFirst().withPerson(personToUpdate).withCategory(categoryToUpdate);
     }
 }
