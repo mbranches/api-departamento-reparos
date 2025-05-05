@@ -61,13 +61,12 @@ Este repositório contém somente o **Backend** do projeto.
   
 ### 2. Popule as variáveis de ambiente.
 
-#### a. **Variáveis Docker**
-- Renomeie o arquivo da raíz do repositório `.envTemplate` para `.env` e preencha as variáveis com os valores apropriados para o seu ambiente de desenvolvimento.
+#### a. **Variável Docker**
+- Renomeie o arquivo da raíz do repositório `.envTemplate` para `.env` e preencha a variável com o valor desejado para o seu ambiente de desenvolvimento.
 
-#### b. **Variáveis Spring Boot (`src/main/resources`)**
-- Obs: Caso queira utilizar as credenciais predefinidas no application, você pode pular essa etapa
+#### b. **Variável Spring Boot (`src/main/resources`)**
 - Navegue até o diretório `src/main/resources`
-- Renomeie o arquivo `.envTemplate` para `.env` e configure as variáveis conforme necessário para o Spring Boot.
+- Renomeie o arquivo `.envTemplate` para `.env` e configure `ENV_ROOT_PASSWORD` igual o definido no `.env` da raíz do projeto.
 
 ### 3. Rode o docker
 - A partir da raíz do repositório rodar o seguinte comando:
