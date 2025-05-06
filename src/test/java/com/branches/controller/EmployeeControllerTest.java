@@ -1,12 +1,16 @@
 package com.branches.controller;
 
+import com.branches.exception.BadRequestException;
 import com.branches.exception.NotFoundException;
 import com.branches.model.Employee;
+import com.branches.model.Person;
+import com.branches.model.Phone;
 import com.branches.request.EmployeePostRequest;
 import com.branches.response.EmployeeGetResponse;
 import com.branches.service.EmployeeService;
 import com.branches.utils.EmployeeUtils;
 import com.branches.utils.FileUtils;
+import com.branches.utils.PersonUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -121,7 +125,7 @@ class EmployeeControllerTest {
 
     @Test
     @DisplayName("POST /v1/employees returns saved employee when successful")
-    @Order(4)
+    @Order(6)
     void save_ReturnsSavedEmployee_WhenGivenSuccessful() throws Exception {
         BDDMockito.when(service.save(ArgumentMatchers.any(EmployeePostRequest.class))).thenReturn(EmployeeUtils.newEmployeePostResponse());
 
@@ -139,8 +143,8 @@ class EmployeeControllerTest {
     }
 
     @Test
-    @DisplayName("POST /v1/employees throws not found exception when given category does not exists")
-    @Order(5)
+    @DisplayName("POST /v1/employees throws NotFoundException when given category does not exists")
+    @Order(7)
     void save_ThrowsNotFoundException_WhenGivenCategoryNotExists() throws Exception {
 
         BDDMockito.when(service.save(ArgumentMatchers.any(EmployeePostRequest.class))).thenThrow(new NotFoundException("Category not Found"));
@@ -158,10 +162,33 @@ class EmployeeControllerTest {
                 .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
     }
 
+    @Test
+    @DisplayName("POST /v1/employees throws BadRequestException when the phone already exists")
+    @Order(8)
+    void save_ThrowsBadRequestException_WhenThePhoneAlreadyExists() throws Exception {
+        String request = fileUtils.readResourceFile("employee/post-request-employee-phone-existing-400.json");
+        String expectedResponse = fileUtils.readResourceFile("employee/post-response-employee-phone-existing-400.json");
+
+        Person personPhoneOwner = PersonUtils.newPersonList().get(1);
+
+        EmployeePostRequest employeePostRequest = EmployeeUtils.newEmployeePostRequest().withPhones(personPhoneOwner.getPhones());
+        Phone phone = employeePostRequest.getPhones().getFirst();
+
+        BDDMockito.doThrow(new BadRequestException("Phone '%s' belongs to another person".formatted(phone.getNumber())))
+                .when(service).save(ArgumentMatchers.any());
+
+        mockMvc.perform(MockMvcRequestBuilders.post(URL)
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
     @ParameterizedTest
     @MethodSource("postEmployeeBadRequestSource")
     @DisplayName("POST /v1/employees return BadRequest when fields are invalid")
-    @Order(7)
+    @Order(9)
     void save_ReturnsBadRequest_WhenFieldAreInvalid(String fileName, List<String> expectedErrors) throws Exception {
         String request = fileUtils.readResourceFile("employee/%s".formatted(fileName));
 
@@ -197,7 +224,7 @@ class EmployeeControllerTest {
 
     @Test
     @DisplayName("DELETE /v1/employees/1 removes employee when successful")
-    @Order(8)
+    @Order(10)
     void deleteById_RemovesEmployee_WhenSuccessful() throws Exception {
         Employee employeeToDelete = EmployeeUtils.newEmployeeList().getFirst();
         Long idToDelete = employeeToDelete.getId();
@@ -211,7 +238,7 @@ class EmployeeControllerTest {
 
     @Test
     @DisplayName("DELETE /v1/employees/25256595 throws NotFoundException when given id is not found")
-    @Order(9)
+    @Order(11)
     void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() throws Exception {
         Long randomId = 25256595L;
 
