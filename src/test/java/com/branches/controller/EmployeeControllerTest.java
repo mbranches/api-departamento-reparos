@@ -6,6 +6,7 @@ import com.branches.model.Employee;
 import com.branches.model.Person;
 import com.branches.model.Phone;
 import com.branches.request.EmployeePostRequest;
+import com.branches.request.EmployeePutRequest;
 import com.branches.response.EmployeeGetResponse;
 import com.branches.service.EmployeeService;
 import com.branches.utils.EmployeeUtils;
@@ -146,8 +147,9 @@ class EmployeeControllerTest {
     @DisplayName("POST /v1/employees throws NotFoundException when given category does not exists")
     @Order(7)
     void save_ThrowsNotFoundException_WhenGivenCategoryNotExists() throws Exception {
+        EmployeePostRequest postRequest = EmployeeUtils.newEmployeePostRequest().withCategoryId(41312L);
 
-        BDDMockito.when(service.save(ArgumentMatchers.any(EmployeePostRequest.class))).thenThrow(new NotFoundException("Category not Found"));
+        BDDMockito.when(service.save(postRequest)).thenThrow(new NotFoundException("Category not Found"));
 
         String request = fileUtils.readResourceFile("employee/post-request-employee-invalid-category-200.json");
         String expectedResponse = fileUtils.readResourceFile("employee/post-response-employee-404.json");
@@ -223,8 +225,115 @@ class EmployeeControllerTest {
     }
 
     @Test
-    @DisplayName("DELETE /v1/employees/1 removes employee when successful")
+    @DisplayName("PUT /v1/employees/1 updates employee when successful")
     @Order(10)
+    void update_UpdatesEmployee_WhenSuccessful() throws Exception {
+        EmployeePutRequest putRequest = EmployeeUtils.newEmployeePutRequest();
+        Long idToUpdate = putRequest.getId();
+
+        BDDMockito.doNothing().when(service).update(idToUpdate, putRequest);
+
+        String request = fileUtils.readResourceFile("employee/put-request-employee-204.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.put(URL + "/{id}", idToUpdate)
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("PUT /v1/employees/999 throws BadRequestException when the url id does not match the request body id")
+    @Order(11)
+    void update_ThrowsBadRequestException_WhenTheUrlIdDoesNotMatchTheRequestBodyId() throws Exception {
+        EmployeePutRequest putRequest = EmployeeUtils.newEmployeePutRequest();
+        Long randomId = 999L;
+
+        BDDMockito.doThrow(new BadRequestException("The ID in the request body (%s) does not match the ID in the URL (%s)".formatted(putRequest.getId(), randomId))).when(service).update(randomId, putRequest);
+
+        String request = fileUtils.readResourceFile("employee/put-request-employee-204.json");
+        String response = fileUtils.readResourceFile("employee/put-response-not-match-ids-employee-400.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.put(URL + "/{id}", randomId)
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().json(response));
+    }
+
+    @Test
+    @DisplayName("PUT /v1/employees/999 throws NotFoundException when the employee is not found")
+    @Order(12)
+    void update_NotFoundException_WhenTheEmployeesIsNotFound() throws Exception {
+        Long randomId = 999L;
+        EmployeePutRequest putRequest = EmployeeUtils.newEmployeePutRequest().withId(randomId);
+
+        BDDMockito.doThrow(new NotFoundException("Employee not Found")).when(service).update(randomId, putRequest);
+
+        String request = fileUtils.readResourceFile("employee/put-request-invalid-employee-404.json");
+        String response = fileUtils.readResourceFile("employee/put-response-invalid-employee-404.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.put(URL + "/{id}", randomId)
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().json(response));
+    }
+
+    @Test
+    @DisplayName("PUT /v1/employees/1 throws NotFoundException when the category is not found")
+    @Order(13)
+    void update_NotFoundException_WhenTheCategoryIsNotFound() throws Exception {
+        Long randomCategoryId = 999L;
+        EmployeePutRequest putRequest = EmployeeUtils.newEmployeePutRequest().withCategoryId(randomCategoryId);
+        Long id = putRequest.getId();
+
+        BDDMockito.doThrow(new NotFoundException("Category not Found")).when(service).update(id, putRequest);
+
+        String request = fileUtils.readResourceFile("employee/put-request-invalid-category-404.json");
+        String response = fileUtils.readResourceFile("employee/put-response-invalid-category-404.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.put(URL + "/{id}", id)
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().json(response));
+    }
+
+    @Test
+    @DisplayName("PUT /v1/employees/1 throws BadRequestException when the phone already exists")
+    @Order(14)
+    void update_ThrowsBadRequestException_WhenThePhoneAlreadyExists() throws Exception {
+        Person personPhoneOwner = PersonUtils.newPersonList().get(1);
+        List<Phone> phones = personPhoneOwner.getPhones();
+        phones.forEach(phone -> {
+            phone.setId(null);
+            phone.setPerson(null);
+        });
+
+        EmployeePutRequest putRequest = EmployeeUtils.newEmployeePutRequest().withPhones(phones);
+        Long id = putRequest.getId();
+
+        Phone phone = phones.getFirst();
+        BDDMockito.doThrow(new BadRequestException("Phone '%s' belongs to another person".formatted(phone.getNumber()))).when(service).update(id, putRequest);
+
+        String request = fileUtils.readResourceFile("employee/put-request-employee-phone-existing-400.json");
+        String response = fileUtils.readResourceFile("employee/put-response-employee-phone-existing-400.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.put(URL + "/{id}", id)
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().json(response));
+    }
+
+    @Test
+    @DisplayName("DELETE /v1/employees/1 removes employee when successful")
+    @Order(15)
     void deleteById_RemovesEmployee_WhenSuccessful() throws Exception {
         Employee employeeToDelete = EmployeeUtils.newEmployeeList().getFirst();
         Long idToDelete = employeeToDelete.getId();
@@ -238,7 +347,7 @@ class EmployeeControllerTest {
 
     @Test
     @DisplayName("DELETE /v1/employees/25256595 throws NotFoundException when given id is not found")
-    @Order(11)
+    @Order(16)
     void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() throws Exception {
         Long randomId = 25256595L;
 

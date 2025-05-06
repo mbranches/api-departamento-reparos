@@ -47,7 +47,7 @@ public class EmployeeUtils {
         Address address = AddressUtils.newAddressToSave();
 
         EmployeePostRequest employee = EmployeePostRequest.builder().name("Chispirito").lastName("Costa").categoryId(1L).address(address).build();
-        Phone phone = PhoneUtils.newPhone(4L);
+        Phone phone = PhoneUtils.newPhone(null);
         employee.setPhones(List.of(phone));
 
         return employee;
@@ -105,7 +105,12 @@ public class EmployeeUtils {
     }
 
     public static EmployeePutRequest newEmployeePutRequest() {
-        Person personToUpdate = PersonUtils.newPersonList().getFirst();
+        Person personToUpdate = PersonUtils.newPersonList().getFirst().withAddress(AddressUtils.newAddressToSave());
+        personToUpdate.getPhones().forEach(phone -> {
+            phone.setId(null);
+            phone.setPerson(null);
+        });
+
         Category category = CategoryUtils.newCategoryList().get(1);
 
         return EmployeePutRequest.builder()
