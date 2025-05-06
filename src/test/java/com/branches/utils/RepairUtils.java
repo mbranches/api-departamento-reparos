@@ -52,15 +52,18 @@ public class RepairUtils {
                 .build();
     }
 
-    public static Repair newRepair() {
+    public static Repair newRepairToSave() {
         LocalDate date = LocalDate.of(2025, 2, 12);
 
         return Repair.builder()
-                .id(4L)
                 .client(ClientUtils.newClientSaved())
                 .vehicle(VehicleUtils.newVehicleToSave())
                 .endDate(date)
                 .build();
+    }
+
+    public static Repair newRepairSaved() {
+        return newRepairToSave().withId(4L);
     }
 
     public static RepairPostResponse newRepairPostResponse() {

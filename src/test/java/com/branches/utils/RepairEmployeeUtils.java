@@ -2,24 +2,30 @@ package com.branches.utils;
 
 import com.branches.model.Category;
 import com.branches.model.Employee;
+import com.branches.model.Repair;
 import com.branches.model.RepairEmployee;
 import com.branches.request.RepairEmployeeByRepairPostRequest;
 import com.branches.response.EmployeeByRepairResponse;
 import com.branches.response.RepairEmployeeByRepairResponse;
 
+import java.util.List;
+
 public class RepairEmployeeUtils {
-    public static RepairEmployee newRepairEmployeeSaved() {
-        Employee employee = EmployeeUtils.newEmployeeList().getFirst();
+    public static List<RepairEmployee> newRepairEmployeeList() {
+        List<Employee> employeeList = EmployeeUtils.newEmployeeList();
+        Repair repair = RepairUtils.newRepairList().getFirst();
         int hoursWorked = 1;
 
-        return RepairEmployee.builder()
-                .id(1L)
-                .repair(RepairUtils.newRepairList().getFirst())
-                .employee(employee)
-                .hoursWorked(hoursWorked)
-                .totalValue(employee.getCategory().getHourlyPrice() * hoursWorked)
-                .build();
+        Employee employee1 = employeeList.getFirst();
+        RepairEmployee repairEmployee1 = RepairEmployee.builder().repair(repair).id(1L).employee(employee1).hoursWorked(hoursWorked).totalValue(employee1.getCategory().getHourlyPrice() * hoursWorked).build();
+        Employee employee2 = employeeList.get(1);
+        RepairEmployee repairEmployee2 = RepairEmployee.builder().repair(repair).id(2L).employee(employee2).hoursWorked(hoursWorked).totalValue(employee2.getCategory().getHourlyPrice() * hoursWorked).build();
+        Employee employee3 = employeeList.getLast();
+        RepairEmployee repairEmployee3 = RepairEmployee.builder().repair(repair).id(3L).employee(employee3).hoursWorked(hoursWorked).totalValue(employee3.getCategory().getHourlyPrice() * hoursWorked).build();
+
+        return List.of(repairEmployee1, repairEmployee2, repairEmployee3);
     }
+
 
     public static RepairEmployeeByRepairPostRequest newRepairEmployeePostRequest() {
         return RepairEmployeeByRepairPostRequest.builder().employeeId(4L).hoursWorked(5).build();
@@ -27,13 +33,6 @@ public class RepairEmployeeUtils {
 
     public static RepairEmployeeByRepairPostRequest newRepairEmployeePostRequestWithRegisteredEmployee() {
         return RepairEmployeeByRepairPostRequest.builder().employeeId(1L).hoursWorked(1).build();
-    }
-
-    public static RepairEmployee newRepairEmployee() {
-        Employee employee = EmployeeUtils.newEmployeeSaved();
-        Category employeeCategory = employee.getCategory();
-
-        return RepairEmployee.builder().id(2L).employee(employee).hoursWorked(5).totalValue(employeeCategory.getHourlyPrice() * 5).build();
     }
 
     public static RepairEmployeeByRepairResponse newRepairEmployeeByRepairPostResponse() {
@@ -59,5 +58,20 @@ public class RepairEmployeeUtils {
                 .hoursWorked(hoursWorked)
                 .totalValue(employee.getCategory().getHourlyPrice() * hoursWorked)
                 .build();
+    }
+
+    public static RepairEmployee newRepairEmployeeToSave() {
+        Employee employee = EmployeeUtils.newEmployeeSaved();
+        Category employeeCategory = employee.getCategory();
+
+        return RepairEmployee.builder().employee(employee).hoursWorked(5).totalValue(employeeCategory.getHourlyPrice() * 5).build();
+    }
+
+    public static RepairEmployee newRepairEmployeeSaved() {
+        RepairEmployee repairEmployee = newRepairEmployeeToSave();
+
+        Category category = repairEmployee.getEmployee().getCategory();
+        return repairEmployee.withId(4L).withTotalValue(category.getHourlyPrice() * repairEmployee.getHoursWorked());
+
     }
 }

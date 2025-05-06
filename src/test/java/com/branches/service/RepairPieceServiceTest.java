@@ -32,7 +32,9 @@ class RepairPieceServiceTest {
     @Order(1)
     void findAllByRepair_ReturnsAllRepairPiecesFromGivenRepair_WhenSuccessful() {
         Repair repairToSearch = RepairUtils.newRepairList().getFirst();
-        List<RepairPiece> expectedResponse = List.of(RepairPieceUtils.newRepairPieceSaved());
+
+        RepairPiece repairPiece = RepairPieceUtils.newRepairPieceList().getFirst();
+        List<RepairPiece> expectedResponse = List.of(repairPiece);
 
         BDDMockito.when(repository.findAllByRepair(repairToSearch)).thenReturn(expectedResponse);
 
@@ -66,7 +68,7 @@ class RepairPieceServiceTest {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Piece piece = PieceUtils.newPieceList().getFirst();
 
-        RepairPiece expectedResponse = RepairPieceUtils.newRepairPieceSaved();
+        RepairPiece expectedResponse = RepairPieceUtils.newRepairPieceList().getFirst();
 
         BDDMockito.when(repository.findByRepairAndPiece(repair, piece)).thenReturn(Optional.of(expectedResponse));
 
@@ -96,7 +98,7 @@ class RepairPieceServiceTest {
     @DisplayName("saveAll returns saved RepairPieces when successful")
     @Order(5)
     void saveAll_ReturnsSavedRepairPieces_WhenSuccessful() {
-        RepairPiece repairPieceToSave = RepairPieceUtils.newRepairPiece();
+        RepairPiece repairPieceToSave = RepairPieceUtils.newRepairPieceToSave();
         List<RepairPiece> repairPieceList = List.of(repairPieceToSave);
 
         Piece pieceToRemoveStock = repairPieceToSave.getPiece();
@@ -105,7 +107,7 @@ class RepairPieceServiceTest {
         Piece expectedPiece = repairPieceToSave.getPiece();
         expectedPiece.setStock(expectedPiece.getStock() - quantityToRemove);
 
-        RepairPiece expectedRepairPiece = RepairPieceUtils.newRepairPiece();
+        RepairPiece expectedRepairPiece = RepairPieceUtils.newRepairPieceToSave();
         expectedRepairPiece.setPiece(expectedPiece);
 
         BDDMockito.when(pieceService.removesStock(pieceToRemoveStock, quantityToRemove)).thenReturn(expectedPiece);
@@ -125,7 +127,7 @@ class RepairPieceServiceTest {
     @DisplayName("saveAll throws BadRequestException when quantity is greater than piece stock")
     @Order(6)
     void saveAll_ThrowsBadRequestException_WhenQuantityIsGreaterThanPieceStock() {
-        RepairPiece repairPieceToSave = RepairPieceUtils.newRepairPiece();
+        RepairPiece repairPieceToSave = RepairPieceUtils.newRepairPieceToSave();
         repairPieceToSave.setQuantity(212131);
         List<RepairPiece> repairPieceList = List.of(repairPieceToSave);
 
@@ -146,7 +148,7 @@ class RepairPieceServiceTest {
     @DisplayName("save returns saved RepairPieces when successful")
     @Order(7)
     void save_ReturnsSavedRepairPieces_WhenSuccessful() {
-        RepairPiece repairPieceToSave = RepairPieceUtils.newRepairPiece();
+        RepairPiece repairPieceToSave = RepairPieceUtils.newRepairPieceToSave();
 
         Piece pieceToRemoveStock = repairPieceToSave.getPiece();
         int quantityToRemove = repairPieceToSave.getQuantity();
@@ -154,7 +156,7 @@ class RepairPieceServiceTest {
         Piece expectedPiece = repairPieceToSave.getPiece();
         expectedPiece.setStock(expectedPiece.getStock() - quantityToRemove);
 
-        RepairPiece expectedResponse = RepairPieceUtils.newRepairPiece();
+        RepairPiece expectedResponse = RepairPieceUtils.newRepairPieceToSave();
         expectedResponse.setPiece(expectedPiece);
 
         BDDMockito.when(repository.findAllByRepair(repairPieceToSave.getRepair())).thenReturn(Collections.emptyList());
@@ -174,10 +176,10 @@ class RepairPieceServiceTest {
     void save_OnlyRemovesTheStockAdditionalAndPersistsTheTotalQuantitySummed_WhenTheGivenRepairPieceIsRegistered() {
         Repair repair = RepairUtils.newRepairList().getFirst();
 
-        RepairPiece savedRepairPiece = RepairPieceUtils.newRepairPiece();
+        RepairPiece savedRepairPiece = RepairPieceUtils.newRepairPieceToSave();
         savedRepairPiece.setRepair(repair);
 
-        RepairPiece repairPieceToSave = RepairPieceUtils.newRepairPiece();
+        RepairPiece repairPieceToSave = RepairPieceUtils.newRepairPieceToSave();
         repairPieceToSave.setRepair(repair);
 
         Piece pieceToRemoveStock = repairPieceToSave.getPiece();
@@ -209,7 +211,7 @@ class RepairPieceServiceTest {
     @DisplayName("save throws BadRequestException when quantity is greater than piece stock")
     @Order(9)
     void save_ThrowsBadRequestException_WhenQuantityIsGreaterThanPieceStock() {
-        RepairPiece repairPieceToSave = RepairPieceUtils.newRepairPiece();
+        RepairPiece repairPieceToSave = RepairPieceUtils.newRepairPieceToSave();
         repairPieceToSave.setQuantity(212131);
 
         Piece pieceToRemoveStock = repairPieceToSave.getPiece();
@@ -232,7 +234,7 @@ class RepairPieceServiceTest {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Piece piece = PieceUtils.newPieceList().getFirst();
 
-        RepairPiece repairPiece = RepairPieceUtils.newRepairPieceSaved();
+        RepairPiece repairPiece = RepairPieceUtils.newRepairPieceList().getFirst();
 
         BDDMockito.when(repository.findByRepairAndPiece(repair, piece)).thenReturn(Optional.of(repairPiece));
         BDDMockito.doNothing().when(repository).delete(repairPiece);

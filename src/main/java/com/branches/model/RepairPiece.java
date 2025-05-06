@@ -5,6 +5,7 @@ import lombok.*;
 
 @Entity(name = "reparacao_peca")
 @Data
+@With
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor

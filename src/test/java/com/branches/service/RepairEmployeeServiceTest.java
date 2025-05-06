@@ -32,8 +32,8 @@ class RepairEmployeeServiceTest {
     @DisplayName("saveAll returns saved RepairEmployees when successful")
     @Order(1)
     void saveAll_ReturnsSavedRepairEmployees_WhenSuccessful() {
-        RepairEmployee repairEmployeeToSave = RepairEmployeeUtils.newRepairEmployee().withId(null);
-        RepairEmployee repairEmployeeSaved = RepairEmployeeUtils.newRepairEmployee();
+        RepairEmployee repairEmployeeToSave = RepairEmployeeUtils.newRepairEmployeeToSave();
+        RepairEmployee repairEmployeeSaved = RepairEmployeeUtils.newRepairEmployeeSaved();
 
         List<RepairEmployee> repairEmployeeToSaveList = List.of(repairEmployeeToSave);
         List<RepairEmployee> repairEmployeeSavedList = List.of(repairEmployeeSaved);
@@ -53,7 +53,8 @@ class RepairEmployeeServiceTest {
     @Order(2)
     void findAllByRepair_ReturnsAllRepairEmployeesFromGivenRepair_WhenSuccessful() {
         Repair repairToSearch = RepairUtils.newRepairList().getFirst();
-        List<RepairEmployee> expectedResponse = List.of(RepairEmployeeUtils.newRepairEmployeeSaved());
+        RepairEmployee repairEmployee = RepairEmployeeUtils.newRepairEmployeeList().getFirst();
+        List<RepairEmployee> expectedResponse = List.of(repairEmployee);
 
         BDDMockito.when(repository.findAllByRepair(repairToSearch)).thenReturn(expectedResponse);
 
@@ -87,7 +88,7 @@ class RepairEmployeeServiceTest {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Employee employee = EmployeeUtils.newEmployeeList().getFirst();
 
-        RepairEmployee expectedResponse = RepairEmployeeUtils.newRepairEmployeeSaved();
+        RepairEmployee expectedResponse = RepairEmployeeUtils.newRepairEmployeeList().getFirst();
 
         BDDMockito.when(repository.findByRepairAndEmployee(repair, employee)).thenReturn(Optional.of(expectedResponse));
 
@@ -119,7 +120,7 @@ class RepairEmployeeServiceTest {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Employee employee = EmployeeUtils.newEmployeeList().getFirst();
 
-        RepairEmployee repairEmployee = RepairEmployeeUtils.newRepairEmployeeSaved();
+        RepairEmployee repairEmployee = RepairEmployeeUtils.newRepairEmployeeList().getFirst();
 
         BDDMockito.when(repository.findByRepairAndEmployee(repair, employee)).thenReturn(Optional.of(repairEmployee));
         BDDMockito.doNothing().when(repository).delete(repairEmployee);
