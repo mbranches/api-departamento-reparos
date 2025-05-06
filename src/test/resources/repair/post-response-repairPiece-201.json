@@ -1,12 +1,12 @@
 [
   {
     "piece": {
-      "id": 4,
-      "name": "Pastilha de freio",
-      "unitValue": 120.0,
-      "stock": 55
+      "id": 1,
+      "name": "Óleo de motor",
+      "unitValue": 50.0,
+      "stock": 50
     },
     "quantity": 5,
-    "totalValue": 600
+    "totalValue": 250.0
   }
 ]

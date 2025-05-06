@@ -356,11 +356,12 @@ class RepairControllerTest {
     @DisplayName("POST /v1/repairs throws BadRequestException when quantity is greater than piece stock")
     @Order(17)
     void save_ThrowsBadRequestException_WhenQuantityIsGreaterThanPieceStock() throws Exception {
-        Piece pieceToSave = PieceUtils.newPieceToSave();
-
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
+
         RepairPieceByRepairPostRequest repairPieceToSave = postRequest.getPieces().getFirst();
         repairPieceToSave.setQuantity(5000);
+
+        Piece pieceToSave = PieceUtils.newPieceList().getFirst();
 
         String request = fileUtils.readResourceFile("repair/post-request-repair-invalid-piece-quantity-200.json");
         String expectedResponse = fileUtils.readResourceFile("repair/post-response-repair-invalid-piece-quantity-400.json");
@@ -600,7 +601,7 @@ class RepairControllerTest {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Long repairId = repair.getId();
 
-        Piece piece = PieceUtils.newPieceToSave();
+        Piece piece = PieceUtils.newPieceList().getFirst();
 
         RepairPieceByRepairPostRequest repairPieceToSave = RepairPieceUtils.newRepairPiecePostRequest().withQuantity(60);
 

@@ -28,7 +28,7 @@ public class RepairEmployeeUtils {
 
 
     public static RepairEmployeeByRepairPostRequest newRepairEmployeePostRequest() {
-        return RepairEmployeeByRepairPostRequest.builder().employeeId(4L).hoursWorked(5).build();
+        return RepairEmployeeByRepairPostRequest.builder().employeeId(1L).hoursWorked(5).build();
     }
 
     public static RepairEmployeeByRepairPostRequest newRepairEmployeePostRequestWithRegisteredEmployee() {

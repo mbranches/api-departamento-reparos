@@ -76,7 +76,7 @@ public class EmployeeUtils {
         Category category = CategoryUtils.newCategoryList().getFirst();
 
         return EmployeeByRepairResponse.builder()
-                .id(4L)
+                .id(1L)
                 .person(person)
                 .category(category)
                 .build();
@@ -87,7 +87,7 @@ public class EmployeeUtils {
         PersonDefaultResponse person = PersonUtils.newPersonDefaultResponse();
 
         return EmployeeByRepairResponse.builder()
-                .id(4L)
+                .id(1L)
                 .person(person)
                 .category(category)
                 .build();

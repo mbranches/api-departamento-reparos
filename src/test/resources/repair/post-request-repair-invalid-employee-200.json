@@ -1,9 +1,9 @@
 {
-  "clientId": 4,
-  "vehicleId": 4,
+  "clientId": 1,
+  "vehicleId": 1,
   "pieces": [
     {
-      "pieceId":4,
+      "pieceId":1,
       "quantity":5
     }
   ],

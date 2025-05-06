@@ -48,9 +48,9 @@ public class PersonUtils {
 
     public static PersonDefaultResponse newPersonDefaultResponse() {
         return PersonDefaultResponse.builder()
-                .id(4L)
-                .name("Chispirito")
-                .lastName("Costa")
+                .id(1L)
+                .name("Marcus")
+                .lastName("Branches")
                 .build();
     }
 

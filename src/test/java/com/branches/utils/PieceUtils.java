@@ -18,9 +18,9 @@ public class PieceUtils {
     }
 
     public static List<PieceGetResponse> newPieceGetResponseList() {
-        PieceGetResponse piece1 = PieceGetResponse.builder().name("Óleo de motor").stock(50).unitValue(50).build();
-        PieceGetResponse piece2 = PieceGetResponse.builder().name("Filtro de ar").stock(50).unitValue(80).build();
-        PieceGetResponse piece3 = PieceGetResponse.builder().name("Pneu Aro 15").stock(98).unitValue(407).build();
+        PieceGetResponse piece1 = PieceGetResponse.builder().name("Óleo de motor").unitValue(50).stock(50).build();
+        PieceGetResponse piece2 = PieceGetResponse.builder().name("Filtro de ar").unitValue(80).stock(50).build();
+        PieceGetResponse piece3 = PieceGetResponse.builder().name("Pneu Aro 15").unitValue(407).stock(98).build();
 
         return new ArrayList<>(List.of(piece1, piece2, piece3));
     }

@@ -39,12 +39,17 @@ public class VehicleUtils {
                 .client(ClientUtils.newClientSaved()).build();
     }
 
+    public static Vehicle newVehicleSaved() {
+        return newVehicleToSave().withId(4L);
+    }
+
     public static VehiclePostRequest newVehiclePostRequest() {
+        Client client = ClientUtils.newClientList().getFirst();
         return VehiclePostRequest.builder()
                 .vehicleType(VehicleType.caminhao)
                 .brand("Scania")
                 .model("T113")
-                .clientId(ClientUtils.newClientSaved().getId())
+                .clientId(client.getId())
                 .build();
     }
 
@@ -68,10 +73,10 @@ public class VehicleUtils {
 
     public static VehicleDefaultResponse newVehicleDefaultResponse() {
         return VehicleDefaultResponse.builder()
-                .id(4L)
-                .vehicleType(VehicleType.caminhao)
-                .brand("Scania")
-                .model("T113")
+                .id(1L)
+                .vehicleType(VehicleType.carro)
+                .brand("Fiat")
+                .model("Toro")
                 .build();
     }
 }

@@ -14,19 +14,19 @@ public class RepairPieceUtils {
         int quantity = 5;
 
         Piece piece1 = PieceUtils.newPieceList().getFirst();
-        RepairPiece repairpiece1 = RepairPiece.builder().id(1L).repair(repair).piece(piece1).quantity(quantity).totalValue(piece1.getUnitValue() * quantity).build();
+        RepairPiece repairPiece1 = RepairPiece.builder().id(1L).repair(repair).piece(piece1).quantity(quantity).totalValue(piece1.getUnitValue() * quantity).build();
 
         Piece piece2 = PieceUtils.newPieceList().get(1);
-        RepairPiece repairpiece2 = RepairPiece.builder().id(2L).repair(repair).piece(piece2).quantity(quantity).totalValue(piece2.getUnitValue() * quantity).build();
+        RepairPiece repairPiece2 = RepairPiece.builder().id(2L).repair(repair).piece(piece2).quantity(quantity).totalValue(piece2.getUnitValue() * quantity).build();
 
-        Piece piece3 = PieceUtils.newPieceList().get(2);
-        RepairPiece repairpiece3 = RepairPiece.builder().id(3L).repair(repair).piece(piece3).quantity(quantity).totalValue(piece3.getUnitValue() * quantity).build();
+        Piece piece3 = PieceUtils.newPieceList().getLast();
+        RepairPiece repairPiece3 = RepairPiece.builder().id(3L).repair(repair).piece(piece3).quantity(quantity).totalValue(piece3.getUnitValue() * quantity).build();
 
-        return List.of(repairpiece1, repairpiece2, repairpiece3);
+        return List.of(repairPiece1, repairPiece2, repairPiece3);
     }
 
     public static RepairPieceByRepairPostRequest newRepairPiecePostRequest() {
-        return RepairPieceByRepairPostRequest.builder().pieceId(4L).quantity(5).build();
+        return RepairPieceByRepairPostRequest.builder().pieceId(1L).quantity(5).build();
     }
 
     public static RepairPiece newRepairPieceToSave() {
@@ -42,7 +42,7 @@ public class RepairPieceUtils {
     }
 
     public static RepairPieceByRepairResponse newRepairPieceByRepairPostResponse() {
-        Piece piece = PieceUtils.newPieceToSave();
+        Piece piece = PieceUtils.newPieceList().getFirst();
 
         return RepairPieceByRepairResponse.builder().piece(piece).quantity(5).totalValue(piece.getUnitValue() * 5).build();
     }

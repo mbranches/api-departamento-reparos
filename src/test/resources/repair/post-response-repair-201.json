@@ -1,39 +1,39 @@
 {
   "id": 4,
   "client": {
-    "id": 4,
+    "id": 1,
     "person": {
-      "id": 4,
-      "name": "Chispirito",
-      "lastName": "Costa"
+      "id": 1,
+      "name": "Marcus",
+      "lastName": "Branches"
     },
-    "email": "chispirito@gmail.com"
+    "email": "marcus@gmail.com"
   },
   "vehicle": {
-    "vehicleType": "caminhao",
-    "brand": "Scania",
-    "model": "T113"
+    "vehicleType": "carro",
+    "brand": "Fiat",
+    "model": "Toro"
   },
   "pieces": [
     {
       "piece": {
-        "id": 4,
-        "name": "Pastilha de freio",
-        "unitValue": 120.0,
-        "stock": 50
+        "id": 1,
+        "name": "Óleo de motor",
+        "unitValue": 50.0,
+        "stock": 45
       },
       "quantity": 5,
-      "totalValue": 600.0
+      "totalValue": 250.0
     }
   ],
   "employees": [
     {
       "employee": {
-        "id": 4,
+        "id": 1,
         "person": {
-          "id": 4,
-          "name": "Chispirito",
-          "lastName": "Costa"
+          "id": 1,
+          "name": "Marcus",
+          "lastName": "Branches"
         },
         "category": {
           "id": 1,
@@ -45,6 +45,6 @@
       "totalValue": 250.0
     }
   ],
-  "totalValue": 850.0,
+  "totalValue": 500.0,
   "endDate": "2025-02-12"
 }

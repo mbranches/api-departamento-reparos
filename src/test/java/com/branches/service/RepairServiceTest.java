@@ -18,7 +18,6 @@ import com.branches.utils.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -320,8 +319,10 @@ class RepairServiceTest {
         Repair repairToSave = RepairUtils.newRepairToSave();
         Repair savedRepair = RepairUtils.newRepairSaved();
 
-        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId())).thenReturn(ClientUtils.newClientSaved());
-        BDDMockito.when(vehicleService.findByIdOrThrowsNotFoundException(postRequest.getVehicleId())).thenReturn(VehicleUtils.newVehicleToSave());
+        Client client = ClientUtils.newClientList().getFirst();
+        Vehicle vehicle = VehicleUtils.newVehicleList().getFirst();
+        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId())).thenReturn(client);
+        BDDMockito.when(vehicleService.findByIdOrThrowsNotFoundException(postRequest.getVehicleId())).thenReturn(vehicle);
         BDDMockito.when(repairPieceMapper.toRepairPieceList(postRequest.getPieces())).thenReturn(List.of(repairPieceToSave));
         BDDMockito.when(repairEmployeeMapper.toRepairEmployeeList(postRequest.getEmployees())).thenReturn(List.of(repairEmployeeToSave));
         BDDMockito.when(repository.save(repairToSave.withTotalValue(250))).thenReturn(savedRepair);
@@ -372,8 +373,10 @@ class RepairServiceTest {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
         postRequest.getPieces().forEach(piece -> piece.setPieceId(999L));
 
-        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId())).thenReturn(ClientUtils.newClientSaved());
-        BDDMockito.when(vehicleService.findByIdOrThrowsNotFoundException(postRequest.getVehicleId())).thenReturn(VehicleUtils.newVehicleToSave());
+        Client client = ClientUtils.newClientList().getFirst();
+        Vehicle vehicle = VehicleUtils.newVehicleList().getFirst();
+        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId())).thenReturn(client);
+        BDDMockito.when(vehicleService.findByIdOrThrowsNotFoundException(postRequest.getVehicleId())).thenReturn(vehicle);
         BDDMockito.when(repairPieceMapper.toRepairPieceList(postRequest.getPieces())).thenThrow(new BadRequestException("Error saving pieces"));
 
 
@@ -411,8 +414,10 @@ class RepairServiceTest {
         Repair repairToSave = RepairUtils.newRepairToSave();
         Repair savedRepair = RepairUtils.newRepairSaved();
 
-        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId())).thenReturn(ClientUtils.newClientSaved());
-        BDDMockito.when(vehicleService.findByIdOrThrowsNotFoundException(postRequest.getVehicleId())).thenReturn(VehicleUtils.newVehicleToSave());
+        Client client = ClientUtils.newClientList().getFirst();
+        Vehicle vehicle = VehicleUtils.newVehicleList().getFirst();
+        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId())).thenReturn(client);
+        BDDMockito.when(vehicleService.findByIdOrThrowsNotFoundException(postRequest.getVehicleId())).thenReturn(vehicle);
         BDDMockito.when(repairPieceMapper.toRepairPieceList(postRequest.getPieces())).thenReturn(List.of(repairPieceToSave));
         BDDMockito.when(repairEmployeeMapper.toRepairEmployeeList(postRequest.getEmployees())).thenReturn(List.of(repairEmployeeToSave));
         BDDMockito.when(repository.save(repairToSave.withTotalValue(250))).thenReturn(savedRepair);
@@ -585,7 +590,7 @@ class RepairServiceTest {
         Long idToDelete = repairToDelete.getId();
 
         BDDMockito.when(repository.findById(idToDelete)).thenReturn(Optional.of(repairToDelete));
-        BDDMockito.doNothing().when(repository).delete(ArgumentMatchers.any(Repair.class));
+        BDDMockito.doNothing().when(repository).delete(repairToDelete);
 
         Assertions.assertThatCode(() -> service.deleteById(idToDelete))
                 .doesNotThrowAnyException();

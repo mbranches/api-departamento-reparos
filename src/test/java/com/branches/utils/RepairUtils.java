@@ -15,8 +15,8 @@ import java.util.List;
 
 public class RepairUtils {
     public static List<Repair> newRepairList() {
-        Client client = ClientUtils.newClientSaved();
-        Vehicle vehicle = VehicleUtils.newVehicleToSave();
+        Client client = ClientUtils.newClientList().getFirst();
+        Vehicle vehicle = VehicleUtils.newVehicleList().getFirst();
         LocalDate date = LocalDate.of(2025, 2, 12);
 
         Repair repair1 = Repair.builder().id(1L).client(client).vehicle(vehicle).totalValue(1000).endDate(date).build();
@@ -44,8 +44,8 @@ public class RepairUtils {
         LocalDate date = LocalDate.of(2025, 2, 12);
 
         return RepairPostRequest.builder()
-                .clientId(4L)
-                .vehicleId(4L)
+                .clientId(1L)
+                .vehicleId(1L)
                 .pieces(repairPieces)
                 .employees(repairEmployees)
                 .endDate(date)
@@ -55,9 +55,11 @@ public class RepairUtils {
     public static Repair newRepairToSave() {
         LocalDate date = LocalDate.of(2025, 2, 12);
 
+        Client client = ClientUtils.newClientList().getFirst();
+        Vehicle vehicle = VehicleUtils.newVehicleList().getFirst();
         return Repair.builder()
-                .client(ClientUtils.newClientSaved())
-                .vehicle(VehicleUtils.newVehicleToSave())
+                .client(client)
+                .vehicle(vehicle)
                 .endDate(date)
                 .build();
     }
