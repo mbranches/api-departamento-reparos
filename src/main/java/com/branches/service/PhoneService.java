@@ -32,6 +32,6 @@ public class PhoneService {
     }
 
     private void throwsPhoneAlreadyExists(Phone phone) {
-        throw new BadRequestException("Phone '%s' already exists for another person".formatted(phone.getNumber()));
+        throw new BadRequestException("Phone '%s' belongs to another person".formatted(phone.getNumber()));
     }
 }
