@@ -93,15 +93,15 @@ public class ClientService {
 
     public void assertEmailDoesNotExists(String email) {
         repository.findByEmail(email)
-                .ifPresent(client -> {
-                    throw new BadRequestException("Email '%s' already exists".formatted(client.getEmail()));
-                });
+                .ifPresent(ClientService::throwsEmailAlreadyExistsException);
     }
 
     public void assertEmailDoesNotExists(String email, Long id) {
         repository.findByEmailAndIdNot(email, id)
-                .ifPresent(client -> {
-                    throw new BadRequestException("Email '%s' already exists".formatted(client.getEmail()));
-                });
+                .ifPresent(ClientService::throwsEmailAlreadyExistsException);
+    }
+
+    private static void throwsEmailAlreadyExistsException(Client client) {
+        throw new BadRequestException("Email '%s' already exists".formatted(client.getEmail()));
     }
 }
