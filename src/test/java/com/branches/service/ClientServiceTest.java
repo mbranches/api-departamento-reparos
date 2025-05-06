@@ -242,7 +242,7 @@ class ClientServiceTest {
 
         Assertions.assertThatThrownBy(() -> service.update(idToUpdate, clientPutRequest))
                 .isInstanceOf(BadRequestException.class)
-                .hasMessageContaining("Email '%s' already exists".formatted(clientPutRequest.getEmail()));
+                .hasMessageContaining("Email '%s' belongs to another person".formatted(clientPutRequest.getEmail()));
     }
 
     @Test

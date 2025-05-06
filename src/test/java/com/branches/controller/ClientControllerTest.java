@@ -344,7 +344,7 @@ class ClientControllerTest {
 
         ClientPutRequest clientPutRequest = ClientUtils.newClientPutRequest().withEmail(clientEmailOwner.getEmail());
 
-        BDDMockito.doThrow(new BadRequestException("Email '%s' already exists".formatted(clientPutRequest.getEmail())))
+        BDDMockito.doThrow(new BadRequestException("Email '%s' belongs to another person".formatted(clientPutRequest.getEmail())))
                 .when(service).update(ArgumentMatchers.anyLong(), ArgumentMatchers.any());
 
         mockMvc.perform(MockMvcRequestBuilders.put(URL + "/{id}", clientPutRequest.getId())

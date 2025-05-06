@@ -1,4 +1,4 @@
 {
   "status": 400,
-  "message": "Email 'vinicius@gmail.com' already exists"
+  "message": "Email 'vinicius@gmail.com' belongs to another person"
 }
