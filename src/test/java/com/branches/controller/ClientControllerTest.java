@@ -2,7 +2,6 @@ package com.branches.controller;
 
 import com.branches.exception.BadRequestException;
 import com.branches.exception.NotFoundException;
-import com.branches.model.Address;
 import com.branches.model.Client;
 import com.branches.model.Phone;
 import com.branches.request.ClientPostRequest;
@@ -12,9 +11,6 @@ import com.branches.service.ClientService;
 import com.branches.service.RepairService;
 import com.branches.service.VehicleService;
 import com.branches.utils.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;

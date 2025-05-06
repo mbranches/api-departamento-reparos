@@ -5,7 +5,6 @@ import com.branches.request.ClientPostRequest;
 import com.branches.request.ClientPutRequest;
 import com.branches.request.EmployeePostRequest;
 import com.branches.request.EmployeePutRequest;
-import jakarta.validation.Valid;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

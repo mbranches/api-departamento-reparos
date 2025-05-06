@@ -1,6 +1,5 @@
 package com.branches.service;
 
-import com.branches.exception.NotFoundException;
 import com.branches.model.Address;
 import com.branches.model.Person;
 import com.branches.model.Phone;

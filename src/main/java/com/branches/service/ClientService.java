@@ -4,10 +4,8 @@ import com.branches.exception.BadRequestException;
 import com.branches.exception.NotFoundException;
 import com.branches.mapper.ClientMapper;
 import com.branches.mapper.PersonMapper;
-import com.branches.model.Address;
 import com.branches.model.Client;
 import com.branches.model.Person;
-import com.branches.model.Phone;
 import com.branches.repository.ClientRepository;
 import com.branches.request.ClientPostRequest;
 import com.branches.request.ClientPutRequest;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

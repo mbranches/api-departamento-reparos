@@ -1,12 +1,10 @@
 package com.branches.mapper;
 
 import com.branches.model.Employee;
-import com.branches.request.EmployeePostRequest;
 import com.branches.response.EmployeeByRepairResponse;
 import com.branches.response.EmployeeGetResponse;
 import com.branches.response.EmployeePostResponse;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.springframework.context.annotation.Primary;
 
