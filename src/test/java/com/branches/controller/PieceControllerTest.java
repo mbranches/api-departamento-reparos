@@ -12,7 +12,6 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -123,7 +122,10 @@ public class PieceControllerTest {
     @DisplayName("POST /v1/pieces returns saved piece when successful")
     @Order(6)
     void save_ReturnsSavedPiece_WhenGivenAddressExists() throws Exception {
-        BDDMockito.when(service.save(ArgumentMatchers.any(PiecePostRequest.class))).thenReturn(PieceUtils.newPiecePostResponse());
+        PiecePostRequest postRequest = PieceUtils.newPiecePostRequest();
+
+        BDDMockito.when(service.save(postRequest)).thenReturn(PieceUtils.newPiecePostResponse());
+
         String request = fileUtils.readResourceFile("piece/post-request-piece-200.json");
         String expectedResponse = fileUtils.readResourceFile("piece/post-response-piece-201.json");
 

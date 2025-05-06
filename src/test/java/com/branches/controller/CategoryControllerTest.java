@@ -12,7 +12,6 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -126,7 +125,10 @@ class CategoryControllerTest {
     @DisplayName("POST /v1/categories returns saved category when successful")
     @Order(6)
     void save_ReturnsSavedCategory_WhenSuccessful() throws Exception {
-        BDDMockito.when(service.save(ArgumentMatchers.any(CategoryPostRequest.class))).thenReturn(CategoryUtils.newCategoryPostResponse());
+        CategoryPostRequest postRequest = CategoryUtils.newCategoryPostRequest();
+
+        BDDMockito.when(service.save(postRequest)).thenReturn(CategoryUtils.newCategoryPostResponse());
+
         String request = fileUtils.readResourceFile("category/post-request-category-200.json");
         String expectedResponse = fileUtils.readResourceFile("category/post-response-category-201.json");
 

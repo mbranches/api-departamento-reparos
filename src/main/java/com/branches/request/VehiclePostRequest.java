@@ -5,8 +5,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
+import lombok.With;
 
 @Data
+@With
 @Builder
 public class VehiclePostRequest {
     @NotNull(message = "The field vehicleType is required")

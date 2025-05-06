@@ -12,7 +12,6 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -94,7 +93,9 @@ class VehicleControllerTest {
     @DisplayName("POST /v1/vehicles returns saved vehicle when successful")
     @Order(2)
     void save_ReturnsSavedVehicle_WhenSuccessful() throws Exception {
-        BDDMockito.when(service.save(ArgumentMatchers.any(VehiclePostRequest.class))).thenReturn(VehicleUtils.newVehiclePostResponse());
+        VehiclePostRequest postRequest = VehicleUtils.newVehiclePostRequest();
+
+        BDDMockito.when(service.save(postRequest)).thenReturn(VehicleUtils.newVehiclePostResponse());
 
         String request = fileUtils.readResourceFile("vehicle/post-request-vehicle-valid-client-200.json");
         String expectedResponse = fileUtils.readResourceFile("vehicle/post-response-vehicle-201.json");
@@ -113,7 +114,9 @@ class VehicleControllerTest {
     @DisplayName("POST /v1/vehicles throws not found exception when given client does not exists")
     @Order(3)
     void save_ThrowsNotFoundException_WhenGivenClientNotExists() throws Exception {
-        BDDMockito.when(service.save(ArgumentMatchers.any(VehiclePostRequest.class))).thenThrow(new NotFoundException("Client not Found"));
+        VehiclePostRequest postRequest = VehicleUtils.newVehiclePostRequest().withClientId(841718L);
+
+        BDDMockito.when(service.save(postRequest)).thenThrow(new NotFoundException("Client not Found"));
 
         String request = fileUtils.readResourceFile("vehicle/post-request-vehicle-invalid-client-200.json");
         String expectedResponse = fileUtils.readResourceFile("vehicle/post-response-vehicle-404.json");

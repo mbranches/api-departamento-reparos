@@ -17,7 +17,6 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -223,7 +222,9 @@ class ClientControllerTest {
     @DisplayName("POST /v1/clients returns saved client when successful")
     @Order(12)
     void save_ReturnsSavedClient_WhenGivenSuccessful() throws Exception {
-        BDDMockito.when(service.save(ArgumentMatchers.any(ClientPostRequest.class))).thenReturn(ClientUtils.newClientPostResponse());
+        ClientPostRequest postRequest = ClientUtils.newClientPostRequest();
+
+        BDDMockito.when(service.save(postRequest)).thenReturn(ClientUtils.newClientPostResponse());
 
         String request = fileUtils.readResourceFile("client/post-request-client-200.json");
         String expectedResponse = fileUtils.readResourceFile("client/post-response-client-201.json");
@@ -247,10 +248,10 @@ class ClientControllerTest {
 
         Client clientEmailOwner = ClientUtils.newClientList().get(1);
 
-        ClientPostRequest clientPostRequest = ClientUtils.newClientPostRequest().withEmail(clientEmailOwner.getEmail());
+        ClientPostRequest postRequest = ClientUtils.newClientPostRequest().withEmail(clientEmailOwner.getEmail());
 
-        BDDMockito.doThrow(new BadRequestException("Email '%s' belongs to another person".formatted(clientPostRequest.getEmail())))
-                .when(service).save(ArgumentMatchers.any(ClientPostRequest.class));
+        BDDMockito.doThrow(new BadRequestException("Email '%s' belongs to another person".formatted(postRequest.getEmail())))
+                .when(service).save(postRequest);
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post(URL)
@@ -270,12 +271,17 @@ class ClientControllerTest {
         String expectedResponse = fileUtils.readResourceFile("client/post-response-client-phone-existing-400.json");
 
         Person personPhoneOwner = PersonUtils.newPersonList().get(1);
+        List<Phone> phones = personPhoneOwner.getPhones();
+        phones.forEach(phone -> {
+            phone.setId(null);
+            phone.setPerson(null);
+        });
 
-        ClientPostRequest clientPostRequest = ClientUtils.newClientPostRequest().withPhones(personPhoneOwner.getPhones());
+        ClientPostRequest postRequest = ClientUtils.newClientPostRequest().withPhones(phones);
 
-        Phone phone = clientPostRequest.getPhones().getFirst();
+        Phone phone = postRequest.getPhones().getFirst();
         BDDMockito.doThrow(new BadRequestException("Phone '%s' belongs to another person".formatted(phone.getNumber())))
-                .when(service).save(ArgumentMatchers.any(ClientPostRequest.class));
+                .when(service).save(postRequest);
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post(URL)
@@ -326,11 +332,11 @@ class ClientControllerTest {
     @Order(16)
     void update_UpdatesClient_WhenSuccessful() throws Exception {
         String request = fileUtils.readResourceFile("client/put-request-client-200.json");
-        ClientPutRequest clientPutRequest = ClientUtils.newClientPutRequest();
+        ClientPutRequest putRequest = ClientUtils.newClientPutRequest();
 
-        BDDMockito.doNothing().when(service).update(clientPutRequest.getId(), clientPutRequest);
+        BDDMockito.doNothing().when(service).update(putRequest.getId(), putRequest);
 
-        mockMvc.perform(MockMvcRequestBuilders.put(URL + "/{id}", clientPutRequest.getId())
+        mockMvc.perform(MockMvcRequestBuilders.put(URL + "/{id}", putRequest.getId())
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(MockMvcResultHandlers.print())
@@ -344,11 +350,11 @@ class ClientControllerTest {
         String request = fileUtils.readResourceFile("client/put-request-client-200.json");
         String expectedResponse = fileUtils.readResourceFile("client/put-response-not-match-ids-client-400.json");
 
-        ClientPutRequest clientPutRequest = ClientUtils.newClientPutRequest();
+        ClientPutRequest putRequest = ClientUtils.newClientPutRequest();
         long randomId = 999L;
 
-        BDDMockito.doThrow(new BadRequestException("The ID in the request body (%s) does not match the ID in the URL (%s)".formatted(clientPutRequest.getId(), randomId)))
-                .when(service).update(ArgumentMatchers.anyLong(), ArgumentMatchers.any());
+        BDDMockito.doThrow(new BadRequestException("The ID in the request body (%s) does not match the ID in the URL (%s)".formatted(putRequest.getId(), randomId)))
+                .when(service).update(randomId, putRequest);
 
         mockMvc.perform(MockMvcRequestBuilders.put(URL + "/{id}", randomId)
                         .content(request)
@@ -366,9 +372,10 @@ class ClientControllerTest {
         String expectedResponse = fileUtils.readResourceFile("client/put-response-invalid-client-404.json");
 
         long randomId = 999L;
+        ClientPutRequest putRequest = ClientUtils.newClientPutRequest().withId(randomId);
 
         BDDMockito.doThrow(new NotFoundException("Client not Found"))
-                .when(service).update(ArgumentMatchers.anyLong(), ArgumentMatchers.any());
+                .when(service).update(putRequest.getId(), putRequest);
 
         mockMvc.perform(MockMvcRequestBuilders.put(URL + "/{id}", randomId)
                         .content(request)
@@ -387,12 +394,12 @@ class ClientControllerTest {
 
         Client clientEmailOwner = ClientUtils.newClientList().get(1);
 
-        ClientPutRequest clientPutRequest = ClientUtils.newClientPutRequest().withEmail(clientEmailOwner.getEmail());
+        ClientPutRequest putRequest = ClientUtils.newClientPutRequest().withEmail(clientEmailOwner.getEmail());
 
-        BDDMockito.doThrow(new BadRequestException("Email '%s' belongs to another person".formatted(clientPutRequest.getEmail())))
-                .when(service).update(ArgumentMatchers.anyLong(), ArgumentMatchers.any());
+        BDDMockito.doThrow(new BadRequestException("Email '%s' belongs to another person".formatted(putRequest.getEmail())))
+                .when(service).update(putRequest.getId(), putRequest);
 
-        mockMvc.perform(MockMvcRequestBuilders.put(URL + "/{id}", clientPutRequest.getId())
+        mockMvc.perform(MockMvcRequestBuilders.put(URL + "/{id}", putRequest.getId())
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(MockMvcResultHandlers.print())
@@ -407,15 +414,20 @@ class ClientControllerTest {
         String request = fileUtils.readResourceFile("client/put-request-client-phone-existing-400.json");
         String expectedResponse = fileUtils.readResourceFile("client/put-response-client-phone-existing-400.json");
 
-        Client clientPhoneOwner = ClientUtils.newClientList().get(1);
+        Person personPhoneOwner = PersonUtils.newPersonList().get(1);
+        List<Phone> phones = personPhoneOwner.getPhones();
+        phones.forEach(phone -> {
+            phone.setId(null);
+            phone.setPerson(null);
+        });
 
-        ClientPutRequest clientPutRequest = ClientUtils.newClientPutRequest().withPhones(clientPhoneOwner.getPerson().getPhones());
-        Phone phone = clientPutRequest.getPhones().getFirst();
+        ClientPutRequest putRequest = ClientUtils.newClientPutRequest().withPhones(phones);
+        Phone phone = putRequest.getPhones().getFirst();
 
         BDDMockito.doThrow(new BadRequestException("Phone '%s' belongs to another person".formatted(phone.getNumber())))
-                .when(service).update(ArgumentMatchers.anyLong(), ArgumentMatchers.any());
+                .when(service).update(putRequest.getId(), putRequest);
 
-        mockMvc.perform(MockMvcRequestBuilders.put(URL + "/{id}", clientPutRequest.getId())
+        mockMvc.perform(MockMvcRequestBuilders.put(URL + "/{id}", putRequest.getId())
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(MockMvcResultHandlers.print())

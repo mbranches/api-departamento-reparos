@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
+import lombok.With;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
 @Builder
+@With
 public class RepairPostRequest {
     @NotNull(message = "The field 'clientId' cannot be null")
     private Long clientId;

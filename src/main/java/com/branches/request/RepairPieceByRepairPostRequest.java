@@ -4,8 +4,10 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Builder;
 import lombok.Data;
+import lombok.With;
 
 @Data
+@With
 @Builder
 public class RepairPieceByRepairPostRequest {
     @NotNull(message = "The field 'pieceId' cannot be null")

@@ -40,7 +40,7 @@ public class ClientUtils {
         Address address = AddressUtils.newAddressToSave();
 
         ClientPostRequest client = ClientPostRequest.builder().name("Chispirito").lastName("Costa").email("chispirito@gmail.com").address(address).build();
-        Phone phone = PhoneUtils.newPhone(4L);
+        Phone phone = PhoneUtils.newPhone(null);
         client.setPhones(List.of(phone));
 
         return client;
@@ -85,12 +85,18 @@ public class ClientUtils {
     public static ClientPutRequest newClientPutRequest() {
         Person person = PersonUtils.newPersonList().getFirst();
 
+        List<Phone> phones = person.getPhones();
+        phones.forEach(phone -> {
+            phone.setId(null);
+            phone.setPerson(null);
+        });
+        Address address = person.getAddress().withId(null);
         return ClientPutRequest.builder()
                 .id(1L)
                 .name("Novo Nome")
                 .lastName("Novo Sobrenome")
-                .address(person.getAddress())
-                .phones(person.getPhones())
+                .address(address)
+                .phones(phones)
                 .email("marcus@gmail.com")
                 .build();
     }

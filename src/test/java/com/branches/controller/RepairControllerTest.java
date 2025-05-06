@@ -5,6 +5,8 @@ import com.branches.exception.NotFoundException;
 import com.branches.model.Employee;
 import com.branches.model.Piece;
 import com.branches.model.Repair;
+import com.branches.request.RepairEmployeeByRepairPostRequest;
+import com.branches.request.RepairPieceByRepairPostRequest;
 import com.branches.request.RepairPostRequest;
 import com.branches.response.RepairGetResponse;
 import com.branches.service.RepairService;
@@ -14,7 +16,6 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -126,7 +127,9 @@ class RepairControllerTest {
     void findById_ThrowsNotFoundException_WhenIdIsNotFound() throws Exception {
         long randomId = 131222L;
 
-        BDDMockito.when(service.findById(randomId)).thenThrow(new NotFoundException("Repair not Found"));
+        BDDMockito.when(service.findById(randomId))
+
+                .thenThrow(new NotFoundException("Repair not Found"));
         String expectedResponse = fileUtils.readResourceFile("repair/get-repair-by-id-404.json");
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{id}", randomId))
@@ -175,7 +178,9 @@ class RepairControllerTest {
     void findEmployeesByRepairId_ThrowsNotFoundException_WhenGivenIdIsNotFound() throws Exception {
         Long randomId = 121123L;
 
-        BDDMockito.when(service.findEmployeesByRepairId(randomId)).thenThrow(new NotFoundException("Repair not Found"));
+        BDDMockito.when(service.findEmployeesByRepairId(randomId))
+
+                .thenThrow(new NotFoundException("Repair not Found"));
 
         String expectedResponse = fileUtils.readResourceFile("repair/get-employees-invalid-repairId-404.json");
 
@@ -225,7 +230,8 @@ class RepairControllerTest {
     void findPiecesByRepairId_ThrowsNotFoundException_WhenGivenIdIsNotFound() throws Exception {
         Long randomId = 121123L;
 
-        BDDMockito.when(service.findPiecesByRepairId(randomId)).thenThrow(new NotFoundException("Repair not Found"));
+        BDDMockito.when(service.findPiecesByRepairId(randomId))
+                .thenThrow(new NotFoundException("Repair not Found"));
 
         String expectedResponse = fileUtils.readResourceFile("repair/get-pieces-invalid-repairId-404.json");
 
@@ -242,7 +248,9 @@ class RepairControllerTest {
         String request = fileUtils.readResourceFile("repair/post-request-repair-200.json");
         String expectedResponse = fileUtils.readResourceFile("repair/post-response-repair-201.json");
 
-        BDDMockito.when(service.save(ArgumentMatchers.any(RepairPostRequest.class))).thenReturn(RepairUtils.newRepairPostResponse());
+        RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
+
+        BDDMockito.when(service.save(postRequest)).thenReturn(RepairUtils.newRepairPostResponse());
 
         mockMvc.perform(
                     MockMvcRequestBuilders.post(URL)
@@ -261,7 +269,10 @@ class RepairControllerTest {
         String request = fileUtils.readResourceFile("repair/post-request-repair-invalid-client-200.json");
         String expectedResponse = fileUtils.readResourceFile("repair/post-response-repair-invalid-client-404.json");
 
-        BDDMockito.when(service.save(ArgumentMatchers.any(RepairPostRequest.class))).thenThrow(new NotFoundException("Client not Found"));
+        RepairPostRequest postRequest = RepairUtils.newRepairPostRequest().withClientId(4551L);
+
+        BDDMockito.when(service.save(postRequest))
+                .thenThrow(new NotFoundException("Client not Found"));
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post(URL)
@@ -280,7 +291,10 @@ class RepairControllerTest {
         String request = fileUtils.readResourceFile("repair/post-request-repair-invalid-vehicle-200.json");
         String expectedResponse = fileUtils.readResourceFile("repair/post-response-repair-invalid-vehicle-404.json");
 
-        BDDMockito.when(service.save(ArgumentMatchers.any(RepairPostRequest.class))).thenThrow(new NotFoundException("Vehicle not Found"));
+        RepairPostRequest postRequest = RepairUtils.newRepairPostRequest().withVehicleId(455L);
+
+        BDDMockito.when(service.save(postRequest))
+                .thenThrow(new NotFoundException("Vehicle not Found"));
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post(URL)
@@ -299,7 +313,11 @@ class RepairControllerTest {
         String request = fileUtils.readResourceFile("repair/post-request-repair-invalid-piece-200.json");
         String expectedResponse = fileUtils.readResourceFile("repair/post-response-repair-invalid-piece-400.json");
 
-        BDDMockito.when(service.save(ArgumentMatchers.any(RepairPostRequest.class))).thenThrow(new BadRequestException("Error saving pieces"));
+        RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
+        postRequest.getPieces().forEach(piece -> piece.setPieceId(412211L));
+
+        BDDMockito.when(service.save(postRequest))
+                .thenThrow(new BadRequestException("Error saving pieces"));
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post(URL)
@@ -318,7 +336,11 @@ class RepairControllerTest {
         String request = fileUtils.readResourceFile("repair/post-request-repair-invalid-employee-200.json");
         String expectedResponse = fileUtils.readResourceFile("repair/post-response-repair-invalid-employee-400.json");
 
-        BDDMockito.when(service.save(ArgumentMatchers.any(RepairPostRequest.class))).thenThrow(new BadRequestException("Error saving employees"));
+        RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
+        postRequest.getEmployees().forEach(employee -> employee.setEmployeeId(45454L));
+
+        BDDMockito.when(service.save(postRequest))
+                .thenThrow(new BadRequestException("Error saving employees"));
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post(URL)
@@ -336,10 +358,15 @@ class RepairControllerTest {
     void save_ThrowsBadRequestException_WhenQuantityIsGreaterThanPieceStock() throws Exception {
         Piece pieceToSave = PieceUtils.newPieceToSave();
 
+        RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
+        RepairPieceByRepairPostRequest repairPieceToSave = postRequest.getPieces().getFirst();
+        repairPieceToSave.setQuantity(5000);
+
         String request = fileUtils.readResourceFile("repair/post-request-repair-invalid-piece-quantity-200.json");
         String expectedResponse = fileUtils.readResourceFile("repair/post-response-repair-invalid-piece-quantity-400.json");
 
-        BDDMockito.when(service.save(ArgumentMatchers.any(RepairPostRequest.class))).thenThrow(new BadRequestException("'" + pieceToSave.getName() + "' has insufficient stock." +
+        BDDMockito.when(service.save(postRequest))
+                .thenThrow(new BadRequestException("'" + pieceToSave.getName() + "' has insufficient stock." +
                 " Available: " + pieceToSave.getStock() + ", Requested: " + 5000));
 
         mockMvc.perform(
@@ -436,13 +463,16 @@ class RepairControllerTest {
     @DisplayName("POST /v1/repairs/1/employees throws BadRequestException when some given employee is not found")
     @Order(21)
     void addEmployee_ThrowsBadRequestException_WhenSomeGivenEmployeeIsNotFound() throws Exception {
-        Repair repair = RepairUtils.newRepairList().getFirst();
-        Long repairId = repair.getId();
-
         String request = fileUtils.readResourceFile("repair/post-request-repairEmployee-invalid-employee-200.json");
         String expectedResponse = fileUtils.readResourceFile("repair/post-response-repairEmployee-invalid-employee-400.json");
 
-        BDDMockito.when(service.addEmployee(ArgumentMatchers.anyLong(), ArgumentMatchers.anyList()))
+        Repair repair = RepairUtils.newRepairList().getFirst();
+        Long repairId = repair.getId();
+
+        RepairEmployeeByRepairPostRequest repairEmployeeToSave = RepairEmployeeUtils.newRepairEmployeePostRequest();
+        repairEmployeeToSave.setEmployeeId(4554444L);
+
+        BDDMockito.when(service.addEmployee(repairId, List.of(repairEmployeeToSave)))
                 .thenThrow(new BadRequestException("Error saving employees"));
 
         mockMvc.perform(MockMvcRequestBuilders.post(
@@ -538,13 +568,16 @@ class RepairControllerTest {
     @DisplayName("POST /v1/repairs/1/pieces throws BadRequestException when some given piece is not found")
     @Order(25)
     void addPiece_ThrowsBadRequestException_WhenSomeGivenPieceIsNotFound() throws Exception {
-        Repair repair = RepairUtils.newRepairList().getFirst();
-        Long repairId = repair.getId();
-
         String request = fileUtils.readResourceFile("repair/post-request-repairPiece-invalid-piece-200.json");
         String expectedResponse = fileUtils.readResourceFile("repair/post-response-repairPiece-invalid-piece-400.json");
 
-        BDDMockito.when(service.addPiece(ArgumentMatchers.anyLong(), ArgumentMatchers.anyList()))
+        Repair repair = RepairUtils.newRepairList().getFirst();
+        Long repairId = repair.getId();
+
+        RepairPieceByRepairPostRequest repairPieceToSave = RepairPieceUtils.newRepairPiecePostRequest();
+        repairPieceToSave.setPieceId(4554444L);
+
+        BDDMockito.when(service.addPiece(repairId, List.of(repairPieceToSave)))
                 .thenThrow(new BadRequestException("Error saving pieces"));
 
         mockMvc.perform(MockMvcRequestBuilders.post(
@@ -561,15 +594,17 @@ class RepairControllerTest {
     @DisplayName("POST /v1/repairs/1/pieces throws BadRequestException when the piece has insufficient stock")
     @Order(26)
     void addPiece_ThrowsBadRequestException_WhenThePieceHasInsufficientStock() throws Exception {
+        String request = fileUtils.readResourceFile("repair/post-request-repairPiece-invalid-quantity-200.json");
+        String expectedResponse = fileUtils.readResourceFile("repair/post-response-repairPiece-invalid-quantity-400.json");
+
         Repair repair = RepairUtils.newRepairList().getFirst();
         Long repairId = repair.getId();
 
         Piece piece = PieceUtils.newPieceToSave();
 
-        String request = fileUtils.readResourceFile("repair/post-request-repairPiece-invalid-quantity-200.json");
-        String expectedResponse = fileUtils.readResourceFile("repair/post-response-repairPiece-invalid-quantity-400.json");
+        RepairPieceByRepairPostRequest repairPieceToSave = RepairPieceUtils.newRepairPiecePostRequest().withQuantity(60);
 
-        BDDMockito.when(service.addPiece(ArgumentMatchers.any(), ArgumentMatchers.anyList()))
+        BDDMockito.when(service.addPiece(repairId, List.of(repairPieceToSave)))
                 .thenThrow(new BadRequestException("'" + piece.getName() + "' has insufficient stock." +
                         " Available: " + piece.getStock() + ", Requested: 60"));
 

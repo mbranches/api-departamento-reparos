@@ -17,7 +17,6 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -128,7 +127,9 @@ class EmployeeControllerTest {
     @DisplayName("POST /v1/employees returns saved employee when successful")
     @Order(6)
     void save_ReturnsSavedEmployee_WhenGivenSuccessful() throws Exception {
-        BDDMockito.when(service.save(ArgumentMatchers.any(EmployeePostRequest.class))).thenReturn(EmployeeUtils.newEmployeePostResponse());
+        EmployeePostRequest postRequest = EmployeeUtils.newEmployeePostRequest();
+
+        BDDMockito.when(service.save(postRequest)).thenReturn(EmployeeUtils.newEmployeePostResponse());
 
         String request = fileUtils.readResourceFile("employee/post-request-employee-valid-category-200.json");
         String expectedResponse = fileUtils.readResourceFile("employee/post-response-employee-201.json");
@@ -172,12 +173,17 @@ class EmployeeControllerTest {
         String expectedResponse = fileUtils.readResourceFile("employee/post-response-employee-phone-existing-400.json");
 
         Person personPhoneOwner = PersonUtils.newPersonList().get(1);
+        List<Phone> phones = personPhoneOwner.getPhones();
+        phones.forEach(phone -> {
+            phone.setId(null);
+            phone.setPerson(null);
+        });
 
-        EmployeePostRequest employeePostRequest = EmployeeUtils.newEmployeePostRequest().withPhones(personPhoneOwner.getPhones());
-        Phone phone = employeePostRequest.getPhones().getFirst();
+        EmployeePostRequest postRequest = EmployeeUtils.newEmployeePostRequest().withPhones(phones);
+        Phone phone = postRequest.getPhones().getFirst();
 
         BDDMockito.doThrow(new BadRequestException("Phone '%s' belongs to another person".formatted(phone.getNumber())))
-                .when(service).save(ArgumentMatchers.any());
+                .when(service).save(postRequest);
 
         mockMvc.perform(MockMvcRequestBuilders.post(URL)
                         .content(request)
