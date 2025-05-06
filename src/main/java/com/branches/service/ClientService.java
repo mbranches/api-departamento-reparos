@@ -102,6 +102,6 @@ public class ClientService {
     }
 
     private static void throwsEmailAlreadyExistsException(Client client) {
-        throw new BadRequestException("Email '%s' already exists".formatted(client.getEmail()));
+        throw new BadRequestException("Email '%s' belongs to another person".formatted(client.getEmail()));
     }
 }
