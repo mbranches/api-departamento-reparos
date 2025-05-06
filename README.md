@@ -89,7 +89,7 @@ Este repositório contém somente o **Backend** do projeto.
 O projeto possui quase 250 testes automatizados para garantir a qualidade do código e o funcionamento correto da aplicação. A aplicação possui duas categorias de testes:
 
 ### Testes Unitários
-- Testesgit p da camada de serviço, que garantem que a lógica de negócio esteja funcionando corretamente.
+- Testes da camada de serviço, que garantem que a lógica de negócio esteja funcionando corretamente.
 - Utilizam `JUnit` para estruturação dos testes, `Mockito` para mockar dependências e `AssertJ` para asserções fluentes.
 
 ### Testes de Controller (Camada Web)
