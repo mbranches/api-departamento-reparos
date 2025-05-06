@@ -3,6 +3,7 @@ package com.branches.controller;
 import com.branches.exception.BadRequestException;
 import com.branches.exception.NotFoundException;
 import com.branches.model.Client;
+import com.branches.model.Person;
 import com.branches.model.Phone;
 import com.branches.request.ClientPostRequest;
 import com.branches.request.ClientPutRequest;
@@ -222,7 +223,6 @@ class ClientControllerTest {
     @DisplayName("POST /v1/clients returns saved client when successful")
     @Order(12)
     void save_ReturnsSavedClient_WhenGivenSuccessful() throws Exception {
-
         BDDMockito.when(service.save(ArgumentMatchers.any(ClientPostRequest.class))).thenReturn(ClientUtils.newClientPostResponse());
 
         String request = fileUtils.readResourceFile("client/post-request-client-200.json");
@@ -238,10 +238,59 @@ class ClientControllerTest {
                 .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
     }
 
+    @Test
+    @DisplayName("POST /v1/clients throws BadRequestException when the email already exists")
+    @Order(13)
+    void save_ThrowsBadRequestException_WhenEmailAlreadyExists() throws Exception {
+        String request = fileUtils.readResourceFile("client/post-request-client-email-existing-400.json");
+        String expectedResponse = fileUtils.readResourceFile("client/post-response-client-email-existing-400.json");
+
+        Client clientEmailOwner = ClientUtils.newClientList().get(1);
+
+        ClientPostRequest clientPostRequest = ClientUtils.newClientPostRequest().withEmail(clientEmailOwner.getEmail());
+
+        BDDMockito.doThrow(new BadRequestException("Email '%s' belongs to another person".formatted(clientPostRequest.getEmail())))
+                .when(service).save(ArgumentMatchers.any(ClientPostRequest.class));
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.post(URL)
+                                .content(request)
+                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
+    @Test
+    @DisplayName("POST /v1/clients throws BadRequestException when the phone already exists")
+    @Order(14)
+    void save_ThrowsBadRequestException_WhenPhoneAlreadyExists() throws Exception {
+        String request = fileUtils.readResourceFile("client/post-request-client-phone-existing-400.json");
+        String expectedResponse = fileUtils.readResourceFile("client/post-response-client-phone-existing-400.json");
+
+        Person personPhoneOwner = PersonUtils.newPersonList().get(1);
+
+        ClientPostRequest clientPostRequest = ClientUtils.newClientPostRequest().withPhones(personPhoneOwner.getPhones());
+
+        Phone phone = clientPostRequest.getPhones().getFirst();
+        BDDMockito.doThrow(new BadRequestException("Phone '%s' belongs to another person".formatted(phone.getNumber())))
+                .when(service).save(ArgumentMatchers.any(ClientPostRequest.class));
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.post(URL)
+                                .content(request)
+                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
     @ParameterizedTest
     @MethodSource("postClientBadRequestSource")
     @DisplayName("POST /v1/clients return BadRequest when fields are invalid")
-    @Order(13)
+    @Order(15)
     void save_ReturnsBadRequest_WhenFieldAreInvalid(String fileName, List<String> expectedErrors) throws Exception {
         String request = fileUtils.readResourceFile("client/%s".formatted(fileName));
 
@@ -262,10 +311,6 @@ class ClientControllerTest {
     }
 
     private static Stream<Arguments> postClientBadRequestSource() {
-        String nameRequiredError = "The field 'name' is required";
-        String lastNameRequiredError = "The field 'lastName' is required";
-        String emailRequiredError = "The field 'email' is required";
-
         String emailNotValidError = "Email is not valid";
 
         List<String> expectedRequiredErrors = basicsRequiredErrors();
@@ -278,7 +323,7 @@ class ClientControllerTest {
 
     @Test
     @DisplayName("PUT /v1/clients/1 updates client when successful")
-    @Order(14)
+    @Order(16)
     void update_UpdatesClient_WhenSuccessful() throws Exception {
         String request = fileUtils.readResourceFile("client/put-request-client-200.json");
         ClientPutRequest clientPutRequest = ClientUtils.newClientPutRequest();
@@ -294,7 +339,7 @@ class ClientControllerTest {
 
     @Test
     @DisplayName("PUT /v1/clients/1 throws BadRequestException when the url id does not match the request body id")
-    @Order(14)
+    @Order(17)
     void update_ThrowsBadRequestException_WhenTheUrlIdDoesNotMatchTheRequestBodyId() throws Exception {
         String request = fileUtils.readResourceFile("client/put-request-client-200.json");
         String expectedResponse = fileUtils.readResourceFile("client/put-response-not-match-ids-client-400.json");
@@ -315,7 +360,7 @@ class ClientControllerTest {
 
     @Test
     @DisplayName("PUT /v1/clients/1 throws NotFoundException() when the client is not found")
-    @Order(15)
+    @Order(18)
     void update_ThrowsNotFoundException_WhenTheClientIsNotFound() throws Exception {
         String request = fileUtils.readResourceFile("client/put-request-invalid-client-404.json");
         String expectedResponse = fileUtils.readResourceFile("client/put-response-invalid-client-404.json");
@@ -335,7 +380,7 @@ class ClientControllerTest {
 
     @Test
     @DisplayName("PUT /v1/clients/1 throws BadRequestException when the email to update does not belong to client")
-    @Order(16)
+    @Order(19)
     void update_ThrowsBadRequestException_WhenTheEmailToUpdateDoesNotBelongToClient() throws Exception {
         String request = fileUtils.readResourceFile("client/put-request-client-email-existing-400.json");
         String expectedResponse = fileUtils.readResourceFile("client/put-response-client-email-existing-400.json");
@@ -357,7 +402,7 @@ class ClientControllerTest {
 
     @Test
     @DisplayName("PUT /v1/clients/1 throws BadRequestException when the some phone to update does not belong to client")
-    @Order(17)
+    @Order(20)
     void update_ThrowsBadRequestException_WhenThePhoneToUpdateDoesNotBelongToClient() throws Exception {
         String request = fileUtils.readResourceFile("client/put-request-client-phone-existing-400.json");
         String expectedResponse = fileUtils.readResourceFile("client/put-response-client-phone-existing-400.json");
@@ -381,7 +426,7 @@ class ClientControllerTest {
     @ParameterizedTest
     @MethodSource("putClientBadRequestSource")
     @DisplayName("PUT /v1/clients/1 return BadRequest when fields are invalid")
-    @Order(18)
+    @Order(21)
     void update_ReturnsBadRequest_WhenFieldAreInvalid(String fileName, List<String> expectedErrors) throws Exception {
         String request = fileUtils.readResourceFile("client/%s".formatted(fileName));
 
@@ -433,7 +478,7 @@ class ClientControllerTest {
 
     @Test
     @DisplayName("DELETE /v1/clients/1 removes client when successful")
-    @Order(19)
+    @Order(22)
     void deleteById_RemovesClient_WhenSuccessful() throws Exception {
         Client clientToDelete = ClientUtils.newClientList().getFirst();
         Long idToDelete = clientToDelete.getId();
@@ -447,7 +492,7 @@ class ClientControllerTest {
 
     @Test
     @DisplayName("DELETE /v1/clients/25256595 throws NotFoundException when given id is not found")
-    @Order(20)
+    @Order(23)
     void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() throws Exception {
         Long randomId = 25256595L;
 

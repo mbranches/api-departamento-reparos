@@ -1,0 +1,17 @@
+{
+  "name": "Chispirito",
+  "lastName": "Costa",
+  "email": "chispirito@gmail.com",
+  "address": {
+    "street": "Almirante Barroso",
+    "district": "São Brás",
+    "city": "Belém",
+    "state": "Pa"
+  },
+  "phones": [
+    {
+      "number": "2222222",
+      "phoneType": "celular"
+    }
+  ]
+}
