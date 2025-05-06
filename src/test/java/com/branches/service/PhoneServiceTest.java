@@ -98,7 +98,7 @@ class PhoneServiceTest {
 
         Assertions.assertThatThrownBy(() -> service.assertPhoneDoesNotExists(phoneToFind, id))
                 .isInstanceOf(BadRequestException.class)
-                .hasMessageContaining("Phone '%s' already exists for another person", phoneToFind.getNumber());
+                .hasMessageContaining("Phone '%s' belongs to another person", phoneToFind.getNumber());
     }
 
     @Test

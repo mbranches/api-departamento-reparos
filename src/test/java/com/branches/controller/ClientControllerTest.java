@@ -367,7 +367,7 @@ class ClientControllerTest {
         ClientPutRequest clientPutRequest = ClientUtils.newClientPutRequest().withPhones(clientPhoneOwner.getPerson().getPhones());
         Phone phone = clientPutRequest.getPhones().getFirst();
 
-        BDDMockito.doThrow(new BadRequestException("Phone '%s' already exists for another person".formatted(phone.getNumber())))
+        BDDMockito.doThrow(new BadRequestException("Phone '%s' belongs to another person".formatted(phone.getNumber())))
                 .when(service).update(ArgumentMatchers.anyLong(), ArgumentMatchers.any());
 
         mockMvc.perform(MockMvcRequestBuilders.put(URL + "/{id}", clientPutRequest.getId())
