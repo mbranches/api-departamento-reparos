@@ -1,6 +1,6 @@
 ## API Departamento de Reparos de Veículos
 
->  Api desenvolvida a fim de pôr em prática meus conhecimentos em Java e Spring Boot
+>  Api desenvolvida a fim de pôr em prática os meus conhecimentos em Java e Spring Boot
 
 Este repositório contém somente o **Backend** do projeto.
 
@@ -26,10 +26,13 @@ Este repositório contém somente o **Backend** do projeto.
 * ✅ **Controle do estoque de Peças**  
   Permite controlar o estoque de peças, conforme a mesma é utiliza em reparos.
 
+* ✅ **Atualizar dados de Cliente e Funcionário**  
+  Permite atualizar dados de clientes e funcionários, como nome, telefone, endereço, categoria para funcionários e e-mail para clientes.
+
 * ✅ **Consultas Avançadas**
     - **Filtrar Clientes por Nome**: Permite buscar clientes por nome.
     - **Filtrar Reparos por Data**: Possibilita filtrar os reparos realizados por data.
-    - **Visualizar Funcionários e Peças Associados a um Reparo**: Para cada reparo, é possível consultar os funcionários e as peças que foram utilizados.
+    - **Visualizar Funcionários e Peças Associados a um Reparo**: Para cada reparo, é possível consultar os funcionários e as peças utilizados.
     - **Visualizar Veículos e Reparos de um Cliente**: Permite listar os veículos e os reparos registrados para um cliente específico.
 
 ## 🛠️ Tecnologias Utilizadas
@@ -78,7 +81,7 @@ Este repositório contém somente o **Backend** do projeto.
 - Certifique-se de ter o Maven instalado no seu computador. Caso não tenha, clique [aqui](https://dicasdeprogramacao.com.br/como-instalar-o-maven-no-windows/) para ter acesso ao tutorial.
 
 ### 5. Inicialize o Spring Boot
-- Com o docker rodando é só inicializar a API com os seguinte comandos:
+- Com o docker rodando é só inicializar a API com os seguintes comandos:
     ```
       mvn clean install
       mvn spring-boot:run
@@ -89,7 +92,7 @@ Este repositório contém somente o **Backend** do projeto.
 O projeto possui quase 250 testes automatizados para garantir a qualidade do código e o funcionamento correto da aplicação. A aplicação possui duas categorias de testes:
 
 ### Testes Unitários
-- Testes da camada de serviço, que garantem que a lógica de negócio esteja funcionando corretamente.
+- Testes da camada de serviço, que garantem que a lógica de negócio funcione corretamente.
 - Utilizam `JUnit` para estruturação dos testes, `Mockito` para mockar dependências e `AssertJ` para asserções fluentes.
 
 ### Testes de Controller (Camada Web)
@@ -125,8 +128,7 @@ Usar o **Postman** para consumir a API facilita o processo de desenvolvimento e 
    Na pasta `data` do repositório, você encontrará um arquivo chamado `Departamento.postman_collection.json`. Esse arquivo contém todas as rotas da API, prontas para serem usadas no **Postman**.
 
 2. **Abrir o Postman**:  
-   Caso não tenha o Postman instalado, você pode baixá-lo gratuitamente no [site oficial](https://www.postman.com/downloads/), caso já tenha o **Postman** mas não sabe usar, clique [aqui](https://www.youtube.com/watch?v=64-O-dDR7ic-) para assistir um tutorial introdutório.
-
+   Caso não tenha o Postman instalado, você pode baixá-lo gratuitamente no [site oficial](https://www.postman.com/downloads/), caso já tenha o **Postman**, mas não sabe usar, clique [aqui](https://www.youtube.com/watch?v=64-O-dDR7ic-) para assistir um tutorial introdutório.
 
 3. **Importar a Collection**:
   - Abra o **Postman**.
@@ -135,13 +137,14 @@ Usar o **Postman** para consumir a API facilita o processo de desenvolvimento e 
   - Após a importação, todas as rotas estarão disponíveis no **Postman**.
 
 4. **Configuração da URL**:  
-   Ao importar a collection, as rotas da API estarão configuradas para o ambiente de produção. Caso estiver rodando localmente e não alterou a porta, a URL da API é ``http://localhost:8080``.
+   Ao importar a collection, as rotas da API estarão configuradas para a url padrão. Caso não tenha alterada a porta, a URL da API é ``http://localhost:8080``.
 
 5. **Consumindo a API**:  
    Agora, você pode começar a testar a API, realizando operações como:
   - **Cadastrar um Cliente** (POST)
   - **Consultar Reparos que um Cliente fez** (GET)
   - **Filtrar Reparos por data** (GET)
+  - **Atualizar dados de um Cliente** (PUT)
   - **Excluir um Cliente** (DELETE)
 
    Agora, basta explorar, testar e interagir com a API de forma prática e eficiente utilizando o **Postman**. 🚀
