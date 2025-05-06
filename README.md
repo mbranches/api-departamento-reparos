@@ -83,6 +83,26 @@ Este repositório contém somente o **Backend** do projeto.
       mvn clean install
       mvn spring-boot:run
     ```
+  
+## 🧪 Testes
+
+O projeto possui quase 250 testes automatizados para garantir a qualidade do código e o funcionamento correto da aplicação. A aplicação possui duas categorias de testes:
+
+### Testes Unitários
+- Testesgit p da camada de serviço, que garantem que a lógica de negócio esteja funcionando corretamente.
+- Utilizam `JUnit` para estruturação dos testes, `Mockito` para mockar dependências e `AssertJ` para asserções fluentes.
+
+### Testes de Controller (Camada Web)
+- Validam o comportamento dos endpoints REST da aplicação em isolamento.
+- Configurados com `@WebMvcTest` inicializam apenas os beans da camada de controller sem carregar todo o contexto do Spring.
+- Utilizam `MockMVC` para simular requisições HTTP.
+- Testam os status HTTP e os payloads das requisições e respostas.
+- Testam os Beans Validation das classes DTO
+
+### Para rodar os testes, execute o seguinte comando na raiz do projeto:
+    ```
+      mvn test
+    ```
 
 ## 🚀 Como Consumir a API com Postman
 
