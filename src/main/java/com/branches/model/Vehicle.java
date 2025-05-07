@@ -23,5 +23,6 @@ public class Vehicle {
     private String model;
     @ManyToOne
     @JoinColumn(name = "fk_cliente_veiculo", referencedColumnName = "idcliente")
+    @ToString.Exclude
     private Client client;
 }

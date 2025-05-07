@@ -2,10 +2,7 @@ package com.branches.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity(name = "telefone")
 @Data
@@ -25,10 +22,7 @@ public class Phone {
     @ManyToOne
     @JoinColumn(name = "fk_pessoa_telefone", referencedColumnName = "idpessoa")
     @JsonIgnore
+    @ToString.Exclude
     private Person person;
 
-    @Override
-    public String toString() {
-        return "Phone(id=" + this.getId() + ", number=" + this.getNumber() + ", phoneType=" + this.getPhoneType() + ")";
-    }
 }
