@@ -22,6 +22,4 @@ public class Client {
     @JoinColumn(name = "fk_pessoa_cliente", referencedColumnName = "idpessoa")
     private Person person;
     private String email;
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-    private List<Vehicle> vehicles;
 }
