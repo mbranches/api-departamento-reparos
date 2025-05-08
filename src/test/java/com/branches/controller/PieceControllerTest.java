@@ -109,7 +109,7 @@ public class PieceControllerTest {
     void findById_ThrowsNotFoundException_WhenIdIsNotFound() throws Exception {
         long randomId = 131222L;
 
-        BDDMockito.when(service.findById(randomId)).thenThrow(new NotFoundException("Piece not Found"));
+        BDDMockito.when(service.findById(randomId)).thenThrow(new NotFoundException("Piece with id '%s' not Found".formatted(randomId)));
         String expectedResponse = fileUtils.readResourceFile("piece/get-piece-by-id-404.json");
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{id}", randomId))
@@ -197,7 +197,7 @@ public class PieceControllerTest {
     void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() throws Exception {
         Long randomId = 25256595L;
 
-        BDDMockito.doThrow(new NotFoundException("Piece not Found")).when(service).deleteById(randomId);
+        BDDMockito.doThrow(new NotFoundException("Piece with id '%s' not Found".formatted(randomId))).when(service).deleteById(randomId);
 
         String expectedResponse = fileUtils.readResourceFile("piece/delete-piece-by-id-404.json");
 

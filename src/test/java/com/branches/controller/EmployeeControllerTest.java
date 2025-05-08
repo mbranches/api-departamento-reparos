@@ -114,7 +114,7 @@ class EmployeeControllerTest {
     void findById_ThrowsNotFoundException_WhenIdIsNotFound() throws Exception {
         long randomId = 131222L;
 
-        BDDMockito.when(service.findById(randomId)).thenThrow(new NotFoundException("Employee not Found"));
+        BDDMockito.when(service.findById(randomId)).thenThrow(new NotFoundException("Employee with id '%s' not Found".formatted(randomId)));
         String expectedResponse = fileUtils.readResourceFile("employee/get-employee-by-id-404.json");
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{id}", randomId))
@@ -148,9 +148,10 @@ class EmployeeControllerTest {
     @DisplayName("POST /v1/employees throws NotFoundException when given category does not exists")
     @Order(7)
     void save_ThrowsNotFoundException_WhenGivenCategoryNotExists() throws Exception {
-        EmployeePostRequest postRequest = EmployeeUtils.newEmployeePostRequest().withCategoryId(41312L);
+        long randomCategoryId = 41312L;
+        EmployeePostRequest postRequest = EmployeeUtils.newEmployeePostRequest().withCategoryId(randomCategoryId);
 
-        BDDMockito.when(service.save(postRequest)).thenThrow(new NotFoundException("Category not Found"));
+        BDDMockito.when(service.save(postRequest)).thenThrow(new NotFoundException("Category with id '%s' not Found".formatted(randomCategoryId)));
 
         String request = fileUtils.readResourceFile("employee/post-request-employee-invalid-category-200.json");
         String expectedResponse = fileUtils.readResourceFile("employee/post-response-employee-404.json");
@@ -275,7 +276,7 @@ class EmployeeControllerTest {
         Long randomId = 999L;
         EmployeePutRequest putRequest = EmployeeUtils.newEmployeePutRequest().withId(randomId);
 
-        BDDMockito.doThrow(new NotFoundException("Employee not Found")).when(service).update(randomId, putRequest);
+        BDDMockito.doThrow(new NotFoundException("Employee with id '%s' not Found".formatted(randomId))).when(service).update(randomId, putRequest);
 
         String request = fileUtils.readResourceFile("employee/put-request-invalid-employee-404.json");
         String response = fileUtils.readResourceFile("employee/put-response-invalid-employee-404.json");
@@ -296,7 +297,7 @@ class EmployeeControllerTest {
         EmployeePutRequest putRequest = EmployeeUtils.newEmployeePutRequest().withCategoryId(randomCategoryId);
         Long id = putRequest.getId();
 
-        BDDMockito.doThrow(new NotFoundException("Category not Found")).when(service).update(id, putRequest);
+        BDDMockito.doThrow(new NotFoundException("Category with id '%s' not Found".formatted(randomCategoryId))).when(service).update(id, putRequest);
 
         String request = fileUtils.readResourceFile("employee/put-request-invalid-category-404.json");
         String response = fileUtils.readResourceFile("employee/put-response-invalid-category-404.json");
@@ -357,7 +358,7 @@ class EmployeeControllerTest {
     void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() throws Exception {
         Long randomId = 25256595L;
 
-        BDDMockito.doThrow(new NotFoundException("Employee not Found")).when(service).deleteById(randomId);
+        BDDMockito.doThrow(new NotFoundException("Employee with id '%s' not Found".formatted(randomId))).when(service).deleteById(randomId);
 
             String expectedResponse = fileUtils.readResourceFile("employee/delete-employee-by-id-404.json");
 

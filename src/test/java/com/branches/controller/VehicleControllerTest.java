@@ -80,7 +80,7 @@ class VehicleControllerTest {
     void findById_ThrowsNotFoundException_WhenIdIsNotFound() throws Exception {
         long randomId = 131222L;
 
-        BDDMockito.when(service.findById(randomId)).thenThrow(new NotFoundException("Vehicle not Found"));
+        BDDMockito.when(service.findById(randomId)).thenThrow(new NotFoundException("Vehicle with id '%s' not Found".formatted(randomId)));
         String expectedResponse = fileUtils.readResourceFile("vehicle/get-vehicle-by-id-404.json");
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{id}", randomId))
@@ -114,9 +114,10 @@ class VehicleControllerTest {
     @DisplayName("POST /v1/vehicles throws not found exception when given client does not exists")
     @Order(3)
     void save_ThrowsNotFoundException_WhenGivenClientNotExists() throws Exception {
-        VehiclePostRequest postRequest = VehicleUtils.newVehiclePostRequest().withClientId(841718L);
+        long randomClientId = 841718L;
+        VehiclePostRequest postRequest = VehicleUtils.newVehiclePostRequest().withClientId(randomClientId);
 
-        BDDMockito.when(service.save(postRequest)).thenThrow(new NotFoundException("Client not Found"));
+        BDDMockito.when(service.save(postRequest)).thenThrow(new NotFoundException("Client with id '%s' not Found".formatted(randomClientId)));
 
         String request = fileUtils.readResourceFile("vehicle/post-request-vehicle-invalid-client-200.json");
         String expectedResponse = fileUtils.readResourceFile("vehicle/post-response-vehicle-404.json");
@@ -187,7 +188,7 @@ class VehicleControllerTest {
     void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() throws Exception {
         Long randomId = 25256595L;
 
-        BDDMockito.doThrow(new NotFoundException("Vehicle not Found")).when(service).deleteById(randomId);
+        BDDMockito.doThrow(new NotFoundException("Vehicle with id '%s' not Found".formatted(randomId))).when(service).deleteById(randomId);
 
         String expectedResponse = fileUtils.readResourceFile("vehicle/delete-vehicle-by-id-404.json");
 

@@ -135,7 +135,7 @@ class EmployeeServiceTest {
 
         Assertions.assertThatThrownBy(() -> service.findById(randomId))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Employee not Found");
+                .hasMessageContaining("Employee with id '%s' not Found".formatted(randomId));
     }
     
     @Test
@@ -169,13 +169,13 @@ class EmployeeServiceTest {
     @DisplayName("save throws NotFoundException when given category does not exists")
     @Order(7)
     void save_ThrowsNotFoundException_WhenGivenCategoryNotExists() {
-        EmployeePostRequest employeePostRequest = EmployeeUtils.newEmployeePostRequest();
+        long randomCategoryId = 999L;
+        EmployeePostRequest employeePostRequest = EmployeeUtils.newEmployeePostRequest().withCategoryId(randomCategoryId);
 
-        BDDMockito.when(categoryService.findByIdOrThrowsNotFoundException(ArgumentMatchers.anyLong())).thenThrow(new NotFoundException("Category not Found"));
+        BDDMockito.when(categoryService.findByIdOrThrowsNotFoundException(randomCategoryId)).thenThrow(NotFoundException.class);
 
         Assertions.assertThatThrownBy(() -> service.save(employeePostRequest))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Category not Found");
+                .isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -232,13 +232,14 @@ class EmployeeServiceTest {
     @DisplayName("update throws NotFoundException when employee is not found")
     @Order(11)
     void update_ThrowsNotFoundException_WhenEmployeeIsNotFound() {
-        EmployeePutRequest putRequest = EmployeeUtils.newEmployeePutRequest();
+        long randomId = 999L;
+        EmployeePutRequest putRequest = EmployeeUtils.newEmployeePutRequest().withId(randomId);
 
         BDDMockito.when(repository.findById(putRequest.getId())).thenReturn(Optional.empty());
 
         Assertions.assertThatThrownBy(() -> service.update(putRequest.getId(), putRequest))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Employee not Found");
+                .hasMessageContaining("Employee with id '%s' not Found".formatted(randomId));
 
     }
 
@@ -281,6 +282,6 @@ class EmployeeServiceTest {
 
         Assertions.assertThatThrownBy(() -> service.deleteById(randomId))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Employee not Found");
+                .hasMessageContaining("Employee with id '%s' not Found".formatted(randomId));
     }
 }

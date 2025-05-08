@@ -120,7 +120,7 @@ class CategoryServiceTest {
 
         Assertions.assertThatThrownBy(() -> service.findById(randomId))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Category not Found");
+                .hasMessageContaining("Category with id '%s' not Found".formatted(randomId));
     }
 
     @Test
@@ -167,6 +167,6 @@ class CategoryServiceTest {
 
         Assertions.assertThatThrownBy(() -> service.deleteById(randomId))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Category not Found");
+                .hasMessageContaining("Category with id '%s' not Found".formatted(randomId));
     }
 }

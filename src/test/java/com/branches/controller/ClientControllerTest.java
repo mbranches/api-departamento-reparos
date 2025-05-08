@@ -119,7 +119,7 @@ class ClientControllerTest {
     void findById_ThrowsNotFoundException_WhenIdIsNotFound() throws Exception {
         long randomId = 131222L;
 
-        BDDMockito.when(service.findById(randomId)).thenThrow(new NotFoundException("Client not Found"));
+        BDDMockito.when(service.findById(randomId)).thenThrow(new NotFoundException("Client with id '%s' not Found".formatted(randomId)));
         String expectedResponse = fileUtils.readResourceFile("client/get-client-by-id-404.json");
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{id}", randomId))
@@ -162,10 +162,10 @@ class ClientControllerTest {
     @DisplayName("GET /v1/clients/488/vehicles throws NotFoundException when client is not found")
     @Order(8)
     void findVehiclesByClientId_ThrowsNotFoundException_WhenClientIsNotFound() throws Exception {
-        long randomId = 1L;
+        long randomId = 488L;
         String expectedResponse = fileUtils.readResourceFile("vehicle/get-vehicles-by-client-id-404.json");
 
-        BDDMockito.when(vehicleService.findByClientId(randomId)).thenThrow(new NotFoundException("Client not Found"));
+        BDDMockito.when(vehicleService.findByClientId(randomId)).thenThrow(new NotFoundException("Client with id '%s' not Found".formatted(randomId)));
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{clientId}/vehicles", randomId))
                 .andDo(MockMvcResultHandlers.print())
@@ -207,10 +207,10 @@ class ClientControllerTest {
     @DisplayName("GET /v1/clients/488/repairs throws NotFoundException when client is not found")
     @Order(11)
     void findRepairsByClientId_ThrowsNotFoundException_WhenClientIsNotFound() throws Exception {
-        long randomId = 1L;
+        long randomId = 488L;
         String expectedResponse = fileUtils.readResourceFile("repair/get-repairs-by-client-id-404.json");
 
-        BDDMockito.when(repairService.findAllByClientId(randomId)).thenThrow(new NotFoundException("Client not Found"));
+        BDDMockito.when(repairService.findAllByClientId(randomId)).thenThrow(new NotFoundException("Client with id '%s' not Found".formatted(randomId)));
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{clientId}/repairs", randomId))
                 .andDo(MockMvcResultHandlers.print())
@@ -374,7 +374,7 @@ class ClientControllerTest {
         long randomId = 999L;
         ClientPutRequest putRequest = ClientUtils.newClientPutRequest().withId(randomId);
 
-        BDDMockito.doThrow(new NotFoundException("Client not Found"))
+        BDDMockito.doThrow(new NotFoundException("Client with id '%s' not Found".formatted(randomId)))
                 .when(service).update(putRequest.getId(), putRequest);
 
         mockMvc.perform(MockMvcRequestBuilders.put(URL + "/{id}", randomId)
@@ -508,7 +508,7 @@ class ClientControllerTest {
     void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() throws Exception {
         Long randomId = 25256595L;
 
-        BDDMockito.doThrow(new NotFoundException("Client not Found")).when(service).deleteById(randomId);
+        BDDMockito.doThrow(new NotFoundException("Client with id '%s' not Found".formatted(randomId))).when(service).deleteById(randomId);
 
         String expectedResponse = fileUtils.readResourceFile("client/delete-client-by-id-404.json");
 

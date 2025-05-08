@@ -140,7 +140,7 @@ class RepairServiceTest {
 
         Assertions.assertThatThrownBy(() -> service.findById(randomId))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Repair not Found");
+                .hasMessageContaining("Repair with id '%s' not Found".formatted(randomId));
     }
 
     @Test
@@ -194,7 +194,7 @@ class RepairServiceTest {
 
         Assertions.assertThatThrownBy(() -> service.findEmployeesByRepairId(randomId))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Repair not Found");
+                .hasMessageContaining("Repair with id '%s' not Found".formatted(randomId));
     }
 
     @Test
@@ -248,7 +248,7 @@ class RepairServiceTest {
 
         Assertions.assertThatThrownBy(() -> service.findPiecesByRepairId(randomId))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Repair not Found");
+                .hasMessageContaining("Repair with id '%s' not Found".formatted(randomId));
     }
 
     @Test
@@ -294,11 +294,10 @@ class RepairServiceTest {
     void findAllByClientId_ThrowsNotFoundException_WhenClientIsNotFound() {
         Long randomId = 1515151L;
 
-        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(randomId)).thenThrow(new NotFoundException("Client not Found"));
+        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(randomId)).thenThrow(NotFoundException.class);
 
         Assertions.assertThatThrownBy(() -> service.findAllByClientId(randomId))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Client not Found");
+                .isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -345,11 +344,10 @@ class RepairServiceTest {
     void save_ThrowsNotFoundException_WhenClientIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
 
-        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId())).thenThrow(new NotFoundException("Client not Found"));
+        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId())).thenThrow(NotFoundException.class);
 
         Assertions.assertThatThrownBy(() -> service.save(postRequest))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Client not Found");
+                .isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -359,11 +357,10 @@ class RepairServiceTest {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest().withClientId(999L);
 
         BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId())).thenReturn(ClientUtils.newClientSaved());
-        BDDMockito.when(vehicleService.findByIdOrThrowsNotFoundException(postRequest.getVehicleId())).thenThrow(new NotFoundException("Vehicle not Found"));
+        BDDMockito.when(vehicleService.findByIdOrThrowsNotFoundException(postRequest.getVehicleId())).thenThrow(NotFoundException.class);
 
         Assertions.assertThatThrownBy(() -> service.save(postRequest))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Vehicle not Found");
+                .isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -496,7 +493,7 @@ class RepairServiceTest {
 
         Assertions.assertThatThrownBy(() -> service.addEmployee(randomRepairId, repairEmployeePostRequestList))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Repair not Found");
+                .hasMessageContaining("Repair with id '%s' not Found".formatted(randomRepairId));
     }
 
     @Test
@@ -561,7 +558,7 @@ class RepairServiceTest {
 
         Assertions.assertThatThrownBy(() -> service.addPiece(randomRepairId, repairPiecePostRequestList))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Repair not Found");
+                .hasMessageContaining("Repair with id '%s' not Found".formatted(randomRepairId));
     }
 
     @Test
@@ -606,7 +603,7 @@ class RepairServiceTest {
 
         Assertions.assertThatThrownBy(() -> service.deleteById(randomId))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Repair not Found");
+                .hasMessageContaining("Repair with id '%s' not Found".formatted(randomId));
     }
 
     @Test
@@ -641,7 +638,7 @@ class RepairServiceTest {
 
         Assertions.assertThatThrownBy(() -> service.removesRepairEmployeeById(randomRepairId, employeeId))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Repair not Found");
+                .hasMessageContaining("Repair with id '%s' not Found".formatted(randomRepairId));
     }
 
     @Test
@@ -654,11 +651,10 @@ class RepairServiceTest {
         Long randomEmployeeId = 5514121L;
 
         BDDMockito.when(repository.findById(repairId)).thenReturn(Optional.of(repair));
-        BDDMockito.when(employeeService.findByIdOrThrowsNotFoundException(randomEmployeeId)).thenThrow(new NotFoundException("Employee not Found"));
+        BDDMockito.when(employeeService.findByIdOrThrowsNotFoundException(randomEmployeeId)).thenThrow(NotFoundException.class);
 
         Assertions.assertThatThrownBy(() -> service.removesRepairEmployeeById(repairId, randomEmployeeId))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Employee not Found");
+                .isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -712,7 +708,7 @@ class RepairServiceTest {
 
         Assertions.assertThatThrownBy(() -> service.removesRepairPieceById(randomRepairId, pieceId))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Repair not Found");
+                .hasMessageContaining("Repair with id '%s' not Found".formatted(randomRepairId));
     }
 
     @Test
@@ -725,11 +721,10 @@ class RepairServiceTest {
         Long randomPieceId = 5514121L;
 
         BDDMockito.when(repository.findById(repairId)).thenReturn(Optional.of(repair));
-        BDDMockito.when(pieceService.findByIdOrThrowsNotFoundException(randomPieceId)).thenThrow(new NotFoundException("Piece not Found"));
+        BDDMockito.when(pieceService.findByIdOrThrowsNotFoundException(randomPieceId)).thenThrow(NotFoundException.class);
 
         Assertions.assertThatThrownBy(() -> service.removesRepairPieceById(repairId, randomPieceId))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Piece not Found");
+                .isInstanceOf(NotFoundException.class);
     }
 
     @Test

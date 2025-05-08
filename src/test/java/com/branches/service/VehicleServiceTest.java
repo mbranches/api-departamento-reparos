@@ -88,7 +88,7 @@ class VehicleServiceTest {
 
         Assertions.assertThatThrownBy(() -> service.findById(randomId))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Vehicle not Found");
+                .hasMessageContaining("Vehicle with id '%s' not Found".formatted(randomId));
     }
 
     @Test
@@ -136,11 +136,10 @@ class VehicleServiceTest {
     void findVehiclesByClientId_ThrowsNotFoundException_WhenClientIsNotFound() {
         long randomClientId = 1234567L;
 
-        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(randomClientId)).thenThrow(new NotFoundException("Client not Found"));
+        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(randomClientId)).thenThrow(NotFoundException.class);
 
         Assertions.assertThatThrownBy(() -> service.findByClientId(randomClientId))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Client not Found");
+                .isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -170,11 +169,10 @@ class VehicleServiceTest {
     void save_ThrowsNotFoundException_WhenGivenClientNotExists() {
         VehiclePostRequest vehiclePostRequest = VehicleUtils.newVehiclePostRequest();
 
-        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(ArgumentMatchers.anyLong())).thenThrow(new NotFoundException("Client not Found"));
+        BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(ArgumentMatchers.anyLong())).thenThrow(NotFoundException.class);
 
         Assertions.assertThatThrownBy(() -> service.save(vehiclePostRequest))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Client not Found");
+                .isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -201,6 +199,6 @@ class VehicleServiceTest {
 
         Assertions.assertThatThrownBy(() -> service.deleteById(randomId))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Vehicle not Found");
+                .hasMessageContaining("Vehicle with id '%s' not Found".formatted(randomId));
     }
 }

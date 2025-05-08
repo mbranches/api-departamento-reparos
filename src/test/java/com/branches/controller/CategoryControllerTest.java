@@ -112,7 +112,7 @@ class CategoryControllerTest {
     void findById_ThrowsNotFoundException_WhenIdIsNotFound() throws Exception {
         long randomId = 131222L;
 
-        BDDMockito.when(service.findById(randomId)).thenThrow(new NotFoundException("Category not Found"));
+        BDDMockito.when(service.findById(randomId)).thenThrow(new NotFoundException("Category with id '%s' not Found".formatted(randomId)));
         String expectedResponse = fileUtils.readResourceFile("category/get-category-by-id-404.json");
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{id}", randomId))
@@ -198,7 +198,7 @@ class CategoryControllerTest {
     void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() throws Exception {
         Long randomId = 25256595L;
 
-        BDDMockito.doThrow(new NotFoundException("Category not Found")).when(service).deleteById(randomId);
+        BDDMockito.doThrow(new NotFoundException("Category with id '%s' not Found".formatted(randomId))).when(service).deleteById(randomId);
 
         String expectedResponse = fileUtils.readResourceFile("category/delete-category-by-id-404.json");
 

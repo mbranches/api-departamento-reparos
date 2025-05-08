@@ -121,7 +121,7 @@ class PieceServiceTest {
 
         Assertions.assertThatThrownBy(() -> service.findById(randomId))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Piece not Found");
+                .hasMessageContaining("Piece with id '%s' not Found".formatted(randomId));
     }
 
     @Test
@@ -201,6 +201,6 @@ class PieceServiceTest {
 
         Assertions.assertThatThrownBy(() -> service.deleteById(randomId))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Piece not Found");
+                .hasMessageContaining("Piece with id '%s' not Found".formatted(randomId));
     }
 }

@@ -133,7 +133,7 @@ class ClientServiceTest {
 
         Assertions.assertThatThrownBy(() -> service.findById(randomId))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Client not Found");
+                .hasMessageContaining("Client with id '%s' not Found".formatted(randomId));
     }
 
     @Test
@@ -223,7 +223,7 @@ class ClientServiceTest {
 
         Assertions.assertThatThrownBy(() -> service.update(randomId, putRequest))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Client not Found");
+                .hasMessageContaining("Client with id '%s' not Found".formatted(randomId));
     }
 
     @Test
@@ -269,7 +269,7 @@ class ClientServiceTest {
 
         Assertions.assertThatThrownBy(() -> service.deleteById(randomId))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Client not Found");
+                .hasMessageContaining("Client with id '%s' not Found".formatted(randomId));
     }
 
     @Test
