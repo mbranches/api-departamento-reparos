@@ -17,7 +17,7 @@
       "model": "Toro"
     },
     "totalValue": 1000,
-    "endDate": "2025-02-12"
+    "endDate": "12/02/2025"
   },
   {
     "id": 2,
@@ -37,7 +37,7 @@
       "model": "Toro"
     },
     "totalValue": 1000,
-    "endDate": "2025-02-12"
+    "endDate": "12/02/2025"
   },
   {
     "id": 3,
@@ -57,6 +57,6 @@
       "model": "Toro"
     },
     "totalValue": 1000,
-    "endDate": "2025-02-12"
+    "endDate": "12/02/2025"
   }
 ]
