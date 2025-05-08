@@ -1,4 +1,4 @@
 {
-  "status": 400,
-  "message": "Error saving pieces"
+  "status": 404,
+  "message": "Piece with id '4554444' not Found"
 }

@@ -315,10 +315,11 @@ class RepairControllerTest {
         String expectedResponse = fileUtils.readResourceFile("repair/post-response-repair-invalid-piece-400.json");
 
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
-        postRequest.getPieces().forEach(piece -> piece.setPieceId(412211L));
+        long randomPieceId = 412211L;
+        postRequest.getPieces().forEach(piece -> piece.setPieceId(randomPieceId));
 
         BDDMockito.when(service.save(postRequest))
-                .thenThrow(new BadRequestException("Error saving pieces"));
+                .thenThrow(new NotFoundException("Piece with id '%s' not Found".formatted(randomPieceId)));
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post(URL)
@@ -326,7 +327,7 @@ class RepairControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
     }
 
@@ -338,10 +339,11 @@ class RepairControllerTest {
         String expectedResponse = fileUtils.readResourceFile("repair/post-response-repair-invalid-employee-400.json");
 
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
-        postRequest.getEmployees().forEach(employee -> employee.setEmployeeId(45454L));
+        long randomEmployeeId = 45454L;
+        postRequest.getEmployees().forEach(employee -> employee.setEmployeeId(randomEmployeeId));
 
         BDDMockito.when(service.save(postRequest))
-                .thenThrow(new BadRequestException("Error saving employees"));
+                .thenThrow(new NotFoundException("Employee with id '%s' not Found".formatted(randomEmployeeId)));
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post(URL)
@@ -349,7 +351,7 @@ class RepairControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
     }
 
@@ -472,10 +474,11 @@ class RepairControllerTest {
         Long repairId = repair.getId();
 
         RepairEmployeeByRepairPostRequest repairEmployeeToSave = RepairEmployeeUtils.newRepairEmployeePostRequest();
-        repairEmployeeToSave.setEmployeeId(4554444L);
+        Long randomEmployeeId = 4554444L;
+        repairEmployeeToSave.setEmployeeId(randomEmployeeId);
 
         BDDMockito.when(service.addEmployee(repairId, List.of(repairEmployeeToSave)))
-                .thenThrow(new BadRequestException("Error saving employees"));
+                .thenThrow(new NotFoundException("Employee with id '%s' not Found".formatted(randomEmployeeId)));
 
         mockMvc.perform(MockMvcRequestBuilders.post(
                                 URL + "/" + repairId + "/employees")
@@ -483,7 +486,7 @@ class RepairControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
     }
 
@@ -577,10 +580,11 @@ class RepairControllerTest {
         Long repairId = repair.getId();
 
         RepairPieceByRepairPostRequest repairPieceToSave = RepairPieceUtils.newRepairPiecePostRequest();
-        repairPieceToSave.setPieceId(4554444L);
+        long randomPieceId = 4554444L;
+        repairPieceToSave.setPieceId(randomPieceId);
 
         BDDMockito.when(service.addPiece(repairId, List.of(repairPieceToSave)))
-                .thenThrow(new BadRequestException("Error saving pieces"));
+                .thenThrow(new NotFoundException("Piece with id '%s' not Found".formatted(randomPieceId)));
 
         mockMvc.perform(MockMvcRequestBuilders.post(
                                 URL + "/" + repairId + "/pieces")
@@ -588,7 +592,7 @@ class RepairControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
     }
 

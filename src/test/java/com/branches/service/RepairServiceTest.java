@@ -368,18 +368,19 @@ class RepairServiceTest {
     @Order(18)
     void save_ThrowsBadRequestException_WhenSomePieceIsNotFound() {
         RepairPostRequest postRequest = RepairUtils.newRepairPostRequest();
-        postRequest.getPieces().forEach(piece -> piece.setPieceId(999L));
+
+        long randomPieceId = 999L;
+        postRequest.getPieces().forEach(piece -> piece.setPieceId(randomPieceId));
 
         Client client = ClientUtils.newClientList().getFirst();
         Vehicle vehicle = VehicleUtils.newVehicleList().getFirst();
         BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId())).thenReturn(client);
         BDDMockito.when(vehicleService.findByIdOrThrowsNotFoundException(postRequest.getVehicleId())).thenReturn(vehicle);
-        BDDMockito.when(repairPieceMapper.toRepairPieceList(postRequest.getPieces())).thenThrow(new BadRequestException("Error saving pieces"));
+        BDDMockito.when(repairPieceMapper.toRepairPieceList(postRequest.getPieces())).thenThrow(NotFoundException.class);
 
 
         Assertions.assertThatThrownBy(() -> service.save(postRequest))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessageContaining("Error saving pieces");
+                .isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -391,12 +392,11 @@ class RepairServiceTest {
 
         BDDMockito.when(clientService.findByIdOrThrowsNotFoundException(postRequest.getClientId())).thenReturn(ClientUtils.newClientSaved());
         BDDMockito.when(repairPieceMapper.toRepairPieceList(postRequest.getPieces())).thenReturn(List.of(RepairPieceUtils.newRepairPieceToSave()));
-        BDDMockito.when(repairEmployeeMapper.toRepairEmployeeList(postRequest.getEmployees())).thenThrow(new BadRequestException("Error saving employees"));
+        BDDMockito.when(repairEmployeeMapper.toRepairEmployeeList(postRequest.getEmployees())).thenThrow(NotFoundException.class);
 
 
         Assertions.assertThatThrownBy(() -> service.save(postRequest))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessageContaining("Error saving employees");
+                .isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -507,11 +507,10 @@ class RepairServiceTest {
         List<RepairEmployeeByRepairPostRequest> repairEmployeePostRequestList = List.of(repairEmployeeToSaved);
 
         BDDMockito.when(repository.findById(repairId)).thenReturn(Optional.of(repair));
-        BDDMockito.when(repairEmployeeMapper.toRepairEmployeeList(repairEmployeePostRequestList)).thenThrow(new BadRequestException("Error saving employees"));
+        BDDMockito.when(repairEmployeeMapper.toRepairEmployeeList(repairEmployeePostRequestList)).thenThrow(NotFoundException.class);
 
         Assertions.assertThatThrownBy(() -> service.addEmployee(repairId, repairEmployeePostRequestList))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessageContaining("Error saving employees");
+                .isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -572,11 +571,10 @@ class RepairServiceTest {
         List<RepairPieceByRepairPostRequest> repairPiecePostRequestList = List.of(repairPieceToSaved);
 
         BDDMockito.when(repository.findById(repairId)).thenReturn(Optional.of(repair));
-        BDDMockito.when(repairPieceMapper.toRepairPieceList(repairPiecePostRequestList)).thenThrow(new BadRequestException("Error saving pieces"));
+        BDDMockito.when(repairPieceMapper.toRepairPieceList(repairPiecePostRequestList)).thenThrow(NotFoundException.class);
 
         Assertions.assertThatThrownBy(() -> service.addPiece(repairId, repairPiecePostRequestList))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessageContaining("Error saving pieces");
+                .isInstanceOf(NotFoundException.class);
     }
 
     @Test
