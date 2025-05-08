@@ -52,7 +52,7 @@ public class RepairService {
 
     public Repair findByIdOrThrowsNotFoundException(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Repair not Found"));
+                .orElseThrow(() -> new NotFoundException("Repair with id '%s' not Found".formatted(id)));
     }
 
     public List<RepairEmployeeByRepairResponse> findEmployeesByRepairId(Long repairId) {

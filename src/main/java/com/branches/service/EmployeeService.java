@@ -41,7 +41,7 @@ public class EmployeeService {
 
     public Employee findByIdOrThrowsNotFoundException(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Employee not Found"));
+                .orElseThrow(() -> new NotFoundException("Employee with id '%s' not Found".formatted(id)));
     }
 
     @Transactional

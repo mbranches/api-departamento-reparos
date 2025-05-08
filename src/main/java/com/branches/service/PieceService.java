@@ -33,7 +33,7 @@ public class PieceService {
 
     public Piece findByIdOrThrowsNotFoundException(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Piece not Found"));
+                .orElseThrow(() -> new NotFoundException("Piece with id '%s' not Found".formatted(id)));
     }
 
     public PiecePostResponse save(PiecePostRequest postRequest) {

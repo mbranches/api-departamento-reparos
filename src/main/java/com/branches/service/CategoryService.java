@@ -20,7 +20,7 @@ public class CategoryService {
 
     public Category findByIdOrThrowsNotFoundException(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Category not Found"));
+                .orElseThrow(() -> new NotFoundException("Category with id '%s' not Found".formatted(id)));
     }
 
     public List<CategoryGetResponse> findAll(String name) {

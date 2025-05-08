@@ -29,7 +29,7 @@ public class VehicleService {
 
     public Vehicle findByIdOrThrowsNotFoundException(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Vehicle not Found"));
+                .orElseThrow(() -> new NotFoundException("Vehicle with id '%s' not Found".formatted(id)));
     }
 
     public VehiclePostResponse save(VehiclePostRequest postRequest) {
