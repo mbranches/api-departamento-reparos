@@ -7,6 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -33,5 +34,12 @@ public class GlobalErrorHandlerAdvice {
         ValidationErrorMessage errorResponse = new ValidationErrorMessage(HttpStatus.BAD_REQUEST.value(), "Are fields invalid", Map.of("errors", errors));
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(DateTimeParseException.class)
+    public ResponseEntity<DefaultErrorMessage> handlerDateTimeParseException() {
+        DefaultErrorMessage error = new DefaultErrorMessage(HttpStatus.BAD_REQUEST.value(), "Date format is invalid");
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 }
