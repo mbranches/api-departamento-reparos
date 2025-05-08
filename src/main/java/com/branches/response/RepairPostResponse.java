@@ -1,5 +1,6 @@
 package com.branches.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,5 +16,6 @@ public class RepairPostResponse {
     private List<RepairPieceByRepairResponse> pieces;
     private List<RepairEmployeeByRepairResponse> employees;
     private double totalValue;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate endDate;
 }
