@@ -18,11 +18,7 @@ public class RepairEmployeeMapper {
     private final EmployeeService employeeService;
 
     public List<RepairEmployee> toRepairEmployeeList(List<RepairEmployeeByRepairPostRequest> postRequest) {
-        try {
-            return postRequest.stream().map(this::toRepairEmployee).toList();
-        } catch (Exception e) {
-            throw new BadRequestException("Error saving employees");
-        }
+        return postRequest.stream().map(this::toRepairEmployee).toList();
     }
 
     public RepairEmployee toRepairEmployee(RepairEmployeeByRepairPostRequest postRequest) {

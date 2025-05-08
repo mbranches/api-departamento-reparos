@@ -17,11 +17,7 @@ public class RepairPieceMapper {
     private final PieceService pieceService;
 
     public List<RepairPiece> toRepairPieceList(List<RepairPieceByRepairPostRequest> postRequest) {
-        try {
-            return postRequest.stream().map(this::toRepairPiece).toList();
-        } catch (Exception e) {
-            throw new BadRequestException("Error saving pieces");
-        }
+        return postRequest.stream().map(this::toRepairPiece).toList();
     }
 
     public RepairPiece toRepairPiece(RepairPieceByRepairPostRequest postRequest) {
