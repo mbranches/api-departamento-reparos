@@ -50,7 +50,7 @@ Este repositório contém somente o **Backend** do projeto.
 ## 💾 Estrutura do Banco de Dados
 
 <div style="text-align: center;">
-  <img src="src/main/resources/db/model-departamento.png" width="700"/>
+  <img src="data/schema.png" width="700"/>
 </div>
 
 ## 🚀 Como Rodar a API
