@@ -103,9 +103,9 @@ O projeto possui quase 250 testes automatizados para garantir a qualidade do có
 - Testam os Beans Validation das classes DTO
 
 ### Para rodar os testes, execute o seguinte comando na raiz do projeto:
-    ```
-      mvn test
-    ```
+```
+   mvn test
+```
 
 ## 🚀 Como Consumir a API com Postman
 
