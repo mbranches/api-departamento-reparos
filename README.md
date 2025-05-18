@@ -47,11 +47,18 @@ Este repositório contém somente o **Backend** do projeto.
 
 ---
 
-## 💾 Estrutura do Banco de Dados
+## 💾 Banco de Dados
+
+### 📐 Estrutura do Banco
+- Abaixo está o diagrama que representa a estrutura do banco de dados utilizada no projeto:
 
 <div style="text-align: center;">
   <img src="src/main/resources/db/model-departamento.png" width="700"/>
 </div>
+
+### 📄 Observações
+- O Spring Boot utiliza um schema SQL personalizado (escrito manualmente) para a criação das tabelas do banco.
+- Você pode visualizar esse script diretamente no arquivo `src/main/resources/db/schema.sql`
 
 ## 🚀 Como Rodar a API
 
