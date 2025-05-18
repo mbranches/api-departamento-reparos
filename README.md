@@ -53,7 +53,7 @@ Este repositório contém somente o **Backend** do projeto.
 - Abaixo está o diagrama que representa a estrutura do banco de dados utilizada no projeto:
 
 <div style="text-align: center;">
-  <img src="src/main/resources/db/model-departamento.png" width="700"/>
+  <img src="data/schema.png" width="700"/>
 </div>
 
 ### 📄 Observações
@@ -110,9 +110,9 @@ O projeto possui quase 250 testes automatizados para garantir a qualidade do có
 - Testam os Beans Validation das classes DTO
 
 ### Para rodar os testes, execute o seguinte comando na raiz do projeto:
-    ```
-      mvn test
-    ```
+```
+   mvn test
+```
 
 ## 🚀 Como Consumir a API com Postman
 
