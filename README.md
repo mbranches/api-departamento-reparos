@@ -57,7 +57,7 @@ Este repositório contém somente o **Backend** do projeto.
 </div>
 
 ### 📄 Observações
-- O Spring Boot utiliza um schema SQL personalizado (escrito manualmente) para a criação das tabelas do banco.
+- A aplicação utiliza um schema SQL personalizado (escrito manualmente) para a criação das tabelas do banco.
 - Você pode visualizar esse script diretamente no arquivo `src/main/resources/db/schema.sql`
 
 ## 🚀 Como Rodar a API
