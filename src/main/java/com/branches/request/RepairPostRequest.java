@@ -17,8 +17,6 @@ public class RepairPostRequest {
     private Long clientId;
     @NotNull(message = "The field 'vehicleId' cannot be null")
     private Long vehicleId;
-    private List<RepairPieceByRepairPostRequest> pieces;
-    private List<RepairEmployeeByRepairPostRequest> employees;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate endDate;
 }
