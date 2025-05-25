@@ -96,7 +96,7 @@ Este repositório contém somente o **Backend** do projeto.
   
 ## 🧪 Testes
 
-O projeto possui quase 250 testes automatizados para garantir a qualidade do código e o funcionamento correto da aplicação. A aplicação possui duas categorias de testes:
+O projeto possui mais de 220 testes automatizados para garantir a qualidade do código e o funcionamento correto da aplicação. A aplicação possui duas categorias de testes:
 
 ### Testes Unitários
 - Testes da camada de serviço, que garantem que a lógica de negócio funcione corretamente.
