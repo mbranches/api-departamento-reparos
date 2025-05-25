@@ -351,9 +351,9 @@ class RepairControllerTest {
     }
 
     @Test
-    @DisplayName("POST /v1/repairs/1/employees returns all saved RepairEmployees when successful")
+    @DisplayName("POST /v1/repairs/1/employees return saved RepairEmployee when successful")
     @Order(16)
-    void addEmployee_ReturnsAllSavedRepairEmployees_WhenSuccessful() throws Exception {
+    void addEmployee_ReturnsSavedRepairEmployee_WhenSuccessful() throws Exception {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Long repairId = repair.getId();
 
@@ -466,9 +466,9 @@ class RepairControllerTest {
     }
 
     @Test
-    @DisplayName("POST /v1/repairs/1/pieces returns all saved RepairPieces when successful")
+    @DisplayName("POST /v1/repairs/1/pieces returns saved RepairPieces when successful")
     @Order(20)
-    void addPiece_ReturnsAllSavedRepairPieces_WhenSuccessful() throws Exception {
+    void addPiece_ReturnsSavedRepairPiece_WhenSuccessful() throws Exception {
         Repair repair = RepairUtils.newRepairList().getFirst();
         Long repairId = repair.getId();
 
