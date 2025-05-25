@@ -520,7 +520,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "/* Um segundo funcionário deve está criado */\r\n[\r\n    {\r\n        \"employeeId\": 2,\r\n        \"hoursWorked\": 10\r\n    }\r\n]",
+							"raw": "/* Um segundo funcionário deve está criado */\r\n{\r\n    \"employeeId\": 2,\r\n    \"hoursWorked\": 10\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -556,7 +556,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "/* Uma peça com id 2 deve está criada*/\r\n\r\n[\r\n    {\r\n        \"pieceId\": 2,\r\n        \"quantity\": 2\r\n    }\r\n]",
+							"raw": "/* Uma peça com id 2 deve está criada*/\r\n\r\n{\r\n    \"pieceId\": 6,\r\n    \"quantity\": 2\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
