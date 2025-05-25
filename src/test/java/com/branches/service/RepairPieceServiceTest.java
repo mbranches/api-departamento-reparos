@@ -145,6 +145,7 @@ class RepairPieceServiceTest {
         BDDMockito.when(pieceService.removesStock(pieceNotUpdated, postRequest.getQuantity())).thenReturn(repairPieceToSave.getPiece());
         BDDMockito.when(repository.findByRepair_IdAndPiece_Id(repairId, postRequest.getPieceId())).thenReturn(Optional.empty());
         BDDMockito.when(repository.save(repairPieceToSave)).thenReturn(savedRepairPiece);
+        BDDMockito.doNothing().when(repairService).updateTotalValue(repairId, savedRepairPiece.getTotalValue());
         BDDMockito.when(mapper.toRepairPiecePostResponse(savedRepairPiece)).thenReturn(postResponse);
 
         RepairPiecePostResponse response = service.save(repairId, postRequest);

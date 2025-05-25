@@ -61,7 +61,7 @@ public class RepairEmployeeUtils {
     }
 
     public static RepairEmployee newRepairEmployeeToSave() {
-        Employee employee = EmployeeUtils.newEmployeeSaved();
+        Employee employee = EmployeeUtils.newEmployeeList().getFirst();
         Category employeeCategory = employee.getCategory();
 
         return RepairEmployee.builder().employee(employee).hoursWorked(5).totalValue(employeeCategory.getHourlyPrice() * 5).build();

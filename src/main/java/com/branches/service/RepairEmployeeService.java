@@ -32,7 +32,7 @@ public class RepairEmployeeService {
         return mapper.toRepairEmployeePostResponseList(response);
     }
 
-    private RepairEmployee findByRepairAndEmployeeOrThrowsNotFoundException(Repair repair, Employee employee) {
+    RepairEmployee findByRepairAndEmployeeOrThrowsNotFoundException(Repair repair, Employee employee) {
         return findByRepairIdAndEmployeeId(repair.getId(), employee.getId())
                 .orElseThrow(() -> new NotFoundException("The employee was not found in the repair"));
     }
