@@ -32,7 +32,7 @@ public class RepairPieceService {
         return mapper.toRepairPiecePostResponseList(response);
     }
 
-    private RepairPiece findByRepairAndPieceOrThrowsNotFoundException(Repair repair, Piece piece) {
+    public RepairPiece findByRepairAndPieceOrThrowsNotFoundException(Repair repair, Piece piece) {
         return findByRepairIdAndPieceId(repair.getId(), piece.getId())
                 .orElseThrow(() -> new NotFoundException("The piece was not found in the repair"));
     }
