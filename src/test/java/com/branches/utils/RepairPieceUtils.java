@@ -30,18 +30,22 @@ public class RepairPieceUtils {
     }
 
     public static RepairPiece newRepairPieceToSave() {
-        Piece piece = PieceUtils.newPieceToSave();
+        int quantity = 5;
+        Piece piece = PieceUtils.newPieceList().getFirst();
+        piece.setStock(piece.getStock() - quantity);
 
-        return RepairPiece.builder().piece(piece).quantity(5).build();
+        return RepairPiece.builder().piece(piece).quantity(quantity).build();
     }
 
     public static RepairPiece newRepairPieceSaved() {
         RepairPiece repairPiece = newRepairPieceToSave();
 
-        return repairPiece.withId(4L).withTotalValue(repairPiece.getPiece().getUnitValue() * repairPiece.getQuantity());
+        Repair repair = RepairUtils.newRepairList().getFirst();
+
+        return repairPiece.withId(4L).withRepair(repair).withTotalValue(repairPiece.getPiece().getUnitValue() * repairPiece.getQuantity());
     }
 
-    public static RepairPiecePostResponse newRepairPieceByRepairPostResponse() {
+    public static RepairPiecePostResponse newRepairPiecePostResponse() {
         Piece piece = PieceUtils.newPieceList().getFirst();
 
         return RepairPiecePostResponse.builder().piece(piece).quantity(5).totalValue(piece.getUnitValue() * 5).build();

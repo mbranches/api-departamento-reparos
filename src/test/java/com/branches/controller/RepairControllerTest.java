@@ -476,7 +476,7 @@ class RepairControllerTest {
         String expectedResponse = fileUtils.readResourceFile("repair/post-response-repairPiece-201.json");
 
         RepairPiecePostRequest postRequest = RepairPieceUtils.newRepairPiecePostRequest();
-        RepairPiecePostResponse postResponse = RepairPieceUtils.newRepairPieceByRepairPostResponse();
+        RepairPiecePostResponse postResponse = RepairPieceUtils.newRepairPiecePostResponse();
 
         BDDMockito.when(repairPieceService.save(repairId, postRequest))
                 .thenReturn(postResponse);
