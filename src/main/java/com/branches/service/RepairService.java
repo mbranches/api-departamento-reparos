@@ -1,28 +1,18 @@
 package com.branches.service;
 
 import com.branches.exception.NotFoundException;
-import com.branches.mapper.RepairEmployeeMapper;
 import com.branches.mapper.RepairMapper;
-import com.branches.mapper.RepairPieceMapper;
 import com.branches.model.*;
 import com.branches.repository.RepairRepository;
-import com.branches.request.RepairEmployeeByRepairPostRequest;
-import com.branches.request.RepairPieceByRepairPostRequest;
 import com.branches.request.RepairPostRequest;
-import com.branches.response.RepairEmployeeByRepairResponse;
 import com.branches.response.RepairGetResponse;
-import com.branches.response.RepairPieceByRepairResponse;
 import com.branches.response.RepairPostResponse;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -53,30 +43,6 @@ public class RepairService {
     public Repair findByIdOrThrowsNotFoundException(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Repair with id '%s' not Found".formatted(id)));
-    }
-
-    public List<RepairEmployeeByRepairResponse> findEmployeesByRepairId(Long repairId) {
-        Repair repair = findByIdOrThrowsNotFoundException(repairId);
-
-        List<RepairEmployee> response = findEmployeesByRepair(repair);
-
-        return repairEmployeeMapper.toRepairEmployeeByRepairResponseList(response);
-    }
-
-    public List<RepairEmployee> findEmployeesByRepair(Repair repair) {
-        return repairEmployeeService.findAllByRepair(repair);
-    }
-
-    public List<RepairPieceByRepairResponse> findPiecesByRepairId(Long repairId) {
-        Repair repair = findByIdOrThrowsNotFoundException(repairId);
-
-        List<RepairPiece> response = findPiecesByRepair(repair);
-
-        return repairPieceMapper.toRepairPieceByRepairResponseList(response);
-    }
-
-    private List<RepairPiece> findPiecesByRepair(Repair repair) {
-        return repairPieceService.findAllByRepair(repair);
     }
 
     public List<RepairGetResponse> findAllByClientId(Long clientId) {
@@ -181,29 +147,10 @@ public class RepairService {
         repository.delete(repairToDelete);
     }
 
-    public void removesRepairEmployeeById(Long repairId, Long employeeId) {
+    public void updateTotalValue(Long repairId, Double valueToSum) {
         Repair repair = findByIdOrThrowsNotFoundException(repairId);
-        Employee employee = employeeService.findByIdOrThrowsNotFoundException(employeeId);
 
-        repairEmployeeService.deleteByRepairAndEmployee(repair, employee);
-
-        updateTotalValue(repair);
-    }
-
-    public void removesRepairPieceById(Long repairId, Long pieceId) {
-        Repair repair = findByIdOrThrowsNotFoundException(repairId);
-        Piece piece = pieceService.findByIdOrThrowsNotFoundException(pieceId);
-
-        repairPieceService.deleteByRepairAndPiece(repair, piece);
-
-        updateTotalValue(repair);
-    }
-
-    public void updateTotalValue(Repair repair) {
-        List<RepairEmployee> repairEmployees = findEmployeesByRepair(repair);
-        List<RepairPiece> repairPieces = findPiecesByRepair(repair);
-
-        repair.setTotalValue(calculatesTotalValue(repairEmployees, repairPieces));
+        repair.setTotalValue(repair.getTotalValue() + valueToSum);
 
         repository.save(repair);
     }

@@ -1,6 +1,5 @@
 package com.branches.repository;
 
-import com.branches.model.Piece;
 import com.branches.model.Repair;
 import com.branches.model.RepairPiece;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,5 +12,6 @@ import java.util.Optional;
 public interface RepairPieceRepository extends JpaRepository<RepairPiece, Long> {
     List<RepairPiece> findAllByRepair(Repair repair);
 
-    Optional<RepairPiece> findByRepairAndPiece(Repair repair, Piece piece);
+    Optional<RepairPiece> findByRepair_IdAndPiece_Id(Long repairId, Long pieceId);
+
 }

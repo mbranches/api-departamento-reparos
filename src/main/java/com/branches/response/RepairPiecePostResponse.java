@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class RepairPieceByRepairResponse {
+public class RepairPiecePostResponse {
     private Piece piece;
     private int quantity;
     private double totalValue;

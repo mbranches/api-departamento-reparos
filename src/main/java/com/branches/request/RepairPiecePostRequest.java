@@ -9,7 +9,7 @@ import lombok.With;
 @Data
 @With
 @Builder
-public class RepairPieceByRepairPostRequest {
+public class RepairPiecePostRequest {
     @NotNull(message = "The field 'pieceId' cannot be null")
     private Long pieceId;
     @NotNull(message = "The field 'quantity' cannot be null")

@@ -1,9 +1,11 @@
 package com.branches.controller;
 
-import com.branches.request.RepairEmployeeByRepairPostRequest;
-import com.branches.request.RepairPieceByRepairPostRequest;
+import com.branches.request.RepairEmployeePostRequest;
+import com.branches.request.RepairPiecePostRequest;
 import com.branches.request.RepairPostRequest;
 import com.branches.response.*;
+import com.branches.service.RepairEmployeeService;
+import com.branches.service.RepairPieceService;
 import com.branches.service.RepairService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RepairController {
     private final RepairService service;
+    private final RepairEmployeeService repairEmployeeService;
+    private final RepairPieceService repairPieceService;
 
     @GetMapping
     public ResponseEntity<List<RepairGetResponse>> findAll(@RequestParam(required = false) LocalDate dateRepair) {
@@ -35,15 +39,15 @@ public class RepairController {
     }
 
     @GetMapping("/{repairId}/employees")
-    public ResponseEntity<List<RepairEmployeeByRepairResponse>> findEmployeesByRepairId(@PathVariable Long repairId){
-        List<RepairEmployeeByRepairResponse> response = service.findEmployeesByRepairId(repairId);
+    public ResponseEntity<List<RepairEmployeePostResponse>> findEmployeesByRepairId(@PathVariable Long repairId){
+        List<RepairEmployeePostResponse> response = repairEmployeeService.findAllByRepairId(repairId);
 
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{repairId}/pieces")
-    public ResponseEntity<List<RepairPieceByRepairResponse>> findPiecesByRepairId(@PathVariable Long repairId){
-        List<RepairPieceByRepairResponse> response = service.findPiecesByRepairId(repairId);
+    public ResponseEntity<List<RepairPiecePostResponse>> findPiecesByRepairId(@PathVariable Long repairId){
+        List<RepairPiecePostResponse> response = repairPieceService.findAllByRepairId(repairId);
 
         return ResponseEntity.ok(response);
     }
@@ -56,15 +60,15 @@ public class RepairController {
     }
 
     @PostMapping("/{repairId}/employees")
-    public ResponseEntity<List<RepairEmployeeByRepairResponse>> addEmployee(@PathVariable Long repairId, @Valid @RequestBody List<RepairEmployeeByRepairPostRequest> postRequests) {
-        List<RepairEmployeeByRepairResponse> response = service.addEmployee(repairId, postRequests);
+    public ResponseEntity<RepairEmployeePostResponse> addEmployee(@PathVariable Long repairId, @Valid @RequestBody RepairEmployeePostRequest postRequest) {
+        RepairEmployeePostResponse response = repairEmployeeService.save(repairId, postRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/{repairId}/pieces")
-    public ResponseEntity<List<RepairPieceByRepairResponse>> addPiece(@PathVariable Long repairId, @Valid @RequestBody List<RepairPieceByRepairPostRequest> postRequests) {
-        List<RepairPieceByRepairResponse> response = service.addPiece(repairId, postRequests);
+    public ResponseEntity<RepairPiecePostResponse> addPiece(@PathVariable Long repairId, @Valid @RequestBody RepairPiecePostRequest postRequest) {
+        RepairPiecePostResponse response = repairPieceService.save(repairId, postRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -78,14 +82,14 @@ public class RepairController {
 
     @DeleteMapping("/{repairId}/employees/{employeeId}")
     public ResponseEntity<Void> removesRepairEmployeeById(@PathVariable Long repairId, @PathVariable Long employeeId) {
-        service.removesRepairEmployeeById(repairId, employeeId);
+        repairEmployeeService.deleteByRepairIdAndEmployeeId(repairId, employeeId);
 
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{repairId}/pieces/{pieceId}")
     public ResponseEntity<Void> removesRepairPieceById(@PathVariable Long repairId, @PathVariable Long pieceId) {
-        service.removesRepairPieceById(repairId, pieceId);
+        repairPieceService.deleteByRepairIdAndPieceId(repairId, pieceId);
 
         return ResponseEntity.noContent().build();
     }

@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class RepairEmployeeByRepairResponse {
+public class RepairEmployeePostResponse {
     private EmployeeByRepairResponse employee;
     private int hoursWorked;
     private double totalValue;
