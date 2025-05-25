@@ -1,17 +1,5 @@
 {
   "clientId": 1,
   "vehicleId": 455,
-  "pieces": [
-    {
-      "pieceId":1,
-      "quantity":5
-    }
-  ],
-  "employees": [
-    {
-      "employeeId": 1,
-      "hoursWorked": 5
-    }
-  ],
   "endDate": "12/02/2025"
 }

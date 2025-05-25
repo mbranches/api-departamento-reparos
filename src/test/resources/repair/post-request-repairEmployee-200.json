@@ -1,6 +1,4 @@
-[
-  {
-    "employeeId": 1,
-    "hoursWorked": 5
-  }
-]
+{
+  "employeeId": 1,
+  "hoursWorked": 5
+}

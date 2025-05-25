@@ -14,37 +14,6 @@
     "brand": "Fiat",
     "model": "Toro"
   },
-  "pieces": [
-    {
-      "piece": {
-        "id": 1,
-        "name": "Óleo de motor",
-        "unitValue": 50.0,
-        "stock": 45
-      },
-      "quantity": 5,
-      "totalValue": 250.0
-    }
-  ],
-  "employees": [
-    {
-      "employee": {
-        "id": 1,
-        "person": {
-          "id": 1,
-          "name": "Marcus",
-          "lastName": "Branches"
-        },
-        "category": {
-          "id": 1,
-          "name": "Mecânico",
-          "hourlyPrice": 50.0
-        }
-      },
-      "hoursWorked": 5,
-      "totalValue": 250.0
-    }
-  ],
-  "totalValue": 500.0,
+  "totalValue": 0.0,
   "endDate": "12/02/2025"
 }

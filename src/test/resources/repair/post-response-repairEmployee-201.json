@@ -1,19 +1,17 @@
-[
-  {
-    "employee": {
+{
+  "employee": {
+    "id": 1,
+    "person": {
       "id": 1,
-      "person": {
-        "id": 1,
-        "name": "Marcus",
-        "lastName": "Branches"
-      },
-      "category": {
-        "id": 1,
-        "name": "Mecânico",
-        "hourlyPrice": 50.0
-      }
+      "name": "Marcus",
+      "lastName": "Branches"
     },
-    "hoursWorked": 5,
-    "totalValue": 250.0
-  }
-]
+    "category": {
+      "id": 1,
+      "name": "Mecânico",
+      "hourlyPrice": 50.0
+    }
+  },
+  "hoursWorked": 5,
+  "totalValue": 250.0
+}

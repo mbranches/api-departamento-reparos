@@ -4,8 +4,8 @@ import com.branches.model.Client;
 import com.branches.model.Piece;
 import com.branches.model.Repair;
 import com.branches.model.Vehicle;
-import com.branches.request.RepairEmployeeByRepairPostRequest;
-import com.branches.request.RepairPieceByRepairPostRequest;
+import com.branches.request.RepairEmployeePostRequest;
+import com.branches.request.RepairPiecePostRequest;
 import com.branches.request.RepairPostRequest;
 import com.branches.response.*;
 
@@ -39,15 +39,11 @@ public class RepairUtils {
     }
 
     public static RepairPostRequest newRepairPostRequest() {
-        List<RepairPieceByRepairPostRequest> repairPieces = List.of(RepairPieceUtils.newRepairPiecePostRequest());
-        List<RepairEmployeeByRepairPostRequest> repairEmployees = List.of(RepairEmployeeUtils.newRepairEmployeePostRequest());
         LocalDate date = LocalDate.of(2025, 2, 12);
 
         return RepairPostRequest.builder()
                 .clientId(1L)
                 .vehicleId(1L)
-                .pieces(repairPieces)
-                .employees(repairEmployees)
                 .endDate(date)
                 .build();
     }
@@ -71,28 +67,12 @@ public class RepairUtils {
     public static RepairPostResponse newRepairPostResponse() {
         LocalDate date = LocalDate.of(2025, 2, 12);
 
-        RepairPieceByRepairResponse repairPieceByRepairPostResponse = RepairPieceUtils.newRepairPieceByRepairPostResponse();
-        Piece piece = repairPieceByRepairPostResponse.getPiece();
-        piece.setStock(piece.getStock() - repairPieceByRepairPostResponse.getQuantity());
-
-        RepairPostResponse response = RepairPostResponse.builder()
+        return RepairPostResponse.builder()
                 .id(4L)
                 .client(ClientUtils.newClientByRepairPostResponse())
                 .vehicle(VehicleUtils.newVehicleDefaultResponse())
-                .pieces(List.of(repairPieceByRepairPostResponse))
-                .employees(List.of(RepairEmployeeUtils.newRepairEmployeeByRepairPostResponse()))
+                .totalValue(0D)
                 .endDate(date)
                 .build();
-
-        List<RepairPieceByRepairResponse> pieces = response.getPieces();
-        double totalPieces = pieces.stream().mapToDouble(repair -> repair.getPiece().getUnitValue() * repair.getQuantity()).sum();
-
-        List<RepairEmployeeByRepairResponse> employees = response.getEmployees();
-        double totalEmployees = employees.stream().mapToDouble(repair -> repair.getEmployee().getCategory().getHourlyPrice() * repair.getHoursWorked()).sum();
-
-        double totalValue = totalPieces + totalEmployees;
-        response.setTotalValue(totalValue);
-
-        return response;
     }
 }

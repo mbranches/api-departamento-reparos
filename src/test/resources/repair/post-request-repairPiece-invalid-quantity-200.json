@@ -1,6 +1,4 @@
-[
-  {
-    "pieceId": 1,
-    "quantity": 60
-  }
-]
+{
+  "pieceId": 1,
+  "quantity": 60
+}

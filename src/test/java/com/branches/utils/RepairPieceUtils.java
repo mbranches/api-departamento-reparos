@@ -3,8 +3,8 @@ package com.branches.utils;
 import com.branches.model.Piece;
 import com.branches.model.Repair;
 import com.branches.model.RepairPiece;
-import com.branches.request.RepairPieceByRepairPostRequest;
-import com.branches.response.RepairPieceByRepairResponse;
+import com.branches.request.RepairPiecePostRequest;
+import com.branches.response.RepairPiecePostResponse;
 
 import java.util.List;
 
@@ -25,8 +25,8 @@ public class RepairPieceUtils {
         return List.of(repairPiece1, repairPiece2, repairPiece3);
     }
 
-    public static RepairPieceByRepairPostRequest newRepairPiecePostRequest() {
-        return RepairPieceByRepairPostRequest.builder().pieceId(1L).quantity(5).build();
+    public static RepairPiecePostRequest newRepairPiecePostRequest() {
+        return RepairPiecePostRequest.builder().pieceId(1L).quantity(5).build();
     }
 
     public static RepairPiece newRepairPieceToSave() {
@@ -41,18 +41,18 @@ public class RepairPieceUtils {
         return repairPiece.withId(4L).withTotalValue(repairPiece.getPiece().getUnitValue() * repairPiece.getQuantity());
     }
 
-    public static RepairPieceByRepairResponse newRepairPieceByRepairPostResponse() {
+    public static RepairPiecePostResponse newRepairPieceByRepairPostResponse() {
         Piece piece = PieceUtils.newPieceList().getFirst();
 
-        return RepairPieceByRepairResponse.builder().piece(piece).quantity(5).totalValue(piece.getUnitValue() * 5).build();
+        return RepairPiecePostResponse.builder().piece(piece).quantity(5).totalValue(piece.getUnitValue() * 5).build();
     }
 
-    public static RepairPieceByRepairResponse newRepairPieceByRepairGetPieces() {
+    public static RepairPiecePostResponse newRepairPieceByRepairGetPieces() {
         Piece piece = PieceUtils.newPieceList().getFirst();
         int quantity = 5;
 
 
-        return RepairPieceByRepairResponse.builder()
+        return RepairPiecePostResponse.builder()
                 .piece(piece)
                 .quantity(quantity)
                 .totalValue(piece.getUnitValue() * quantity)
