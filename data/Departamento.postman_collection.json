@@ -382,6 +382,24 @@
 					"response": []
 				},
 				{
+					"name": "Adicionar estoque a uma peça",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"quantity\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/pieces/3/stock"
+					},
+					"response": []
+				},
+				{
 					"name": "Listar todas as peças",
 					"request": {
 						"method": "GET",
@@ -449,7 +467,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "/*\r\nO cliente com id 1 deve está criado\r\nO veiculo com id 1 deve está criado\r\nA peça com id 1 deve está criada\r\nO funcionário com 1 deve está criado\r\n*/\r\n\r\n{\r\n    \"clientId\": 1,\r\n    \"vehicleId\": 1,\r\n    \"pieces\": [\r\n        {\r\n            \"pieceId\": 1,\r\n            \"quantity\": 8\r\n        }\r\n    ],\r\n    \"employees\": [\r\n        {\r\n            \"employeeId\": 1,\r\n            \"hoursWorked\": 35\r\n        }\r\n    ],\r\n    \"endDate\": \"02/01/2025\"\r\n}",
+							"raw": "/*\r\nO cliente com id 1 deve está criado\r\nO veiculo com id 1 deve está criado\r\n*/\r\n\r\n{\r\n    \"clientId\": 1,\r\n    \"vehicleId\": 1,\r\n    \"endDate\": \"02/01/2025\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -572,7 +590,7 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "http://localhost:8080/v1/repairs/1/pieces/2"
+						"url": "http://localhost:8080/v1/repairs/1/pieces/1"
 					},
 					"response": []
 				},
