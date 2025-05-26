@@ -6,6 +6,7 @@ import com.branches.mapper.PieceMapper;
 import com.branches.model.Piece;
 import com.branches.repository.PieceRepository;
 import com.branches.request.PiecePostRequest;
+import com.branches.request.PiecePostStockRequest;
 import com.branches.response.PieceGetResponse;
 import com.branches.response.PiecePostResponse;
 import com.branches.utils.PieceUtils;
@@ -145,8 +146,49 @@ class PieceServiceTest {
     }
 
     @Test
-    @DisplayName("removesStock returns the piece with the removed stock when successful")
+    @DisplayName("addStock returns updated piece when successful")
     @Order(7)
+    void addStock_ReturnsUpdatedPiece_WhenSuccessful() {
+        Piece pieceToUpdate = pieceList.getFirst();
+        Long pieceId = pieceToUpdate.getId();
+
+        int quantityToAdd = 25;
+        int newStock = pieceToUpdate.getStock() + quantityToAdd;
+
+        PiecePostStockRequest postStockRequest = PiecePostStockRequest.builder().quantity(quantityToAdd).build();
+        PiecePostResponse postResponse = PiecePostResponse.builder().id(pieceId).name(pieceToUpdate.getName()).stock(newStock).unitValue(pieceToUpdate.getUnitValue()).build();
+
+        Piece pieceUpdated = pieceToUpdate.withStock(newStock);
+
+        BDDMockito.when(repository.findById(pieceId)).thenReturn(Optional.of(pieceToUpdate));
+        BDDMockito.when(repository.save(pieceUpdated)).thenReturn(pieceUpdated);
+        BDDMockito.when(mapper.toPiecePostResponse(pieceUpdated)).thenReturn(postResponse);
+
+        PiecePostResponse response = service.addStock(pieceId, postStockRequest);
+
+        Assertions.assertThat(response)
+                .isNotNull()
+                .isEqualTo(postResponse);
+    }
+
+    @Test
+    @DisplayName("addStock throws NotFoundException when the given piece id is not found")
+    @Order(8)
+    void addStock_ThrowsNotFoundException_WhenTheGivenPieceIdIsNotFound() {
+        long randomPieceId = 999L;
+
+        PiecePostStockRequest postStockRequest = PiecePostStockRequest.builder().quantity(10).build();
+
+        BDDMockito.when(repository.findById(randomPieceId)).thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> service.addStock(randomPieceId, postStockRequest))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Piece with id '%s' not Found".formatted(randomPieceId));
+    }
+
+    @Test
+    @DisplayName("removesStock returns the piece with the removed stock when successful")
+    @Order(9)
     void removesStock_ReturnsPieceWithRemovedStock_WhenSuccessful() {
         Piece pieceToRemoveStock = pieceList.getFirst();
         int quantityToRemove = 5;
@@ -165,7 +207,7 @@ class PieceServiceTest {
 
     @Test
     @DisplayName("removeStock throws BadRequestException when quantity is greater than stock")
-    @Order(7)
+    @Order(10)
     void removesStock_ThrowsBadRequestException_WhenQuantityIsGreaterThanStock() {
         Piece pieceToRemoveStock = pieceList.getFirst();
         int quantityToRemove = 555555;
@@ -179,7 +221,7 @@ class PieceServiceTest {
 
     @Test
     @DisplayName("deleteById removes piece when successful")
-    @Order(8)
+    @Order(11)
     void deleteById_RemovesPiece_WhenSuccessful() {
         Piece pieceToDelete = pieceList.getFirst();
         Long idToDelete = pieceToDelete.getId();
@@ -193,7 +235,7 @@ class PieceServiceTest {
 
     @Test
     @DisplayName("deleteById throws NotFoundException when given id is not found")
-    @Order(9)
+    @Order(12)
     void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() {
         Long randomId = 15512366L;
 
