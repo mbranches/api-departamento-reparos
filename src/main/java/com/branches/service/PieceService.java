@@ -6,6 +6,7 @@ import com.branches.mapper.PieceMapper;
 import com.branches.model.Piece;
 import com.branches.repository.PieceRepository;
 import com.branches.request.PiecePostRequest;
+import com.branches.request.PiecePostStockRequest;
 import com.branches.response.PieceGetResponse;
 import com.branches.response.PiecePostResponse;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,17 @@ public class PieceService {
         Piece pieceToSave = mapper.toPiece(postRequest);
 
         Piece response = repository.save(pieceToSave);
+
+        return mapper.toPiecePostResponse(response);
+    }
+
+    public PiecePostResponse addStock(Long pieceId, PiecePostStockRequest postStockRequest) {
+        Piece piece = findByIdOrThrowsNotFoundException(pieceId);
+
+        int newStock = piece.getStock() + postStockRequest.getQuantity();
+        piece.setStock(newStock);
+
+        Piece response = repository.save(piece);
 
         return mapper.toPiecePostResponse(response);
     }

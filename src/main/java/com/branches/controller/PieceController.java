@@ -1,6 +1,7 @@
 package com.branches.controller;
 
 import com.branches.request.PiecePostRequest;
+import com.branches.request.PiecePostStockRequest;
 import com.branches.response.PieceGetResponse;
 import com.branches.response.PiecePostResponse;
 import com.branches.service.PieceService;
@@ -35,6 +36,13 @@ public class PieceController {
     @PostMapping
     public ResponseEntity<PiecePostResponse> save(@Valid @RequestBody PiecePostRequest postRequest) {
         PiecePostResponse response = service.save(postRequest);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/{pieceId}/stock")
+    public ResponseEntity<PiecePostResponse> addStock(@PathVariable Long pieceId, @RequestBody PiecePostStockRequest stockPostRequest) {
+        PiecePostResponse response = service.addStock(pieceId, stockPostRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
