@@ -41,7 +41,7 @@ public class PieceController {
     }
 
     @PostMapping("/{pieceId}/stock")
-    public ResponseEntity<PiecePostResponse> addStock(@PathVariable Long pieceId, @RequestBody PiecePostStockRequest stockPostRequest) {
+    public ResponseEntity<PiecePostResponse> addStock(@PathVariable Long pieceId, @Valid @RequestBody PiecePostStockRequest stockPostRequest) {
         PiecePostResponse response = service.addStock(pieceId, stockPostRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
