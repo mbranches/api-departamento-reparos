@@ -3,7 +3,9 @@ package com.branches.controller;
 import com.branches.exception.NotFoundException;
 import com.branches.model.Piece;
 import com.branches.request.PiecePostRequest;
+import com.branches.request.PiecePostStockRequest;
 import com.branches.response.PieceGetResponse;
+import com.branches.response.PiecePostResponse;
 import com.branches.service.PieceService;
 import com.branches.utils.PieceUtils;
 import com.branches.utils.FileUtils;
@@ -178,8 +180,103 @@ public class PieceControllerTest {
     }
 
     @Test
-    @DisplayName("DELETE /v1/pieces/1 removes piece when successful")
+    @DisplayName("POST /v1/pieces/1/stock returns updated piece when successful")
     @Order(8)
+    void addStock_ReturnsUpdatedPiece_WhenSuccessful() throws Exception {
+        String request = fileUtils.readResourceFile("piece/post-request-piece-stock-200.json");
+        String expectedResponse = fileUtils.readResourceFile("piece/post-response-piece-stock-201.json");
+
+        int quantityToAdd = 25;
+
+        PiecePostStockRequest postStockRequest = PiecePostStockRequest.builder().quantity(quantityToAdd).build();
+
+        PieceGetResponse pieceNotUpdated = pieceGetResponseList.getFirst();
+        Long pieceId = pieceNotUpdated.getId();
+
+        PiecePostResponse postResponse = PiecePostResponse.builder()
+                .id(pieceId)
+                .name(pieceNotUpdated.getName())
+                .stock(pieceNotUpdated.getStock() + quantityToAdd)
+                .unitValue(pieceNotUpdated.getUnitValue())
+                .build();
+
+        BDDMockito.when(service.addStock(pieceId, postStockRequest))
+                        .thenReturn(postResponse);
+
+        mockMvc.perform(MockMvcRequestBuilders.post(
+                        URL + "/%s/stock".formatted(pieceId))
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
+    @Test
+    @DisplayName("POST /v1/pieces/999/stock throws NotFoundException when the given piece id is not found")
+    @Order(9)
+    void addStock_ThrowsNotFoundException_WhenTheGivenPieceIdIsNotFound() throws Exception {
+        String request = fileUtils.readResourceFile("piece/post-request-piece-stock-200.json");
+        String expectedResponse = fileUtils.readResourceFile("piece/post-response-piece-stock-404.json");
+
+        int quantityToAdd = 25;
+
+        PiecePostStockRequest postStockRequest = PiecePostStockRequest.builder().quantity(quantityToAdd).build();
+
+        Long randomPieceId = 999L;
+
+        BDDMockito.when(service.addStock(randomPieceId, postStockRequest))
+                .thenThrow(new NotFoundException("Piece with id '%s' not Found".formatted(randomPieceId)));
+
+        mockMvc.perform(MockMvcRequestBuilders.post(
+                                URL + "/%s/stock".formatted(randomPieceId))
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResponse));
+    }
+
+    @ParameterizedTest
+    @MethodSource("postPieceStockBadRequestSource")
+    @DisplayName("POST /v1/pieces/1/stock throws BadRequestException when the field is invalid")
+    @Order(9)
+    void addStock_ThrowsBadRequestException_WhenTheFieldIsInvalid(String fileName, String expectedError) throws Exception {
+        String request = fileUtils.readResourceFile("piece/%s".formatted(fileName));
+
+        long id = 1L;
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post(URL + "/%s/stock".formatted(id))
+                                .content(request)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn();
+
+        Exception exception = mvcResult.getResolvedException();
+
+        Assertions.assertThat(exception.getMessage())
+                .isNotNull()
+                .contains(expectedError);
+    }
+
+    private static Stream<Arguments> postPieceStockBadRequestSource() {
+        String quantityNotNullError = "The field 'quantity' cannot be null";
+        String quantityMustBePositive = "The field 'quantity' must be positive";
+
+        return Stream.of(
+                Arguments.of("post-request-piece-stock-null-field-400.json", quantityNotNullError),
+                Arguments.of("post-request-piece-stock-negative-field-400.json", quantityMustBePositive)
+        );
+    }
+
+    @Test
+    @DisplayName("DELETE /v1/pieces/1 removes piece when successful")
+    @Order(10)
     void deleteById_RemovesPiece_WhenSuccessful() throws Exception {
         Piece pieceToDelete = PieceUtils.newPieceList().getFirst();
         Long idToDelete = pieceToDelete.getId();
@@ -193,7 +290,7 @@ public class PieceControllerTest {
 
     @Test
     @DisplayName("DELETE /v1/pieces/25256595 throws NotFoundException when given id is not found")
-    @Order(9)
+    @Order(11)
     void deleteById_ThrowsNotFoundException_WhenGivenIdIsNotFound() throws Exception {
         Long randomId = 25256595L;
 
